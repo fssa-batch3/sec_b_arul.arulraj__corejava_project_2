@@ -6,12 +6,34 @@ CREATE TABLE category (
     PRIMARY KEY (id)
 );
 
+USE techno_library;
+
+Select*
+FROM category;
+
+INSERT INTO category (category_name)
+VALUES('Novel');
+
+INSERT INTO category (category_name)
+VALUES('humor');
+
 CREATE TABLE publisher (
 	id INT NOT NULL AUTO_INCREMENT,
 	publisher_name VARCHAR(50) NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT true,
     PRIMARY KEY (id)
 );
+
+USE techno_library;
+
+INSERT INTO publisher (publisher_name)
+VALUES('Sesslyn&co');
+
+INSERT INTO publisher (publisher_name)
+VALUES('Dcruzz&co');
+
+Select*
+FROM publisher;
 
 CREATE TABLE book (
 	id INT NOT NULL AUTO_INCREMENT,

@@ -1,5 +1,5 @@
 package in.fssa.technolibrary.model;
 
-public class User {
+public class Book extends BookEntity {
 
 }
