@@ -2,8 +2,7 @@
 
 ## Database Design 
 
-- [ ] Create an ER diagram of the database- ![\] ](https://iili.io/HtMjxne.png)
-- [ ] Write Create table scripts [script](src/main/resources/db/migration/V1__create_users.sql)
+- [ ] Create an ER diagram of the database- [ ![\] ](https://iili.io/HtMjxne.png)Write Create table scripts [script](path/to/sql/file)
 
 
 ## Project Setup
@@ -83,8 +82,8 @@ C -- Invalid --> F(Validation Exception)
 
 #### Pre-requisites:  
 - [ ] book table
-- [ ] book DAO ( find all, find all by id, find all by author )  
-- [ ] book service ( find all,  find all by id, find all by author )
+- [ ] book DAO ( find all, find by id, find all books by author)  
+- [ ] book service ( find all,  find by id, find all books by author)
 
  #### Flow:  
  
