@@ -17,13 +17,11 @@ public class CategoryDAO {
 		ResultSet rs = null;
 
 		try {
-			String query = "INSERT INTO book (id, name) VALUES (?,?)";
+			String query = "INSERT INTO category (category_name) VALUES (?)";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			
-
-				ps.setInt(1, newCategory.getId());
-				ps.setString(2, newCategory.getName());
+				ps.setString(1, newCategory.getName());
 				ps.executeUpdate();
 				
 				System.out.print("Category has been successfully created");

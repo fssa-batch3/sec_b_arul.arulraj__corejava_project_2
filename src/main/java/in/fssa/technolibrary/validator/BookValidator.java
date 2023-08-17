@@ -1,5 +1,9 @@
 package in.fssa.technolibrary.validator;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -7,6 +11,7 @@ import java.util.regex.Pattern;
 
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Book;
+import in.fssa.technolibrary.util.ConnectionUtil;
 import in.fssa.technolibrary.util.StringUtil;
 
 public class BookValidator {
@@ -18,13 +23,15 @@ public class BookValidator {
 			throw new ValidationException("Invalid user input");
 		}
 		
-		validateId(book.getId());
 		validateTitle(book.getTitle());
-		validateAuthorName(book.getAuthor());
+		validateAuthorNamePattern(book.getAuthor());
 		validatePublisherId(book.getPublisherId());
-		validatePublisherId(book.getPublisherId());
+		validateCategoryId(book.getCategoryId());
 		validatePrice(book.getPrice());
 		validateDate(book.getPublishedDate());
+		bookIdAlreadyExistOrNot(book.getId());
+		authorAlreadyExistOrNot(book.getAuthor());
+		
 	}
 		
 	
@@ -38,7 +45,7 @@ public class BookValidator {
 	
 	}
 	
-	public static void validateAuthorName(String author) throws ValidationException {
+	public static void validateAuthorNamePattern(String author) throws ValidationException {
 		
 		StringUtil.rejectIfInvalidString(author, "Author");
 		
@@ -91,6 +98,54 @@ public class BookValidator {
 	    if (dueDate.equals(currentDate) || dueDate.isAfter(currentDate)) {
 	        throw new ValidationException("Invalid date or Invalid date format ( yyyy-MM-dd)");
 	    }
+	}
+	
+	public static void bookIdAlreadyExistOrNot(int id) throws ValidationException {
+		
+		Connection conn = null;
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		try {
+			String query = "Select * From book Where id = ?";
+			conn = ConnectionUtil.getConnection();
+			pre = conn.prepareStatement(query);
+			pre.setInt(1, id);
+			rs = pre.executeQuery();
+			if (!rs.next()) {
+				throw new ValidationException("Book doesn't exist");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			throw new RuntimeException();
+		} finally {
+			ConnectionUtil.close(conn, pre, rs);
+		}
+		
+	}
+	
+	public static void authorAlreadyExistOrNot(String author) throws ValidationException {
+		
+		Connection conn = null;
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		try {
+			String query = "Select * From book Where author = ?";
+			conn = ConnectionUtil.getConnection();
+			pre = conn.prepareStatement(query);
+			pre.setString(1, author);
+			rs = pre.executeQuery();
+			if (!rs.next()) {
+				throw new ValidationException("Author doesn't exist");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			throw new RuntimeException();
+		} finally {
+			ConnectionUtil.close(conn, pre, rs);
+		}
+		
 	}
 
 }

@@ -17,13 +17,11 @@ public class PublisherDAO {
 			ResultSet rs = null;
 
 			try {
-				String query = "INSERT INTO book (id, name) VALUES (?,?)";
+				String query = "INSERT INTO book (publisher_name) VALUES (?)";
 				con = ConnectionUtil.getConnection();
 				ps = con.prepareStatement(query);
 				
-
-					ps.setInt(1, newPublisher.getId());
-					ps.setString(2, newPublisher.getName());
+					ps.setString(1, newPublisher.getName());
 					ps.executeUpdate();
 					
 					System.out.print("Publisher has been successfully created");
