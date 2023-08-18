@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
+import in.fssa.technolibrary.exception.PersistanceException;
+import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.util.ConnectionUtil;
 
@@ -15,7 +17,7 @@ public class BookDAO {
 	
 	//Create Book 
 	
-	public void create(Book newBook) throws RuntimeException {
+	public void create(Book newBook) throws PersistanceException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -35,11 +37,10 @@ public class BookDAO {
 				
 				System.out.print("Book has been Added successfully");
 
-		}catch(SQLException e)
-	{
-		System.out.print(e.getMessage());
-		throw new RuntimeException();
-	}finally
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new PersistanceException(e.getMessage());
+		}finally
 	{
 		ConnectionUtil.close(con, ps);
 	}
@@ -258,7 +259,7 @@ public class BookDAO {
 		}
 	}
 	
-	public void basicUpdate(int id, Book basicUpdate) {
+	public void updatePrice(int id, Book basicUpdate) {
 		 Connection conn = null;
 		    PreparedStatement ps = null;
 		    try {
@@ -276,6 +277,52 @@ public class BookDAO {
 		    } finally {
 		        ConnectionUtil.close(conn, ps, null);
 		    }
+	}
+	
+public static void bookIdAlreadyExistOrNot(int id) throws PersistanceException {
+		
+		Connection conn = null;
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		try {
+			String query = "Select * From book Where id = ?";
+			conn = ConnectionUtil.getConnection();
+			pre = conn.prepareStatement(query);
+			pre.setInt(1, id);
+			rs = pre.executeQuery();
+			if (!rs.next()) {
+				throw new PersistanceException("Book doesn't exist");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new PersistanceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, pre, rs);
+		}
+		
+	}
+	
+	public static void authorAlreadyExistOrNot(String author) throws PersistanceException {
+		
+		Connection conn = null;
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		try {
+			String query = "Select * From book Where author = ?";
+			conn = ConnectionUtil.getConnection();
+			pre = conn.prepareStatement(query);
+			pre.setString(1, author);
+			rs = pre.executeQuery();
+			if (!rs.next()) {
+				throw new PersistanceException("Author doesn't exist");
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+			throw new PersistanceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, pre, rs);
+		}
+		
 	}
 
 }

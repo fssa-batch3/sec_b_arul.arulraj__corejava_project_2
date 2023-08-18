@@ -4,7 +4,8 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import in.fssa.technolibrary.dao.BookDAO;
+import in.fssa.technolibrary.exception.PersistanceException;
+import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.service.BookService;
 
@@ -42,15 +43,8 @@ public class TestGetAllBook {
 		System.out.print(book);
 	}
 	@Test
-	public void delete(int taskId) {
-		BookDAO taskDao = new BookDAO();
-		taskDao.delete(taskId);
-	}
-	@Test
-	public void testDelete() {
+	public void testDelete() throws ValidationException, PersistanceException {
 		BookService bookService = new BookService();
-		Book newBook = new Book();
-		
 		bookService.delete(5556);
 	}
 }

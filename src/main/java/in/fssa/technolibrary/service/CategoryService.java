@@ -8,8 +8,9 @@ public class CategoryService {
 	
 	public static void create(Category newCategory) throws Exception {
 		CategoryValidator.validate(newCategory);
-		CategoryValidator.categoryIdAlreadyExistOrNot(newCategory.getId());
 		CategoryDAO bookDao = new CategoryDAO();
+		bookDao.categoryIdAlreadyExistOrNot(newCategory.getId());
+
 		bookDao.create(newCategory);
 	}
 

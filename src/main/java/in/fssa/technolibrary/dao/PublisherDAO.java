@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import in.fssa.technolibrary.exception.PersistanceException;
+import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Publisher;
 import in.fssa.technolibrary.util.ConnectionUtil;
 
@@ -35,5 +37,29 @@ public class PublisherDAO {
 			ConnectionUtil.close(con, ps);
 		}
 	}
+		
+		public static void publisherIdAlreadyExistOrNot(int id) throws ValidationException, PersistanceException {
+			
+			Connection conn = null;
+			PreparedStatement pre = null;
+			ResultSet rs = null;
+			try {
+				String query = "Select * From publisher Where id = ?";
+				conn = ConnectionUtil.getConnection();
+				pre = conn.prepareStatement(query);
+				pre.setInt(1, id);
+				rs = pre.executeQuery();
+				if (!rs.next()) {
+					System.out.println("Publisher doesn't exist");
+					throw new PersistanceException("Publisher doesn't exist");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new PersistanceException(e.getMessage());
+			} finally {
+				ConnectionUtil.close(conn, pre, rs);
+			}
+			
+		}
 
 }

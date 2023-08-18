@@ -1,14 +1,9 @@
 package in.fssa.technolibrary.validator;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Category;
-import in.fssa.technolibrary.util.ConnectionUtil;
 import in.fssa.technolibrary.util.StringUtil;
 
 public class CategoryValidator {
@@ -21,7 +16,6 @@ public class CategoryValidator {
 		}
 		
 		validateName(category.getName());
-		categoryIdAlreadyExistOrNot(category.getId());
 	}
 	
 	public static void validateName(String name) throws ValidationException {
@@ -40,27 +34,5 @@ public class CategoryValidator {
 	
 	}
 	
-	public static void categoryIdAlreadyExistOrNot(int id) throws ValidationException {
-		
-		Connection conn = null;
-		PreparedStatement pre = null;
-		ResultSet rs = null;
-		try {
-			String query = "Select * From category Where id = ?";
-			conn = ConnectionUtil.getConnection();
-			pre = conn.prepareStatement(query);
-			pre.setInt(1, id);
-			rs = pre.executeQuery();
-			if (!rs.next()) {
-				throw new ValidationException("Category doesn't exist");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-			throw new RuntimeException();
-		} finally {
-			ConnectionUtil.close(conn, pre, rs);
-		}
-		
-	}
+
 }

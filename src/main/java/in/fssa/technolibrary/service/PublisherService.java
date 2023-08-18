@@ -8,8 +8,8 @@ public class PublisherService {
 	
 	public static void create(Publisher newPublisher) throws Exception {
 		PublisherValidator.validate(newPublisher);
-		PublisherValidator.publisherIdAlreadyExistOrNot(newPublisher.getId());
 		PublisherDAO publisherDao = new PublisherDAO();
+		publisherDao.publisherIdAlreadyExistOrNot(newPublisher.getId());
 		publisherDao.create(newPublisher);
 	}
 

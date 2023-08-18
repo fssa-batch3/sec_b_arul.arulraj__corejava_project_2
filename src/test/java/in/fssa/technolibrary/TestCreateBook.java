@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.service.BookService;
+import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ValidationException;
 
 public class TestCreateBook {
@@ -102,7 +103,34 @@ public class TestCreateBook {
 
 		assertTrue(exceptedMessage.equals(actualMessage));
 	}
-	
+	@Test
+	public void testAuthorAlreadyExistOrNot() {
+
+		BookService bookService = new BookService();
+
+		Exception exception = assertThrows(PersistanceException.class, () -> {
+			bookService.findByAuthor("gt");
+		});
+
+		String exceptedMessage = "Author doesn't exist";
+		String actualMessage = exception.getMessage();
+
+		assertTrue(exceptedMessage.equals(actualMessage));
+	}
+	@Test
+	public void testBookAlreadyExistOrNot() {
+
+		BookService bookService = new BookService();
+
+		Exception exception = assertThrows(PersistanceException.class, () -> {
+			bookService.findById(11);
+		});
+
+		String exceptedMessage = "Book doesn't exist";
+		String actualMessage = exception.getMessage();
+
+		assertTrue(exceptedMessage.equals(actualMessage));
+	}
 	@Test
 	public void testPublisherId() {
 
@@ -276,17 +304,8 @@ public class TestCreateBook {
 
 		BookService bookService = new BookService();
 
-		Book newBook = new Book();
-
-		newBook.setAuthor("Ajun");
-		newBook.setTitle("IR");
-		newBook.setCategoryId(6);
-		newBook.setPublisherId(1);
-		newBook.setPublishedDate("2023-01-12");
-		newBook.setPrice(1000);
-
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.create(newBook);
+		Exception exception = assertThrows(RuntimeException.class, () -> {
+			bookService.findByCategoryId(10);
 		});
 
 		String exceptedMessage = "Category doesn't exist";
@@ -300,17 +319,8 @@ public class TestCreateBook {
 
 		BookService bookService = new BookService();
 
-		Book newBook = new Book();
-
-		newBook.setAuthor("Ajun");
-		newBook.setTitle("IR");
-		newBook.setCategoryId(1);
-		newBook.setPublisherId(6);
-		newBook.setPublishedDate("2023-01-12");
-		newBook.setPrice(1000);
-
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.create(newBook);
+		Exception exception = assertThrows(PersistanceException.class, () -> {
+			bookService.findByPublisherId(10);
 		});
 
 		String exceptedMessage = "Publisher doesn't exist";

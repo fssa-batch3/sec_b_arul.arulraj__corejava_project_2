@@ -21,7 +21,7 @@ private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
 		}
 		
 		validateName(publisher.getName());
-		publisherIdAlreadyExistOrNot(publisher.getId());
+//		publisherIdAlreadyExistOrNot(publisher.getId());
 	}
 	
 	public static void validateName(String name) throws ValidationException {
@@ -38,30 +38,6 @@ private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
 			throw new ValidationException("Id can not be less than zero.");
 		}
 	
-	}
-	
-	public static void publisherIdAlreadyExistOrNot(int id) throws ValidationException {
-		
-		Connection conn = null;
-		PreparedStatement pre = null;
-		ResultSet rs = null;
-		try {
-			String query = "Select * From publisher Where id = ?";
-			conn = ConnectionUtil.getConnection();
-			pre = conn.prepareStatement(query);
-			pre.setInt(1, id);
-			rs = pre.executeQuery();
-			if (!rs.next()) {
-				throw new ValidationException("Publisher doesn't exist");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-			throw new RuntimeException();
-		} finally {
-			ConnectionUtil.close(conn, pre, rs);
-		}
-		
 	}
 
 }
