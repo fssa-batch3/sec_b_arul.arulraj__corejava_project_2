@@ -13,6 +13,11 @@ import in.fssa.technolibrary.util.ConnectionUtil;
 public class CategoryDAO {
 
 	// Create Category
+	/**
+	 * 
+	 * @param newCategory
+	 * @throws RuntimeException
+	 */
 	public void create(Category newCategory) throws RuntimeException {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -37,6 +42,11 @@ public class CategoryDAO {
 	}
 
 	// Category ExistOrNot
+	/**
+	 * 
+	 * @param id
+	 * @throws PersistanceException
+	 */
 	public void categoryIdAlreadyExistOrNot(int id) throws PersistanceException {
 
 		Connection conn = null;

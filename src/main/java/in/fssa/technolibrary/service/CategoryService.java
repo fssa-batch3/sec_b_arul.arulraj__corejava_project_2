@@ -5,7 +5,11 @@ import in.fssa.technolibrary.model.Category;
 import in.fssa.technolibrary.validator.CategoryValidator;
 
 public class CategoryService {
-	
+	/**
+	 * 
+	 * @param newCategory
+	 * @throws Exception
+	 */
 	public static void create(Category newCategory) throws Exception {
 		CategoryValidator.validate(newCategory);
 		CategoryDAO bookDao = new CategoryDAO();

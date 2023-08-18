@@ -9,7 +9,11 @@ import in.fssa.technolibrary.util.StringUtil;
 public class CategoryValidator {
 	
 	private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
-	
+	/**
+	 * 
+	 * @param category
+	 * @throws ValidationException
+	 */
 	public static void validate(Category category) throws ValidationException {
 		if (category == null) {
 			throw new ValidationException("Invalid user input");
@@ -17,7 +21,11 @@ public class CategoryValidator {
 		
 		validateName(category.getName());
 	}
-	
+	/**
+	 * 
+	 * @param name
+	 * @throws ValidationException
+	 */
 	public static void validateName(String name) throws ValidationException {
 		
 		StringUtil.rejectIfInvalidString(name, "Name");
@@ -26,7 +34,11 @@ public class CategoryValidator {
 			throw new ValidationException("Name doesn't match the pattern");
 		}
 	}
-	
+	/**
+	 * 
+	 * @param id
+	 * @throws ValidationException
+	 */
 	public static void validateId(int id) throws ValidationException {
 		if (id <= 0) {
 			throw new ValidationException("Id can not be less than zero.");

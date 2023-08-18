@@ -47,4 +47,11 @@ public class TestGetAllBook {
 		BookService bookService = new BookService();
 		bookService.delete(5556);
 	}
+	@Test
+	public void testUpdatePrice() throws Exception {
+		BookService bookService = new BookService();
+		Book newPrice = new Book();
+		newPrice.setPrice(100);
+		bookService.updatePrice(1, newPrice);
+	}
 }

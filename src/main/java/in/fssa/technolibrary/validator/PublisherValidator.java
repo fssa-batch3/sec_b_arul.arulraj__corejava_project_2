@@ -14,7 +14,11 @@ import in.fssa.technolibrary.util.StringUtil;
 public class PublisherValidator {
 	
 private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
-	
+	/**
+	 * 
+	 * @param publisher
+	 * @throws ValidationException
+	 */
 	public static void validate(Publisher publisher) throws ValidationException {
 		if (publisher == null) {
 			throw new ValidationException("Invalid user input");
@@ -23,7 +27,11 @@ private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
 		validateName(publisher.getName());
 //		publisherIdAlreadyExistOrNot(publisher.getId());
 	}
-	
+	/**
+	 * 
+	 * @param name
+	 * @throws ValidationException
+	 */
 	public static void validateName(String name) throws ValidationException {
 		
 		StringUtil.rejectIfInvalidString(name, "Name");
@@ -32,7 +40,11 @@ private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
 			throw new ValidationException("Name doesn't match the pattern");
 		}
 	}
-	
+	/**
+	 * 
+	 * @param id
+	 * @throws ValidationException
+	 */
 	public static void validateId(int id) throws ValidationException {
 		if (id <= 0) {
 			throw new ValidationException("Id can not be less than zero.");

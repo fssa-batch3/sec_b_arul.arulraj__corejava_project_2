@@ -12,7 +12,11 @@ import in.fssa.technolibrary.util.StringUtil;
 public class BookValidator {
 	
 	private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
-	
+	/**
+	 * 
+	 * @param book
+	 * @throws ValidationException
+	 */
 	public static void validate(Book book) throws ValidationException {
 		if (book == null) {
 			throw new ValidationException("Invalid user input");
@@ -27,7 +31,11 @@ public class BookValidator {
 		
 	}
 		
-	
+	/**
+	 * 
+	 * @param title
+	 * @throws ValidationException
+	 */
 	public static void validateTitle(String title) throws ValidationException {
 		
 		StringUtil.rejectIfInvalidString(title, "Title");
@@ -37,7 +45,11 @@ public class BookValidator {
 		}
 	
 	}
-	
+	/**
+	 * 
+	 * @param author
+	 * @throws ValidationException
+	 */
 	public static void validateAuthorNamePattern(String author) throws ValidationException {
 		
 		StringUtil.rejectIfInvalidString(author, "Author");
@@ -47,35 +59,55 @@ public class BookValidator {
 		}
 	
 	}
-	
+	/**
+	 * 
+	 * @param id
+	 * @throws ValidationException
+	 */
 	public static void validateId(int id) throws ValidationException {
 		if (id <= 0) {
 			throw new ValidationException("Id can not be less than zero.");
 		}
 	
 	}
-	
+	/**
+	 * 
+	 * @param publisher_id
+	 * @throws ValidationException
+	 */
 	public static void validatePublisherId(int publisher_id) throws ValidationException {
 		if (publisher_id <= 0) {
 			throw new ValidationException("Publisher Id can not be less than zero.");
 		}
 	
 	}
-	
+	/**
+	 * 
+	 * @param category_id
+	 * @throws ValidationException
+	 */
 	public static void validateCategoryId(int category_id) throws ValidationException {
 		if (category_id <= 0) {
 			throw new ValidationException("Category Id can not be less than zero.");
 		}
 	
 	}
-	
+	/**
+	 * 
+	 * @param price
+	 * @throws ValidationException
+	 */
 	public static void validatePrice(int price) throws ValidationException {
 		if (price <= 0) {
 			throw new ValidationException("Price can not be less than zero.");
 		}
 	
 	}
-	
+	/**
+	 * 
+	 * @param date
+	 * @throws ValidationException
+	 */
 	public static void validateDate(String date) throws ValidationException {
 	    StringUtil.rejectIfInvalidString(date, "Date");
 	    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

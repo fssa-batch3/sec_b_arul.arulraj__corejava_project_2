@@ -9,43 +9,47 @@ import java.util.HashSet;
 import java.util.Set;
 
 import in.fssa.technolibrary.exception.PersistanceException;
-import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.util.ConnectionUtil;
 
 public class BookDAO {
-	
-	//Create Book 
-	
+
+	// Create Book
+	/**
+	 * 
+	 * @param newBook
+	 * @throws PersistanceException
+	 */
 	public void create(Book newBook) throws PersistanceException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		ResultSet rs = null;
-
 		try {
 			String query = "INSERT INTO book ( title, author, publisher_id, category_id,published_date,price) VALUES (?,?,?,?,?,?)";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
-				ps.setString(1, newBook.getTitle());
-				ps.setString(2, newBook.getAuthor());
-				ps.setInt(3, newBook.getPublisherId());
-				ps.setInt(4, newBook.getCategoryId());
-				java.sql.Date date = java.sql.Date.valueOf(newBook.getPublishedDate());
-		        ps.setDate(5, date);
-				ps.setInt(6, newBook.getPrice());
-				ps.executeUpdate();
-				
-				System.out.print("Book has been Added successfully");
+			ps.setString(1, newBook.getTitle());
+			ps.setString(2, newBook.getAuthor());
+			ps.setInt(3, newBook.getPublisherId());
+			ps.setInt(4, newBook.getCategoryId());
+			java.sql.Date date = java.sql.Date.valueOf(newBook.getPublishedDate());
+			ps.setDate(5, date);
+			ps.setInt(6, newBook.getPrice());
+			ps.executeUpdate();
+
+			System.out.print("Book has been Added successfully");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new PersistanceException(e.getMessage());
-		}finally
-	{
-		ConnectionUtil.close(con, ps);
+		} finally {
+			ConnectionUtil.close(con, ps);
+		}
 	}
-}	
-
+	/**
+	 * 
+	 * @return
+	 * @throws RuntimeException
+	 */
 	public Set<Book> findAll() throws RuntimeException {
 
 		Connection con = null;
@@ -70,8 +74,8 @@ public class BookDAO {
 				book.setAuthor(rs.getString("author"));
 				book.setPublisherId(rs.getInt("publisher_id"));
 				book.setCategoryId(rs.getInt("category_id"));
-		        book.setPrice(rs.getInt("price"));
-		        book.setActive(rs.getBoolean("is_active"));
+				book.setPrice(rs.getInt("price"));
+				book.setActive(rs.getBoolean("is_active"));
 				bookList.add(book);
 			}
 
@@ -83,7 +87,12 @@ public class BookDAO {
 		}
 		return bookList;
 	}
-	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 * @throws RuntimeException
+	 */
 	public Book findById(int id) throws RuntimeException {
 
 		Connection con = null;
@@ -107,8 +116,8 @@ public class BookDAO {
 				book.setAuthor(rs.getString("author"));
 				book.setPublisherId(rs.getInt("publisher_id"));
 				book.setCategoryId(rs.getInt("category_id"));
-		        book.setPrice(rs.getInt("price"));
-		        book.setActive(rs.getBoolean("is_active"));
+				book.setPrice(rs.getInt("price"));
+				book.setActive(rs.getBoolean("is_active"));
 			}
 
 		} catch (SQLException e) {
@@ -119,14 +128,19 @@ public class BookDAO {
 		}
 		return book;
 	}
-	
+	/**
+	 * 
+	 * @param author
+	 * @return
+	 * @throws RuntimeException
+	 */
 	public Set<Book> findByAuthor(String author) throws RuntimeException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Book book = null;
-		
+
 		Set<Book> bookList = new HashSet<>();
 
 		try {
@@ -145,9 +159,9 @@ public class BookDAO {
 				book.setAuthor(rs.getString("author"));
 				book.setPublisherId(rs.getInt("publisher_id"));
 				book.setCategoryId(rs.getInt("category_id"));
-		        book.setPrice(rs.getInt("price"));
-		        book.setActive(rs.getBoolean("is_active"));
-		        bookList.add(book);
+				book.setPrice(rs.getInt("price"));
+				book.setActive(rs.getBoolean("is_active"));
+				bookList.add(book);
 			}
 
 		} catch (SQLException e) {
@@ -158,14 +172,19 @@ public class BookDAO {
 		}
 		return bookList;
 	}
-	
+	/**
+	 * 
+	 * @param category_id
+	 * @return
+	 * @throws RuntimeException
+	 */
 	public Set<Book> findByCtegoryId(int category_id) throws RuntimeException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Book book = null;
-		
+
 		Set<Book> bookList = new HashSet<>();
 
 		try {
@@ -174,7 +193,7 @@ public class BookDAO {
 			ps = con.prepareStatement(query);
 			ps.setInt(1, category_id);
 			rs = ps.executeQuery();
-			
+
 			while (rs.next()) {
 				book = new Book();
 				book.setId(rs.getInt("id"));
@@ -185,8 +204,8 @@ public class BookDAO {
 				book.setAuthor(rs.getString("author"));
 				book.setPublisherId(rs.getInt("publisher_id"));
 				book.setCategoryId(rs.getInt("category_id"));
-		        book.setPrice(rs.getInt("price"));
-		        bookList.add(book);
+				book.setPrice(rs.getInt("price"));
+				bookList.add(book);
 			}
 
 		} catch (SQLException e) {
@@ -197,14 +216,19 @@ public class BookDAO {
 		}
 		return bookList;
 	}
-	
+	/**
+	 * 
+	 * @param publisher_id
+	 * @return
+	 * @throws RuntimeException
+	 */
 	public Set<Book> findByPublisherId(int publisher_id) throws RuntimeException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Book book = null;
-		
+
 		Set<Book> bookList = new HashSet<>();
 
 		try {
@@ -213,7 +237,7 @@ public class BookDAO {
 			ps = con.prepareStatement(query);
 			ps.setInt(1, publisher_id);
 			rs = ps.executeQuery();
-			
+
 			while (rs.next()) {
 				book = new Book();
 				book.setId(rs.getInt("id"));
@@ -224,9 +248,9 @@ public class BookDAO {
 				book.setAuthor(rs.getString("author"));
 				book.setPublisherId(rs.getInt("publisher_id"));
 				book.setCategoryId(rs.getInt("category_id"));
-		        book.setPrice(rs.getInt("price"));
-		        book.setActive(rs.getBoolean("is_active"));
-		        bookList.add(book);
+				book.setPrice(rs.getInt("price"));
+				book.setActive(rs.getBoolean("is_active"));
+				bookList.add(book);
 			}
 
 		} catch (SQLException e) {
@@ -237,50 +261,86 @@ public class BookDAO {
 		}
 		return bookList;
 	}
-	
+	/**
+	 * 
+	 * @param id
+	 */
 	public void delete(int id) {
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
 			String query = "UPDATE book SET is_active = false WHERE is_active = 1 AND id = ?";
-			
+
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, id);
-			
+
 			ps.executeUpdate();
 			System.out.println("Book has been successfullly deleted.");
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 			throw new RuntimeException(e);
-		}finally {
+		} finally {
 			ConnectionUtil.close(con, ps);
 		}
 	}
-	
-	public void updatePrice(int id, Book basicUpdate) {
+	/**
+	 * 
+	 * @param id
+	 * @param basicUpdate
+	 * @throws PersistanceException
+	 */
+	public void updatePrice(int id, Book basicUpdate) throws PersistanceException{
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			String query = "UPDATE book SET price = ? WHERE is_active = 1 AND id = ?";
+			conn = ConnectionUtil.getConnection();
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, basicUpdate.getPrice());
+			ps.setInt(2, id);
+			ps.executeUpdate();
+			System.out.println("Price has been updated successfully");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new PersistanceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, ps, null);
+		}
+	}
+	/**
+	 * 
+	 * @param id
+	 * @param basicUpdate
+	 * @throws PersistanceException
+	 */
+	public void updateTitleAndDate(int id, Book basicUpdate) throws PersistanceException{
 		 Connection conn = null;
 		    PreparedStatement ps = null;
 		    try {
-		        String query = "UPDATE tasks SET price = ? WHERE is_active = 1 AND id = ?" ;
+		        String query = "UPDATE book SET title = ? , published_date = ? WHERE is_active = 1 AND id = ?" ;
 		        conn = ConnectionUtil.getConnection();
 		        ps = conn.prepareStatement(query);
-		        ps.setInt(1, basicUpdate.getPrice());
-		        ps.setInt(2, id);
+		        ps.setString(1, basicUpdate.getTitle());
+		        ps.setString(2, basicUpdate.getPublishedDate());
+		        ps.setInt(3, id);
 		        ps.executeUpdate();
-		        System.out.println("Price has been updated successfully");
+		        System.out.println("Title And Published Date has been updated successfully");
 		    } catch (SQLException e) {
-		        e.printStackTrace();
-		        System.out.println(e.getMessage());
-		        throw new RuntimeException(e);
-		    } finally {
+				e.printStackTrace();
+				throw new PersistanceException(e.getMessage());
+			} finally {
 		        ConnectionUtil.close(conn, ps, null);
 		    }
 	}
-	
-public static void bookIdAlreadyExistOrNot(int id) throws PersistanceException {
-		
+	/**
+	 * 
+	 * @param id
+	 * @throws PersistanceException
+	 */
+	public static void bookIdAlreadyExistOrNot(int id) throws PersistanceException {
+
 		Connection conn = null;
 		PreparedStatement pre = null;
 		ResultSet rs = null;
@@ -299,11 +359,15 @@ public static void bookIdAlreadyExistOrNot(int id) throws PersistanceException {
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);
 		}
-		
+
 	}
-	
+	/**
+	 * 
+	 * @param author
+	 * @throws PersistanceException
+	 */
 	public static void authorAlreadyExistOrNot(String author) throws PersistanceException {
-		
+
 		Connection conn = null;
 		PreparedStatement pre = null;
 		ResultSet rs = null;
@@ -316,13 +380,13 @@ public static void bookIdAlreadyExistOrNot(int id) throws PersistanceException {
 			if (!rs.next()) {
 				throw new PersistanceException("Author doesn't exist");
 			}
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);
 		}
-		
+
 	}
 
 }

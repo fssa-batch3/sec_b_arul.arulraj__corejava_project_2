@@ -12,7 +12,11 @@ import in.fssa.technolibrary.util.ConnectionUtil;
 
 public class PublisherDAO {
 	//Create Publisher
-	
+		/**
+		 * 
+		 * @param newPublisher
+		 * @throws RuntimeException
+		 */
 		public void create(Publisher newPublisher) throws RuntimeException {
 			Connection con = null;
 			PreparedStatement ps = null;
@@ -37,7 +41,12 @@ public class PublisherDAO {
 			ConnectionUtil.close(con, ps);
 		}
 	}
-		
+	/**
+	 * 	
+	 * @param id
+	 * @throws ValidationException
+	 * @throws PersistanceException
+	 */
 		public static void publisherIdAlreadyExistOrNot(int id) throws ValidationException, PersistanceException {
 			
 			Connection conn = null;
