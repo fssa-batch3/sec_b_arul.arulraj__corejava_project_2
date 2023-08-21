@@ -1,14 +1,9 @@
 package in.fssa.technolibrary.validator;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Publisher;
-import in.fssa.technolibrary.util.ConnectionUtil;
 import in.fssa.technolibrary.util.StringUtil;
 
 public class PublisherValidator {

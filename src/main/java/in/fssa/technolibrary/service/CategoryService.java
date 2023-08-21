@@ -12,10 +12,8 @@ public class CategoryService {
 	 */
 	public static void create(Category newCategory) throws Exception {
 		CategoryValidator.validate(newCategory);
-		CategoryDAO bookDao = new CategoryDAO();
-		bookDao.categoryIdAlreadyExistOrNot(newCategory.getId());
-
-		bookDao.create(newCategory);
+		CategoryDAO.categoryNameAlreadyExists(newCategory.getName());
+		CategoryDAO categoryDao = new CategoryDAO();
+		categoryDao.create(newCategory);
 	}
-
 }

@@ -10,7 +10,6 @@ import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.model.BookEntity;
 import in.fssa.technolibrary.validator.BookValidator;
-
 public class BookService {
 	
 	/**
@@ -23,7 +22,7 @@ public class BookService {
 		BookValidator.validate(newBook);
 		BookDAO bookDao = new BookDAO();
 		PublisherDAO.publisherIdAlreadyExistOrNot(newBook.getPublisherId());
-		CategoryDAO.categoryIdAlreadyExistOrNot(newBook.getId());
+		CategoryDAO.categoryIdAlreadyExistOrNot(newBook.getCategoryId());
 		bookDao.create(newBook);
 	}
 	/**
@@ -45,12 +44,13 @@ public class BookService {
 	 * 
 	 * @param id
 	 * @return
+	 * @throws PersistanceException 
 	 * @throws Exception
 	 */
-	public Book findById(int id)throws Exception {
+	public Book findById(int id)throws ValidationException, PersistanceException {
 		BookValidator.validateId(id);
 		BookDAO bookDao = new BookDAO();
-		BookDAO.bookIdAlreadyExistOrNot(id);
+		bookDao.bookIdAlreadyExistOrNot(id);
 		Book book = bookDao.findById(id);
 		return book;
 		
@@ -125,19 +125,19 @@ public class BookService {
 	 * @throws ValidationException
 	 * @throws PersistanceException
 	 */
-	public void updatePrice(int id, Book updatedData) throws ValidationException, PersistanceException {
+	public void updatePrice(int id, Book updatedData) throws PersistanceException, ValidationException {
 	    BookValidator.validateId(id);
 	    BookDAO bookDao = new BookDAO();
 	    if (!BookDAO.bookIdAlreadyExistOrNot(id)) {
-	        throw new ValidationException("Book with ID " + id + " does not exist.");
+	        throw new PersistanceException("Book with ID " + id + " does not exist.");
 	    }
 	    int newPrice = updatedData.getPrice();
 	    Book oldData = bookDao.findById(id);
 	    int oldPrice = oldData.getPrice();
 	    if (oldPrice != newPrice) {
 	        bookDao.updatePrice(id, updatedData);
-	    } else {
-	        throw new ValidationException("New price is the same as the old price.");
+	   } else {
+	        throw new PersistanceException("New price is the same as the old price.");
 	    }
 	}
 	/**
@@ -205,5 +205,5 @@ public class BookService {
 	    }
 	}
 
-
 }
+

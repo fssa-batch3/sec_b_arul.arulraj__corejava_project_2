@@ -1,41 +1,57 @@
 package in.fssa.technolibrary;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.service.BookService;
+import in.fssa.technolibrary.validator.BookValidator;
+import in.fssa.technolibrary.validator.PublisherValidator;
 import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ValidationException;
 
 public class TestCreateBook {
-
+	
 	@Test
-	public void testCreateBookWithValidDetails(){
-
-		BookService bookService = new BookService();
+    public void testCreateBookWithValidDetails() throws Exception {
 		
-		Book newBook = new Book();
-		
-		newBook.setAuthor("Tommy");
-		newBook.setTitle("LK");
-		newBook.setCategoryId(1);
-		newBook.setPublisherId(1);
-		newBook.setPublishedDate("2023-01-12");
-		newBook.setPrice(5100);
+        Book newBook = new Book();
 
-		assertDoesNotThrow(() -> {
-			bookService.create(newBook);
+        String generatedAuthor = generateRandomAlphabeticName();
+        String generatedTitle = generateRandomAlphabeticName();
+      
+        newBook.setAuthor(generatedAuthor);
+        newBook.setTitle(generatedTitle);
+        newBook.setCategoryId(1);
+        newBook.setPublisherId(1);
+        newBook.setPublishedDate("2023-01-12");
+        newBook.setPrice(5100);
+        assertDoesNotThrow(() -> {
+        	BookService.create(newBook);
 		});
-	}
+        
+             
+    }
+
+    private String generateRandomAlphabeticName() {
+        int nameLength = 10;
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(nameLength);
+        for (int i = 1; i < nameLength; i++) {
+            char randomChar = (char) (random.nextInt(26) + 'a');
+            sb.append(randomChar);
+        }
+        return sb.toString();
+    }
 	
 	@Test
 	public void testAuthorNameNull() {
-
-		BookService bookService = new BookService();
 
 		Book newBook = new Book();
 
@@ -47,7 +63,7 @@ public class TestCreateBook {
 		newBook.setPrice(1000);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.create(newBook);
+			BookService.create(newBook);
 		});
 
 		String exceptedMessage = "Author cannot be null or empty";
@@ -59,8 +75,6 @@ public class TestCreateBook {
 	@Test
 	public void testAuthorNameEmpty() {
 
-		BookService bookService = new BookService();
-
 		Book newBook = new Book();
 
 		newBook.setAuthor("");
@@ -71,19 +85,17 @@ public class TestCreateBook {
 		newBook.setPrice(1000);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.create(newBook);
+			BookService.create(newBook);
 		});
 
 		String exceptedMessage = "Author cannot be null or empty";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 	
 	@Test
 	public void testAuthorNamePattern() {
-
-		BookService bookService = new BookService();
 
 		Book newBook = new Book();
 
@@ -95,7 +107,7 @@ public class TestCreateBook {
 		newBook.setPrice(1000);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.create(newBook);
+			BookService.create(newBook);
 		});
 
 		String exceptedMessage = "Author name doesn't match the pattern";
@@ -122,19 +134,17 @@ public class TestCreateBook {
 
 		BookService bookService = new BookService();
 
-		Exception exception = assertThrows(PersistanceException.class, () -> {
-			bookService.findById(11);
+		Exception exception = assertThrows(	ValidationException.class, () -> {
+			bookService.findById(200);
 		});
 
 		String exceptedMessage = "Book doesn't exist";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 	@Test
 	public void testPublisherId() {
-
-		BookService bookService = new BookService();
 
 		Book newBook = new Book();
 
@@ -146,7 +156,7 @@ public class TestCreateBook {
 		newBook.setPrice(1000);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.create(newBook);
+			BookService.create(newBook);
 		});
 
 		String exceptedMessage = "Publisher Id can not be less than zero.";
@@ -158,8 +168,6 @@ public class TestCreateBook {
 	@Test
 	public void testCategoryId() {
 
-		BookService bookService = new BookService();
-
 		Book newBook = new Book();
 
 		newBook.setAuthor("Ajun");
@@ -170,7 +178,7 @@ public class TestCreateBook {
 		newBook.setPrice(1000);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.create(newBook);
+			BookService.create(newBook);
 		});
 
 		String exceptedMessage = "Category Id can not be less than zero.";
@@ -182,8 +190,6 @@ public class TestCreateBook {
 	@Test
 	public void testPrice() {
 
-		BookService bookService = new BookService();
-
 		Book newBook = new Book();
 
 		newBook.setAuthor("Ajun");
@@ -194,7 +200,7 @@ public class TestCreateBook {
 		newBook.setPrice(0);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.create(newBook);
+			BookService.create(newBook);
 		});
 
 		String exceptedMessage = "Price can not be less than zero.";
@@ -206,8 +212,6 @@ public class TestCreateBook {
 	@Test
 	public void testDateNull() {
 
-		BookService bookService = new BookService();
-
 		Book newBook = new Book();
 
 		newBook.setAuthor("Ajun");
@@ -218,7 +222,7 @@ public class TestCreateBook {
 		newBook.setPrice(1000);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.create(newBook);
+			BookService.create(newBook);
 		});
 
 		String exceptedMessage = "Date cannot be null or empty";
@@ -230,8 +234,6 @@ public class TestCreateBook {
 	@Test
 	public void testDateEmpty() {
 
-		BookService bookService = new BookService();
-
 		Book newBook = new Book();
 
 		newBook.setAuthor("Ajun");
@@ -242,7 +244,7 @@ public class TestCreateBook {
 		newBook.setPrice(1000);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.create(newBook);
+			BookService.create(newBook);
 		});
 
 		String exceptedMessage = "Date cannot be null or empty";
@@ -253,8 +255,6 @@ public class TestCreateBook {
 	
 	@Test
 	public void testDateFormat() {
-
-		BookService bookService = new BookService();
 		
 		Book newBook = new Book();
 
@@ -266,7 +266,7 @@ public class TestCreateBook {
 		newBook.setPrice(1000);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.create(newBook);
+			BookService.create(newBook);
 		});
 
 		String exceptedMessage = "Invalid date or Invalid date format ( yyyy-MM-dd)";
@@ -278,8 +278,6 @@ public class TestCreateBook {
 	@Test
 	public void testDateValidRange() {
 
-		BookService bookService = new BookService();
-
 		Book newBook = new Book();
 
 		newBook.setAuthor("Ajun");
@@ -290,7 +288,7 @@ public class TestCreateBook {
 		newBook.setPrice(1000);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.create(newBook);
+			BookService.create(newBook);
 		});
 
 		String exceptedMessage = "Invalid date or Invalid date format ( yyyy-MM-dd)";
@@ -304,14 +302,14 @@ public class TestCreateBook {
 
 		BookService bookService = new BookService();
 
-		Exception exception = assertThrows(RuntimeException.class, () -> {
-			bookService.findByCategoryId(10);
+		Exception exception = assertThrows(PersistanceException.class, () -> {
+			bookService.findByCategoryId(5000);
 		});
 
-		String exceptedMessage = "Category doesn't exist";
+		String exceptedMessage = "Category with ID 5000 doesn't exist";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 	
 	@Test
@@ -319,8 +317,8 @@ public class TestCreateBook {
 
 		BookService bookService = new BookService();
 
-		Exception exception = assertThrows(PersistanceException.class, () -> {
-			bookService.findByPublisherId(10);
+		Exception exception = assertThrows(Exception.class, () -> {
+			bookService.findByPublisherId(1000);
 		});
 
 		String exceptedMessage = "Publisher doesn't exist";

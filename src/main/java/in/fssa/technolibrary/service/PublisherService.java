@@ -13,7 +13,6 @@ public class PublisherService {
 	public static void create(Publisher newPublisher) throws Exception {
 		PublisherValidator.validate(newPublisher);
 		PublisherDAO publisherDao = new PublisherDAO();
-		publisherDao.publisherIdAlreadyExistOrNot(newPublisher.getId());
 		publisherDao.create(newPublisher);
 	}
 

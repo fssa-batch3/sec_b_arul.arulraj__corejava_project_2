@@ -22,7 +22,7 @@ public class PublisherDAO {
 			PreparedStatement ps = null;
 
 			try {
-				String query = "INSERT INTO book (publisher_name) VALUES (?)";
+				String query = "INSERT INTO publisher (publisher_name) VALUES (?)";
 				con = ConnectionUtil.getConnection();
 				ps = con.prepareStatement(query);
 				
@@ -43,10 +43,9 @@ public class PublisherDAO {
 	/**
 	 * 	
 	 * @param id
-	 * @throws ValidationException
 	 * @throws PersistanceException
 	 */
-		public static boolean publisherIdAlreadyExistOrNot(int id) throws ValidationException, PersistanceException {
+		public static boolean publisherIdAlreadyExistOrNot(int id) throws PersistanceException {
 			
 			Connection conn = null;
 			PreparedStatement pre = null;

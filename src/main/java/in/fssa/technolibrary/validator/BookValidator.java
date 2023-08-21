@@ -10,7 +10,6 @@ import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.util.StringUtil;
 
 public class BookValidator {
-	
 	private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
 	/**
 	 * 
