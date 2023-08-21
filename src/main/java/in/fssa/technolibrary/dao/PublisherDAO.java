@@ -20,7 +20,6 @@ public class PublisherDAO {
 		public void create(Publisher newPublisher) throws RuntimeException {
 			Connection con = null;
 			PreparedStatement ps = null;
-			ResultSet rs = null;
 
 			try {
 				String query = "INSERT INTO book (publisher_name) VALUES (?)";
@@ -47,11 +46,12 @@ public class PublisherDAO {
 	 * @throws ValidationException
 	 * @throws PersistanceException
 	 */
-		public static void publisherIdAlreadyExistOrNot(int id) throws ValidationException, PersistanceException {
+		public static boolean publisherIdAlreadyExistOrNot(int id) throws ValidationException, PersistanceException {
 			
 			Connection conn = null;
 			PreparedStatement pre = null;
 			ResultSet rs = null;
+			boolean result = true;
 			try {
 				String query = "Select * From publisher Where id = ?";
 				conn = ConnectionUtil.getConnection();
@@ -59,6 +59,7 @@ public class PublisherDAO {
 				pre.setInt(1, id);
 				rs = pre.executeQuery();
 				if (!rs.next()) {
+					result = false;
 					System.out.println("Publisher doesn't exist");
 					throw new PersistanceException("Publisher doesn't exist");
 				}
@@ -68,6 +69,7 @@ public class PublisherDAO {
 			} finally {
 				ConnectionUtil.close(conn, pre, rs);
 			}
+			return result;
 			
 		}
 

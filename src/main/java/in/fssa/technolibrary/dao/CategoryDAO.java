@@ -21,7 +21,6 @@ public class CategoryDAO {
 	public void create(Category newCategory) throws RuntimeException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		ResultSet rs = null;
 
 		try {
 			String query = "INSERT INTO category (category_name) VALUES (?)";
@@ -47,11 +46,12 @@ public class CategoryDAO {
 	 * @param id
 	 * @throws PersistanceException
 	 */
-	public void categoryIdAlreadyExistOrNot(int id) throws PersistanceException {
+	public static boolean categoryIdAlreadyExistOrNot(int id) throws PersistanceException {
 
 		Connection conn = null;
 		PreparedStatement pre = null;
 		ResultSet rs = null;
+		boolean result = true;
 		try {
 			String query = "Select * From category Where id = ?";
 			conn = ConnectionUtil.getConnection();
@@ -59,6 +59,7 @@ public class CategoryDAO {
 			pre.setInt(1, id);
 			rs = pre.executeQuery();
 			if (!rs.next()) {
+				result = false;
 				System.out.println("Category doesn't exist");
 				throw new PersistanceException("Category doesn't exist");
 			}
@@ -68,6 +69,6 @@ public class CategoryDAO {
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);
 		}
-
+		return result;
 	}
 }

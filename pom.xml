@@ -47,6 +47,11 @@
 			<artifactId>java-dotenv</artifactId>
 			<version>5.2.2</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fssa.corejava</groupId>
+			<artifactId>template</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 

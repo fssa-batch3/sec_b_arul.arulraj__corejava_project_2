@@ -45,12 +45,13 @@ public class BookDAO {
 			ConnectionUtil.close(con, ps);
 		}
 	}
+
 	/**
 	 * 
 	 * @return
 	 * @throws RuntimeException
 	 */
-	public Set<Book> findAll() throws RuntimeException {
+	public Set<Book> findAll() throws PersistanceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -80,20 +81,22 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.print(e.getMessage());
-			throw new RuntimeException();
+			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
 		return bookList;
 	}
+
 	/**
 	 * 
 	 * @param id
 	 * @return
 	 * @throws RuntimeException
 	 */
-	public Book findById(int id) throws RuntimeException {
+	public Book findById(int id) throws PersistanceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -121,20 +124,22 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.print(e.getMessage());
-			throw new RuntimeException();
+			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
 		return book;
 	}
+
 	/**
 	 * 
 	 * @param author
 	 * @return
 	 * @throws RuntimeException
 	 */
-	public Set<Book> findByAuthor(String author) throws RuntimeException {
+	public Set<Book> findByAuthor(String author) throws PersistanceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -165,20 +170,22 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.print(e.getMessage());
-			throw new RuntimeException();
+			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
 		return bookList;
 	}
+
 	/**
 	 * 
 	 * @param category_id
 	 * @return
 	 * @throws RuntimeException
 	 */
-	public Set<Book> findByCtegoryId(int category_id) throws RuntimeException {
+	public Set<Book> findByCtegoryId(int category_id) throws PersistanceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -209,20 +216,22 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.print(e.getMessage());
-			throw new RuntimeException();
-		} finally {
+			throw new PersistanceException(e.getMessage());
+		}finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
 		return bookList;
 	}
+
 	/**
 	 * 
 	 * @param publisher_id
 	 * @return
 	 * @throws RuntimeException
 	 */
-	public Set<Book> findByPublisherId(int publisher_id) throws RuntimeException {
+	public Set<Book> findByPublisherId(int publisher_id) throws PersistanceException{
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -254,18 +263,20 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.print(e.getMessage());
-			throw new RuntimeException();
+			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
 		return bookList;
 	}
+
 	/**
 	 * 
 	 * @param id
 	 */
-	public void delete(int id) {
+	public void delete(int id) throws PersistanceException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
@@ -274,24 +285,24 @@ public class BookDAO {
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, id);
-
 			ps.executeUpdate();
 			System.out.println("Book has been successfullly deleted.");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
-			throw new RuntimeException(e);
+			System.out.print(e.getMessage());
+			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps);
 		}
 	}
+
 	/**
 	 * 
 	 * @param id
 	 * @param basicUpdate
 	 * @throws PersistanceException
 	 */
-	public void updatePrice(int id, Book basicUpdate) throws PersistanceException{
+	public void updatePrice(int id, Book basicUpdate) throws PersistanceException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
@@ -304,6 +315,34 @@ public class BookDAO {
 			System.out.println("Price has been updated successfully");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.print(e.getMessage());
+			throw new PersistanceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, ps, null);
+		}
+	}
+
+	/**
+	 * 
+	 * @param id
+	 * @param basicUpdate
+	 * @throws PersistanceException
+	 */
+	public void updateTitleAndDate(int id, Book basicUpdate) throws PersistanceException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			String query = "UPDATE book SET title = ? , published_date = ? WHERE is_active = 1 AND id = ?";
+			conn = ConnectionUtil.getConnection();
+			ps = conn.prepareStatement(query);
+			ps.setString(1, basicUpdate.getTitle());
+			ps.setString(2, basicUpdate.getPublishedDate());
+			ps.setInt(3, id);
+			ps.executeUpdate();
+			System.out.println("Title And Published Date has been updated successfully");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.print(e.getMessage());
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, ps, null);
@@ -315,35 +354,40 @@ public class BookDAO {
 	 * @param basicUpdate
 	 * @throws PersistanceException
 	 */
-	public void updateTitleAndDate(int id, Book basicUpdate) throws PersistanceException{
-		 Connection conn = null;
-		    PreparedStatement ps = null;
-		    try {
-		        String query = "UPDATE book SET title = ? , published_date = ? WHERE is_active = 1 AND id = ?" ;
-		        conn = ConnectionUtil.getConnection();
-		        ps = conn.prepareStatement(query);
-		        ps.setString(1, basicUpdate.getTitle());
-		        ps.setString(2, basicUpdate.getPublishedDate());
-		        ps.setInt(3, id);
-		        ps.executeUpdate();
-		        System.out.println("Title And Published Date has been updated successfully");
-		    } catch (SQLException e) {
-				e.printStackTrace();
-				throw new PersistanceException(e.getMessage());
-			} finally {
-		        ConnectionUtil.close(conn, ps, null);
-		    }
+	public void updateAuthorNamePublisheIdCategoryId(int id, Book basicUpdate) throws PersistanceException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			String query = "UPDATE book SET author = ? , publisher_id = ? , category_id = ? WHERE is_active = 1 AND id = ?";
+			conn = ConnectionUtil.getConnection();
+			ps = conn.prepareStatement(query);
+			ps.setString(1, basicUpdate.getAuthor());
+			ps.setInt(2, basicUpdate.getPublisherId());
+			ps.setInt(3, basicUpdate.getCategoryId());
+			ps.setInt(4, id);
+			ps.executeUpdate();
+			System.out.println("Author ,Published Id And Category Id has been updated successfully");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.print(e.getMessage());
+			throw new PersistanceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, ps, null);
+		}
 	}
+
 	/**
 	 * 
 	 * @param id
+	 * @return
 	 * @throws PersistanceException
 	 */
-	public static void bookIdAlreadyExistOrNot(int id) throws PersistanceException {
+	public static boolean bookIdAlreadyExistOrNot(int id) throws PersistanceException {
 
 		Connection conn = null;
 		PreparedStatement pre = null;
 		ResultSet rs = null;
+		boolean result = true;
 		try {
 			String query = "Select * From book Where id = ?";
 			conn = ConnectionUtil.getConnection();
@@ -351,16 +395,19 @@ public class BookDAO {
 			pre.setInt(1, id);
 			rs = pre.executeQuery();
 			if (!rs.next()) {
+				result = false;
 				throw new PersistanceException("Book doesn't exist");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.print(e.getMessage());
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);
 		}
-
+		return result;
 	}
+
 	/**
 	 * 
 	 * @param author
@@ -382,6 +429,7 @@ public class BookDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.print(e.getMessage());
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);

@@ -23,16 +23,16 @@ public class BookService {
 		BookValidator.validate(newBook);
 		BookDAO bookDao = new BookDAO();
 		PublisherDAO.publisherIdAlreadyExistOrNot(newBook.getPublisherId());
-		CategoryDAO categoryDao = new CategoryDAO();
-		categoryDao.categoryIdAlreadyExistOrNot(newBook.getId());
+		CategoryDAO.categoryIdAlreadyExistOrNot(newBook.getId());
 		bookDao.create(newBook);
 	}
 	/**
 	 * 
 	 * @return
+	 * @throws PersistanceException 
 	 */
 
-	public Set<Book> findAll() {
+	public Set<Book> findAll() throws PersistanceException {
 		BookDAO bookDao = new BookDAO();
 		Set<Book> BookList = bookDao.findAll();
 		for (BookEntity list : BookList) {
@@ -82,8 +82,7 @@ public class BookService {
 	public Set<Book> findByCategoryId(int category_id) throws ValidationException, PersistanceException {
 		BookValidator.validateCategoryId(category_id);
 		BookDAO bookDao = new BookDAO();
-		CategoryDAO categoryDao = new CategoryDAO();
-		categoryDao.categoryIdAlreadyExistOrNot(category_id);
+		CategoryDAO.categoryIdAlreadyExistOrNot(category_id);
 		Set<Book> BookList = bookDao.findByCtegoryId(category_id);
 		for (BookEntity list : BookList) {
 			System.out.println(list);
@@ -127,18 +126,84 @@ public class BookService {
 	 * @throws PersistanceException
 	 */
 	public void updatePrice(int id, Book updatedData) throws ValidationException, PersistanceException {
-		BookValidator.validateId(id);
-		BookDAO bookDao = new BookDAO();
-		BookDAO.bookIdAlreadyExistOrNot(id);
-		int newPrice = updatedData.getPrice();
-		Book oldData = bookDao.findById(id);
-		int oldPrice = oldData.getPrice();
-		if(oldPrice != newPrice) {
-			bookDao.updatePrice(id, updatedData);
-		}else {
-			System.out.print("Updated price and old price is same");
-		}
-		
+	    BookValidator.validateId(id);
+	    BookDAO bookDao = new BookDAO();
+	    if (!BookDAO.bookIdAlreadyExistOrNot(id)) {
+	        throw new ValidationException("Book with ID " + id + " does not exist.");
+	    }
+	    int newPrice = updatedData.getPrice();
+	    Book oldData = bookDao.findById(id);
+	    int oldPrice = oldData.getPrice();
+	    if (oldPrice != newPrice) {
+	        bookDao.updatePrice(id, updatedData);
+	    } else {
+	        throw new ValidationException("New price is the same as the old price.");
+	    }
 	}
+	/**
+	 * 
+	 * @param id
+	 * @param updatedData
+	 * @throws ValidationException
+	 * @throws PersistanceException
+	 */
+	public void updateTitleAndDate(int id, Book updatedData) throws ValidationException, PersistanceException {
+	    BookValidator.validateId(id);
+	    BookValidator.validateTitle(updatedData.getTitle());
+	    BookValidator.validateDate(updatedData.getPublishedDate());
+	    BookDAO bookDao = new BookDAO();
+	    if (!BookDAO.bookIdAlreadyExistOrNot(id)) {
+	        throw new ValidationException("Book with ID " + id + " does not exist.");
+	    }
+	    
+	    String newTitle = updatedData.getTitle();
+	    String newDate = updatedData.getPublishedDate();
+	    Book oldData = bookDao.findById(id);
+	    String oldTitle = oldData.getTitle();
+	    String oldDate = oldData.getPublishedDate();
+	    if (!oldTitle.equals(newTitle) && !oldDate.equals(newDate)) {
+	        bookDao.updateTitleAndDate(id, updatedData);
+	    } else {
+	        throw new ValidationException("New Title And Published Date is the same as the old Title And Published Date.");
+	    }
+	}
+	/**
+	 * 
+	 * @param id
+	 * @param updatedData
+	 * @throws ValidationException
+	 * @throws PersistanceException
+	 */
+	public void updateAuthorNamePublisheIdCategoryId(int id, Book updatedData) throws ValidationException, PersistanceException {
+	    BookValidator.validateId(id);
+	    BookValidator.validateAuthorNamePattern(updatedData.getAuthor());
+	    BookValidator.validatePublisherId(updatedData.getPublisherId());
+	    BookValidator.validateCategoryId(updatedData.getCategoryId());
+	    BookDAO bookDao = new BookDAO();
+	    
+	    if (!BookDAO.bookIdAlreadyExistOrNot(id)) {
+	        throw new ValidationException("Book with ID " + id + " does not exist.");
+	    }
+	    if (!PublisherDAO.publisherIdAlreadyExistOrNot(updatedData.getPublisherId())) {
+	        throw new ValidationException("Publisher ID " + updatedData.getPublisherId() + " does not exist.");
+	    }
+	    if (!CategoryDAO.categoryIdAlreadyExistOrNot(updatedData.getCategoryId())) {
+	        throw new ValidationException("Category ID " + updatedData.getCategoryId() + " does not exist.");
+	    }
+	    
+	    String newAuthorName = updatedData.getTitle();
+	    int newPublisherId = updatedData.getPublisherId();
+	    int newCategoryId = updatedData.getCategoryId();
+	    Book oldData = bookDao.findById(id);
+	    String oldAuthorName = oldData.getAuthor();
+	    int oldPublisherId = oldData.getPublisherId();
+	    int oldCategory = oldData.getCategoryId();
+	    if (!oldAuthorName.equals(newAuthorName) && oldPublisherId != newPublisherId && oldCategory != newCategoryId) {
+	        bookDao.updateAuthorNamePublisheIdCategoryId(id, updatedData);
+	    } else {
+	        throw new ValidationException("New Author ,Published Id And Category Id is the same as the old Author ,Published Id And Category Id.");
+	    }
+	}
+
 
 }
