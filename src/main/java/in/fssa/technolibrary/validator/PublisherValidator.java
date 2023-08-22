@@ -46,5 +46,7 @@ private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
 		}
 	
 	}
+	
+	// TODO:  rejectIfIdAlreadyExists(int id)
 
 }
