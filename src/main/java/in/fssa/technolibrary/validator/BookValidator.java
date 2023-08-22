@@ -23,6 +23,10 @@ public class BookValidator {
 		
 		validateTitle(book.getTitle());
 		validateAuthorNamePattern(book.getAuthor());
+		
+		// TODO: PublisherValidator.validateId();
+		// TODO: PublisherValidator.rejectIfIdAlreadyExists();
+		
 		validatePublisherId(book.getPublisherId());
 		validateCategoryId(book.getCategoryId());
 		validatePrice(book.getPrice());

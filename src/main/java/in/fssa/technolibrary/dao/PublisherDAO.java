@@ -44,14 +44,15 @@ public class PublisherDAO {
 	 * 	
 	 * @param id
 	 * @throws PersistanceException
+	 * @throws ValidationException 
 	 */
-		public static boolean publisherIdAlreadyExistOrNot(int id) throws PersistanceException {
+		public static boolean publisherIdAlreadyExistOrNot(int id) throws PersistanceException, ValidationException {
 			
 			Connection conn = null;
 			PreparedStatement pre = null;
 			ResultSet rs = null;
 			boolean result = true;
-			try {
+		  try {
 				String query = "Select * From publisher Where id = ?";
 				conn = ConnectionUtil.getConnection();
 				pre = conn.prepareStatement(query);
@@ -60,7 +61,7 @@ public class PublisherDAO {
 				if (!rs.next()) {
 					result = false;
 					System.out.println("Publisher doesn't exist");
-					throw new PersistanceException("Publisher doesn't exist");
+					throw new ValidationException("Publisher doesn't exist");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

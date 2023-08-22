@@ -113,12 +113,23 @@ public class TestGetAllBook {
 	}
 
 	@Test
-	public void testUpdatePrice() throws Exception {
-		BookService bookService = new BookService();
-		Book newPrice = new Book();
-		newPrice.setPrice(2000);
-		bookService.updatePrice(1, newPrice);
-	}
+    public void testUpdatePrice() throws Exception {
+        BookService bookService = new BookService();
+        
+        // Generate a random price between a specified range
+        int minPrice = 1000;
+        int maxPrice = 5000;
+        int randomPrice = generateRandomPrice(minPrice, maxPrice);
+
+        Book newPrice = new Book();
+        newPrice.setPrice(randomPrice);
+        
+        bookService.updatePrice(1, newPrice);
+    }
+
+    private int generateRandomPrice(int minPrice, int maxPrice) {
+        return minPrice + (int) (Math.random() * (maxPrice - minPrice + 1));
+    }
 
 	@Test
 	public void testUpdatePriceWithTheSamePrice() throws ValidationException, PersistanceException {
@@ -140,9 +151,9 @@ public class TestGetAllBook {
 	public void testupdateAuthorNamePublisheIdCategoryId() throws ValidationException, PersistanceException {
 		BookService bookService = new BookService();
 		Book newData = new Book();
-		newData.setAuthor("DYTH");
-		newData.setPublisherId(1);
-		newData.setCategoryId(6);
+		newData.setAuthor("HEYR");
+		newData.setPublisherId(3);
+		newData.setCategoryId(2);
 		bookService.updateAuthorNamePublisheIdCategoryId(2, newData);
 		}
 	
