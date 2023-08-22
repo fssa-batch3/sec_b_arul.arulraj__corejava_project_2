@@ -136,10 +136,10 @@ public class TestGetAllBook {
 		BookService bookService = new BookService();
 		Book newPrice = new Book();
 		bookService.findById(1);
-		newPrice.setPrice(1500);
+		newPrice.setPrice(5100);
 
 		Exception exception = assertThrows(PersistanceException.class, () -> {
-			bookService.updatePrice(1, newPrice);
+			bookService.updatePrice(3, newPrice);
 		});
 
 		String expectedMessage = "New price is the same as the old price.";
