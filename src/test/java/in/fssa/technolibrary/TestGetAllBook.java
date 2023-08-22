@@ -150,18 +150,29 @@ public class TestGetAllBook {
 	@Test
 	public void testupdateAuthorNamePublisheIdCategoryId() throws ValidationException, PersistanceException {
 	    BookService bookService = new BookService();
+	    Book existingBook = bookService.findById(2); // Replace with the actual method to retrieve a book by ID
+	    
 	    Book newData = new Book();
 	    
-	    // Generate random author name
-	    String randomAuthor = generateRandomAuthor();
+	    // Generate a random author name different from the existing one
+	    String randomAuthor;
+	    do {
+	        randomAuthor = generateRandomAuthor();
+	    } while (randomAuthor.equals(existingBook.getAuthor()));
 	    newData.setAuthor(randomAuthor);
 	    
-	    // Generate random publisher id between 1 and 5
-	    int randomPublisherId = generateRandomId(1, 5);
+	    // Generate a random publisher id different from the existing one
+	    int randomPublisherId;
+	    do {
+	        randomPublisherId = generateRandomId(1, 5);
+	    } while (randomPublisherId == existingBook.getPublisherId());
 	    newData.setPublisherId(randomPublisherId);
 	    
-	    // Generate random category id between 1 and 5
-	    int randomCategoryId = generateRandomId(1, 5);
+	    // Generate a random category id different from the existing one
+	    int randomCategoryId;
+	    do {
+	        randomCategoryId = generateRandomId(1, 5);
+	    } while (randomCategoryId == existingBook.getCategoryId());
 	    newData.setCategoryId(randomCategoryId);
 	    
 	    bookService.updateAuthorNamePublisheIdCategoryId(2, newData);
