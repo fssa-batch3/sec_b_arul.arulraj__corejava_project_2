@@ -151,9 +151,9 @@ public class TestGetAllBook {
 	public void testupdateAuthorNamePublisheIdCategoryId() throws ValidationException, PersistanceException {
 		BookService bookService = new BookService();
 		Book newData = new Book();
-		newData.setAuthor("GEUT");
-		newData.setPublisherId(4);
-		newData.setCategoryId(6);
+		newData.setAuthor("UTGb");
+		newData.setPublisherId(2);
+		newData.setCategoryId(5);
 		bookService.updateAuthorNamePublisheIdCategoryId(2, newData);
 		}
 	
