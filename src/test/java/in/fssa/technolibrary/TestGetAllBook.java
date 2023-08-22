@@ -149,13 +149,34 @@ public class TestGetAllBook {
 	
 	@Test
 	public void testupdateAuthorNamePublisheIdCategoryId() throws ValidationException, PersistanceException {
-		BookService bookService = new BookService();
-		Book newData = new Book();
-		newData.setAuthor("UTGb");
-		newData.setPublisherId(2);
-		newData.setCategoryId(5);
-		bookService.updateAuthorNamePublisheIdCategoryId(2, newData);
-		}
+	    BookService bookService = new BookService();
+	    Book newData = new Book();
+	    
+	    // Generate random author name
+	    String randomAuthor = generateRandomAuthor();
+	    newData.setAuthor(randomAuthor);
+	    
+	    // Generate random publisher id between 1 and 5
+	    int randomPublisherId = generateRandomId(1, 5);
+	    newData.setPublisherId(randomPublisherId);
+	    
+	    // Generate random category id between 1 and 5
+	    int randomCategoryId = generateRandomId(1, 5);
+	    newData.setCategoryId(randomCategoryId);
+	    
+	    bookService.updateAuthorNamePublisheIdCategoryId(2, newData);
+	}
+
+	private String generateRandomAuthor() {
+	    String[] authors = {"AuthorA", "AuthorB", "AuthorC", "AuthorD"};
+	    Random random = new Random();
+	    return authors[random.nextInt(authors.length)];
+	}
+
+	private int generateRandomId(int min, int max) {
+	    Random random = new Random();
+	    return random.nextInt(max - min + 1) + min;
+	}
 	
 	@Test
 	public void testupdateAuthorNamePublisheIdCategoryIdSameDetails() throws PersistanceException {
