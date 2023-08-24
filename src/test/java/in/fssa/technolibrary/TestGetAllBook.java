@@ -150,7 +150,7 @@ public class TestGetAllBook {
 	@Test
 	public void testupdateAuthorNamePublisheIdCategoryId() throws ValidationException, PersistanceException {
 	    BookService bookService = new BookService();
-	    Book existingBook = bookService.findById(2); // Replace with the actual method to retrieve a book by ID
+	    Book existingBook = BookService.findById(2);
 	    
 	    Book newData = new Book();
 	    
@@ -175,7 +175,7 @@ public class TestGetAllBook {
 	    } while (randomCategoryId == existingBook.getCategoryId());
 	    newData.setCategoryId(randomCategoryId);
 	    
-	    bookService.updateAuthorNamePublisheIdCategoryId(2, newData);
+	    bookService.updateAuthorNamePublisherIdCategoryId(2, newData);
 	}
 
 	private String generateRandomAuthor() {
@@ -198,7 +198,7 @@ public class TestGetAllBook {
 		newData.setCategoryId(2);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.updateAuthorNamePublisheIdCategoryId(1, newData);
+			bookService.updateAuthorNamePublisherIdCategoryId(1, newData);
 		});
 
 		String expectedMessage = "New Author ,Published Id And Category Id is the same as the old Author ,Published Id And Category Id.";

@@ -15,14 +15,13 @@ public class BookService {
 	/**
 	 * 
 	 * @param newBook
-	 * @throws Exception
+	 * @throws PersistanceException 
+	 * @throws ValidationException 
 	 */
 
-	public static void create(Book newBook) throws Exception {
+	public static void create(Book newBook) throws ValidationException, PersistanceException {
 		BookValidator.validate(newBook);
 		BookDAO bookDao = new BookDAO();
-		PublisherDAO.publisherIdAlreadyExistOrNot(newBook.getPublisherId());
-		CategoryDAO.categoryIdAlreadyExistOrNot(newBook.getCategoryId());
 		bookDao.create(newBook);
 	}
 	/**
@@ -47,10 +46,9 @@ public class BookService {
 	 * @throws PersistanceException 
 	 * @throws Exception
 	 */
-	public Book findById(int id)throws ValidationException, PersistanceException {
+	public static Book findById(int id)throws ValidationException, PersistanceException {
 		BookValidator.validateId(id);
 		BookDAO bookDao = new BookDAO();
-		bookDao.bookIdAlreadyExistOrNot(id);
 		Book book = bookDao.findById(id);
 		return book;
 		
@@ -63,7 +61,7 @@ public class BookService {
 	 * @throws PersistanceException
 	 */
 	public Set<Book> findByAuthor(String author) throws ValidationException, PersistanceException {
-		BookValidator.validateAuthorNamePattern(author);
+		BookValidator.validateAthor(author);
 		BookDAO bookDao = new BookDAO();
 		BookDAO.authorAlreadyExistOrNot(author);
 		Set<Book> BookList = bookDao.findByAuthor(author);
@@ -96,11 +94,10 @@ public class BookService {
 	 * @throws ValidationException
 	 * @throws PersistanceException
 	 */
-	public Set<Book> findByPublisherId(int publisher_id) throws ValidationException, PersistanceException {
-		BookValidator.validatePublisherId(publisher_id);
-		PublisherDAO.publisherIdAlreadyExistOrNot(publisher_id);
+	public Set<Book> findByPublisherId(int publisherId) throws ValidationException, PersistanceException {
+		BookValidator.validatePublisherId(publisherId);
 		BookDAO bookDao = new BookDAO();
-		Set<Book> BookList = bookDao.findByPublisherId(publisher_id);
+		Set<Book> BookList = bookDao.findByPublisherId(publisherId);
 		for (BookEntity list : BookList) {
 			System.out.println(list);
 		}
@@ -115,7 +112,6 @@ public class BookService {
 	public void delete(int id) throws ValidationException, PersistanceException {
 		BookValidator.validateId(id);
 		BookDAO bookDAO = new BookDAO();
-		BookDAO.bookIdAlreadyExistOrNot(id);
 		bookDAO.delete(id);
 	}
 	/**
@@ -174,7 +170,7 @@ public class BookService {
 	 * @throws ValidationException
 	 * @throws PersistanceException
 	 */
-	public void updateAuthorNamePublisheIdCategoryId(int id, Book updatedData) throws ValidationException, PersistanceException {
+	public void updateAuthorNamePublisherIdCategoryId(int id, Book updatedData) throws ValidationException, PersistanceException {
 	    BookValidator.validateId(id);
 	    BookValidator.validateAuthorNamePattern(updatedData.getAuthor());
 	    BookValidator.validatePublisherId(updatedData.getPublisherId());

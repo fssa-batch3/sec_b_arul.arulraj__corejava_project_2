@@ -5,6 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
+import in.fssa.technolibrary.dao.BookDAO;
+import in.fssa.technolibrary.dao.CategoryDAO;
+import in.fssa.technolibrary.dao.PublisherDAO;
+import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.util.StringUtil;
@@ -15,23 +19,26 @@ public class BookValidator {
 	 * 
 	 * @param book
 	 * @throws ValidationException
+	 * @throws PersistanceException 
 	 */
-	public static void validate(Book book) throws ValidationException {
+	public static void validate(Book book) throws ValidationException, PersistanceException {
 		if (book == null) {
 			throw new ValidationException("Invalid user input");
 		}
 		
 		validateTitle(book.getTitle());
 		validateAuthorNamePattern(book.getAuthor());
-		
-		// TODO: PublisherValidator.validateId();
-		// TODO: PublisherValidator.rejectIfIdAlreadyExists();
-		
+		PublisherValidator.validateId(book.getPublisherId());
+		CategoryValidator.validateId(book.getCategoryId());
 		validatePublisherId(book.getPublisherId());
 		validateCategoryId(book.getCategoryId());
 		validatePrice(book.getPrice());
 		validateDate(book.getPublishedDate());
 		
+	}
+	public static void validateAthor(String author) throws ValidationException, PersistanceException {
+		validateAuthorNamePattern(author);
+		BookDAO.authorAlreadyExistOrNot(author);
 	}
 		
 	/**
@@ -52,12 +59,13 @@ public class BookValidator {
 	 * 
 	 * @param author
 	 * @throws ValidationException
+	 * @throws PersistanceException 
 	 */
-	public static void validateAuthorNamePattern(String author) throws ValidationException {
+	public static void validateAuthorNamePattern(String authorName) throws ValidationException, PersistanceException {
 		
-		StringUtil.rejectIfInvalidString(author, "Author");
+		StringUtil.rejectIfInvalidString(authorName, "Author");
 		
-		if (!Pattern.matches(NAME_PATTERN, author)) {
+		if (!Pattern.matches(NAME_PATTERN, authorName)) {
 			throw new ValidationException("Author name doesn't match the pattern");
 		}
 	
@@ -66,33 +74,39 @@ public class BookValidator {
 	 * 
 	 * @param id
 	 * @throws ValidationException
+	 * @throws PersistanceException 
 	 */
-	public static void validateId(int id) throws ValidationException {
+	public static void validateId(int id) throws ValidationException, PersistanceException {
 		if (id <= 0) {
 			throw new ValidationException("Id can not be less than zero.");
 		}
+		BookDAO.bookIdAlreadyExistOrNot(id);
 	
 	}
 	/**
 	 * 
-	 * @param publisher_id
+	 * @param publisherId
 	 * @throws ValidationException
+	 * @throws PersistanceException 
 	 */
-	public static void validatePublisherId(int publisher_id) throws ValidationException {
-		if (publisher_id <= 0) {
+	public static void validatePublisherId(int publisherId) throws ValidationException, PersistanceException {
+		if (publisherId <= 0) {
 			throw new ValidationException("Publisher Id can not be less than zero.");
 		}
+		PublisherDAO.publisherIdAlreadyExistOrNot(publisherId);
 	
 	}
 	/**
 	 * 
 	 * @param category_id
 	 * @throws ValidationException
+	 * @throws PersistanceException 
 	 */
-	public static void validateCategoryId(int category_id) throws ValidationException {
-		if (category_id <= 0) {
+	public static void validateCategoryId(int categoryId) throws ValidationException, PersistanceException {
+		if (categoryId <= 0) {
 			throw new ValidationException("Category Id can not be less than zero.");
 		}
+		CategoryDAO.categoryIdAlreadyExistOrNot(categoryId);
 	
 	}
 	/**

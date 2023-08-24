@@ -373,7 +373,7 @@ public class BookDAO {
 			System.out.print(e.getMessage());
 			throw new PersistanceException(e.getMessage());
 		} finally {
-			ConnectionUtil.close(conn, ps, null);
+			ConnectionUtil.close(conn, ps);
 		}
 	}
 

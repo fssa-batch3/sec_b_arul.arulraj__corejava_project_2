@@ -2,7 +2,10 @@ package in.fssa.technolibrary.validator;
 
 import java.util.regex.Pattern;
 
+import in.fssa.technolibrary.dao.PublisherDAO;
+import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ValidationException;
+import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.model.Publisher;
 import in.fssa.technolibrary.util.StringUtil;
 
@@ -39,12 +42,13 @@ private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
 	 * 
 	 * @param id
 	 * @throws ValidationException
+	 * @throws PersistanceException 
 	 */
-	public static void validateId(int id) throws ValidationException {
+	public static void validateId(int id) throws ValidationException, PersistanceException {
 		if (id <= 0) {
 			throw new ValidationException("Id can not be less than zero.");
 		}
-	
+		PublisherDAO.publisherIdAlreadyExistOrNot(id);
 	}
 	
 	// TODO:  rejectIfIdAlreadyExists(int id)
