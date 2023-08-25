@@ -25,8 +25,7 @@ public class TestGetAllBook {
 
 	@Test
 	public void getBookById() throws Exception {
-		BookService bookService = new BookService();
-		Book book = bookService.findById(1);
+		Book book = BookService.findById(1);
 		System.out.print(book);
 	}
 
@@ -135,8 +134,7 @@ public class TestGetAllBook {
 	public void testUpdatePriceWithTheSamePrice() throws ValidationException, PersistanceException {
 		BookService bookService = new BookService();
 		Book newPrice = new Book();
-		bookService.findById(1);
-		newPrice.setPrice(5100);
+		newPrice.setPrice(5000);
 
 		Exception exception = assertThrows(PersistanceException.class, () -> {
 			bookService.updatePrice(3, newPrice);
@@ -144,6 +142,7 @@ public class TestGetAllBook {
 
 		String expectedMessage = "New price is the same as the old price.";
 		String actualMessage = exception.getMessage();
+		System.out.print(actualMessage);
 		assertEquals(actualMessage,expectedMessage);
 	}
 	

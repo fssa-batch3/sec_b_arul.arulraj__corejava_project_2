@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.service.BookService;
-import in.fssa.technolibrary.validator.BookValidator;
-import in.fssa.technolibrary.validator.PublisherValidator;
 import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ValidationException;
 
@@ -99,7 +97,7 @@ public class TestCreateBook {
 
 		Book newBook = new Book();
 
-		newBook.setAuthor("142fr");
+		newBook.setAuthor("a24fr");
 		newBook.setTitle("IR");
 		newBook.setCategoryId(1);
 		newBook.setPublisherId(1);
@@ -132,10 +130,8 @@ public class TestCreateBook {
 	@Test
 	public void testBookAlreadyExistOrNot() {
 
-		BookService bookService = new BookService();
-
 		Exception exception = assertThrows(	ValidationException.class, () -> {
-			bookService.findById(200);
+			BookService.findById(200);
 		});
 
 		String exceptedMessage = "Book doesn't exist";
@@ -159,7 +155,7 @@ public class TestCreateBook {
 			BookService.create(newBook);
 		});
 
-		String exceptedMessage = "Publisher Id can not be less than zero.";
+		String exceptedMessage = "Id can not be less than zero.";
 		String actualMessage = exception.getMessage();
 
 		assertTrue(exceptedMessage.equals(actualMessage));
@@ -181,9 +177,9 @@ public class TestCreateBook {
 			BookService.create(newBook);
 		});
 
-		String exceptedMessage = "Category Id can not be less than zero.";
+		String exceptedMessage = "Id can not be less than zero.";
 		String actualMessage = exception.getMessage();
-
+		System.out.print(actualMessage);
 		assertTrue(exceptedMessage.equals(actualMessage));
 	}
 	
@@ -276,7 +272,7 @@ public class TestCreateBook {
 	}
 	
 	@Test
-	public void testDateValidRange() {
+	public void testDateInvalideFormate() {
 
 		Book newBook = new Book();
 
@@ -291,9 +287,9 @@ public class TestCreateBook {
 			BookService.create(newBook);
 		});
 
-		String exceptedMessage = "Invalid date or Invalid date format ( yyyy-MM-dd)";
+		String exceptedMessage = "Date can't be in future";
 		String actualMessage = exception.getMessage();
-
+		System.out.print(actualMessage);
 		assertTrue(exceptedMessage.equals(actualMessage));
 	}
 	

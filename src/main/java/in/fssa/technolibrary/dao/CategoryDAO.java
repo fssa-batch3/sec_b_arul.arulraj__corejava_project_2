@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import in.fssa.technolibrary.exception.PersistanceException;
-import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Category;
 import in.fssa.technolibrary.util.ConnectionUtil;
 
@@ -75,7 +74,6 @@ public class CategoryDAO {
         Connection conn = null;
         PreparedStatement pre = null;
         ResultSet rs = null;
-        boolean result = true;
         try {
             String query = "SELECT category_name FROM category WHERE category_name = ?";
             conn = ConnectionUtil.getConnection();

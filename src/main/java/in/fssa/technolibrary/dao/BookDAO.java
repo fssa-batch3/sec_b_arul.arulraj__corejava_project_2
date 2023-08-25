@@ -186,7 +186,7 @@ public class BookDAO {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	public Set<Book> findByCtegoryId(int category_id) throws PersistanceException {
+	public Set<Book> findByCtegoryId(int categoryId) throws PersistanceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -199,7 +199,7 @@ public class BookDAO {
 			String query = "SELECT * FROM book WHERE category_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setInt(1, category_id);
+			ps.setInt(1, categoryId);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
@@ -232,7 +232,7 @@ public class BookDAO {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	public Set<Book> findByPublisherId(int publisher_id) throws PersistanceException{
+	public Set<Book> findByPublisherId(int publisherId) throws PersistanceException{
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -245,7 +245,7 @@ public class BookDAO {
 			String query = "SELECT * FROM book WHERE publisher_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setInt(1, publisher_id);
+			ps.setInt(1, publisherId);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
@@ -277,15 +277,15 @@ public class BookDAO {
 	 * 
 	 * @param id
 	 */
-	public void delete(int id) throws PersistanceException {
+	public void delete(int bookId) throws PersistanceException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
-			String query = "UPDATE book SET is_active = false WHERE is_active = 1 AND id = ?";
+			String query = "UPDATE book SET is_active = 0 WHERE is_active = 1 AND id = ?";
 
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setInt(1, bookId);
 			ps.executeUpdate();
 			System.out.println("Book has been successfullly deleted.");
 		} catch (SQLException e) {
@@ -303,14 +303,14 @@ public class BookDAO {
 	 * @param basicUpdate
 	 * @throws PersistanceException
 	 */
-	public void updatePrice(int id, Book basicUpdate) throws PersistanceException {
+	public void updatePrice(int id, Book priceUpdate) throws PersistanceException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
 			String query = "UPDATE book SET price = ? WHERE is_active = 1 AND id = ?";
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query);
-			ps.setInt(1, basicUpdate.getPrice());
+			ps.setInt(1, priceUpdate.getPrice());
 			ps.setInt(2, id);
 			ps.executeUpdate();
 			System.out.println("Price has been updated successfully");
@@ -329,15 +329,15 @@ public class BookDAO {
 	 * @param basicUpdate
 	 * @throws PersistanceException
 	 */
-	public void updateTitleAndDate(int id, Book basicUpdate) throws PersistanceException {
+	public void updateTitleAndDate(int id, Book titleAndDateUpdate) throws PersistanceException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
 			String query = "UPDATE book SET title = ? , published_date = ? WHERE is_active = 1 AND id = ?";
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query);
-			ps.setString(1, basicUpdate.getTitle());
-			ps.setString(2, basicUpdate.getPublishedDate());
+			ps.setString(1, titleAndDateUpdate.getTitle());
+			ps.setString(2, titleAndDateUpdate.getPublishedDate());
 			ps.setInt(3, id);
 			ps.executeUpdate();
 			System.out.println("Title And Published Date has been updated successfully");
@@ -355,16 +355,16 @@ public class BookDAO {
 	 * @param basicUpdate
 	 * @throws PersistanceException
 	 */
-	public void updateAuthorNamePublisheIdCategoryId(int id, Book basicUpdate) throws PersistanceException {
+	public void updateAuthorNamePublisheIdCategoryId(int id, Book AuthorNamePublisheIdCategoryId) throws PersistanceException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
 			String query = "UPDATE book SET author = ? , publisher_id = ? , category_id = ? WHERE is_active = 1 AND id = ?";
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query);
-			ps.setString(1, basicUpdate.getAuthor());
-			ps.setInt(2, basicUpdate.getPublisherId());
-			ps.setInt(3, basicUpdate.getCategoryId());
+			ps.setString(1, AuthorNamePublisheIdCategoryId.getAuthor());
+			ps.setInt(2, AuthorNamePublisheIdCategoryId.getPublisherId());
+			ps.setInt(3, AuthorNamePublisheIdCategoryId.getCategoryId());
 			ps.setInt(4, id);
 			ps.executeUpdate();
 			System.out.println("Author ,Published Id And Category Id has been updated successfully");
@@ -384,7 +384,7 @@ public class BookDAO {
 	 * @throws PersistanceException
 	 * @throws ValidationException 
 	 */
-	public static boolean bookIdAlreadyExistOrNot(int id) throws PersistanceException, ValidationException {
+	public static boolean bookIdAlreadyExistOrNot(int bookId) throws PersistanceException, ValidationException {
         Connection conn = null;
         PreparedStatement pre = null;
         ResultSet rs = null;
@@ -394,7 +394,7 @@ public class BookDAO {
             String query = "SELECT * FROM book WHERE id = ?";
             conn = ConnectionUtil.getConnection();
             pre = conn.prepareStatement(query);
-            pre.setInt(1, id);
+            pre.setInt(1, bookId);
             rs = pre.executeQuery();
             
             if (!rs.next()) {

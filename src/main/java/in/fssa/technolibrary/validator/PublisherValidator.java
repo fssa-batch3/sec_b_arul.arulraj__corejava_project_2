@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 import in.fssa.technolibrary.dao.PublisherDAO;
 import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ValidationException;
-import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.model.Publisher;
 import in.fssa.technolibrary.util.StringUtil;
 

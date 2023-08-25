@@ -23,7 +23,6 @@ public class CategoryValidator {
 		}
 		
 		validateName(category.getName());
-		validateId(category.getId());
 	}
 	/**
 	 * 

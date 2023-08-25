@@ -14,7 +14,7 @@ import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.util.StringUtil;
 
 public class BookValidator {
-	private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
+	private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\s]*$";
 	/**
 	 * 
 	 * @param book
@@ -33,7 +33,7 @@ public class BookValidator {
 		validatePublisherId(book.getPublisherId());
 		validateCategoryId(book.getCategoryId());
 		validatePrice(book.getPrice());
-		validateDate(book.getPublishedDate());
+		validatePublishedDate(book.getPublishedDate());
 		
 	}
 	public static void validateAthor(String author) throws ValidationException, PersistanceException {
@@ -81,7 +81,6 @@ public class BookValidator {
 			throw new ValidationException("Id can not be less than zero.");
 		}
 		BookDAO.bookIdAlreadyExistOrNot(id);
-	
 	}
 	/**
 	 * 
@@ -125,12 +124,12 @@ public class BookValidator {
 	 * @param date
 	 * @throws ValidationException
 	 */
-	public static void validateDate(String date) throws ValidationException {
-	    StringUtil.rejectIfInvalidString(date, "Date");
+	public static void validatePublishedDate(String publisheddate) throws ValidationException {
+	    StringUtil.rejectIfInvalidString(publisheddate, "Date");
 	    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	    LocalDate dueDate;
 	    try {
-	        dueDate = LocalDate.parse(date, inputFormatter);
+	        dueDate = LocalDate.parse(publisheddate, inputFormatter);
 	    } catch (DateTimeParseException e) {
 	        throw new ValidationException("Invalid date or Invalid date format ( yyyy-MM-dd)");
 	    }
@@ -138,7 +137,7 @@ public class BookValidator {
 	    System.out.println("Formatted Date: " + formattedDate);
 	    LocalDate currentDate = LocalDate.now();
 	    if (dueDate.equals(currentDate) || dueDate.isAfter(currentDate)) {
-	        throw new ValidationException("Invalid date or Invalid date format ( yyyy-MM-dd)");
+	        throw new ValidationException("Date can't be in future");
 	    }
 	}
 }
