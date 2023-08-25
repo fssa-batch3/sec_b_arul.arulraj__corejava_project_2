@@ -97,7 +97,7 @@ public class BookDAO {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	public Book findById(int id) throws PersistanceException {
+	public Book findById(int bookId) throws PersistanceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -108,7 +108,7 @@ public class BookDAO {
 			String query = "SELECT * FROM book WHERE id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setInt(1, bookId);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				book = new Book();
@@ -140,7 +140,7 @@ public class BookDAO {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	public Set<Book> findByAuthor(String author) throws PersistanceException {
+	public Set<Book> findByAuthor(String authorName) throws PersistanceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -153,7 +153,7 @@ public class BookDAO {
 			String query = "SELECT * FROM book WHERE author = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setString(1, author);
+			ps.setString(1, authorName);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				book = new Book();
@@ -355,7 +355,7 @@ public class BookDAO {
 	 * @param basicUpdate
 	 * @throws PersistanceException
 	 */
-	public void updateAuthorNamePublisheIdCategoryId(int id, Book AuthorNamePublisheIdCategoryId) throws PersistanceException {
+	public void updateAuthorNamePublisherIdCategoryId(int id, Book AuthorNamePublisheIdCategoryId) throws PersistanceException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
@@ -411,7 +411,7 @@ public class BookDAO {
         return result;
     }
 
-    public static void authorAlreadyExistOrNot(String author) throws PersistanceException {
+    public static void authorAlreadyExistOrNot(String authorName) throws PersistanceException {
         Connection conn = null;
         PreparedStatement pre = null;
         ResultSet rs = null;
@@ -420,7 +420,7 @@ public class BookDAO {
             String query = "SELECT * FROM book WHERE author = ?";
             conn = ConnectionUtil.getConnection();
             pre = conn.prepareStatement(query);
-            pre.setString(1, author);
+            pre.setString(1, authorName);
             rs = pre.executeQuery();
             
             if (!rs.next()) {

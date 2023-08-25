@@ -25,7 +25,7 @@ public class TestCreatePublisher {
 	        newPublisher.setName(generatedName);
 
 	        assertDoesNotThrow(() -> {
-	            PublisherService.create(newPublisher);
+	            PublisherService.createPublisher(newPublisher);
 	        });
 
 	        // Validate the generated name using the pattern
@@ -53,7 +53,7 @@ public class TestCreatePublisher {
 		newPublisher.setName(null);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			PublisherService.create(newPublisher);
+			PublisherService.createPublisher(newPublisher);
 		});
 
 		String exceptedMessage = "Name cannot be null or empty";
@@ -70,7 +70,7 @@ public class TestCreatePublisher {
 		newPublisher.setName("");
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			PublisherService.create(newPublisher);
+			PublisherService.createPublisher(newPublisher);
 		});
 
 		String exceptedMessage = "Name cannot be null or empty";
@@ -87,7 +87,7 @@ public class TestCreatePublisher {
 		newPublisher.setName("dcs676");
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			PublisherService.create(newPublisher);
+			PublisherService.createPublisher(newPublisher);
 		});
 
 		String exceptedMessage = "Name doesn't match the pattern";

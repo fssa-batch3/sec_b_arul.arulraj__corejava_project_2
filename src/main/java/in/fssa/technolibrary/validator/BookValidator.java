@@ -36,9 +36,9 @@ public class BookValidator {
 		validatePublishedDate(book.getPublishedDate());
 		
 	}
-	public static void validateAthor(String author) throws ValidationException, PersistanceException {
-		validateAuthorNamePattern(author);
-		BookDAO.authorAlreadyExistOrNot(author);
+	public static void validateAthor(String authorName) throws ValidationException, PersistanceException {
+		validateAuthorNamePattern(authorName);
+//		BookDAO.authorAlreadyExistOrNot(authorName);
 	}
 		
 	/**
@@ -46,11 +46,11 @@ public class BookValidator {
 	 * @param title
 	 * @throws ValidationException
 	 */
-	public static void validateTitle(String title) throws ValidationException {
+	public static void validateTitle(String bookTitle) throws ValidationException {
 		
-		StringUtil.rejectIfInvalidString(title, "Title");
+		StringUtil.rejectIfInvalidString(bookTitle, "Title");
 		
-		if (!Pattern.matches(NAME_PATTERN, title)) {
+		if (!Pattern.matches(NAME_PATTERN, bookTitle)) {
 			throw new ValidationException("Title doesn't match the pattern");
 		}
 	
@@ -76,11 +76,11 @@ public class BookValidator {
 	 * @throws ValidationException
 	 * @throws PersistanceException 
 	 */
-	public static void validateId(int id) throws ValidationException, PersistanceException {
-		if (id <= 0) {
+	public static void validateId(int bookId) throws ValidationException, PersistanceException {
+		if (bookId <= 0) {
 			throw new ValidationException("Id can not be less than zero.");
 		}
-		BookDAO.bookIdAlreadyExistOrNot(id);
+		BookDAO.bookIdAlreadyExistOrNot(bookId);
 	}
 	/**
 	 * 
@@ -113,8 +113,8 @@ public class BookValidator {
 	 * @param price
 	 * @throws ValidationException
 	 */
-	public static void validatePrice(int price) throws ValidationException {
-		if (price <= 0) {
+	public static void validatePrice(int bookPrice) throws ValidationException {
+		if (bookPrice <= 0) {
 			throw new ValidationException("Price can not be less than zero.");
 		}
 	

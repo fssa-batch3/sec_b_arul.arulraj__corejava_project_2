@@ -46,7 +46,7 @@ public class PublisherDAO {
 	 * @throws PersistanceException
 	 * @throws ValidationException 
 	 */
-		public static boolean publisherIdAlreadyExistOrNot(int id) throws PersistanceException, ValidationException {
+		public static boolean publisherIdAlreadyExistOrNot(int publisherId) throws PersistanceException, ValidationException {
 			
 			Connection conn = null;
 			PreparedStatement pre = null;
@@ -56,7 +56,7 @@ public class PublisherDAO {
 				String query = "Select * From publisher Where id = ?";
 				conn = ConnectionUtil.getConnection();
 				pre = conn.prepareStatement(query);
-				pre.setInt(1, id);
+				pre.setInt(1, publisherId);
 				rs = pre.executeQuery();
 				if (!rs.next()) {
 					result = false;

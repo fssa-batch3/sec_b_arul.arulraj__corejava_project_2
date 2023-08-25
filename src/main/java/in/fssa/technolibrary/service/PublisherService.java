@@ -10,7 +10,7 @@ public class PublisherService {
 	 * @param newPublisher
 	 * @throws Exception
 	 */
-	public static void create(Publisher newPublisher) throws Exception {
+	public static void createPublisher(Publisher newPublisher) throws Exception {
 		PublisherValidator.validate(newPublisher);
 		PublisherDAO publisherDao = new PublisherDAO();
 		publisherDao.create(newPublisher);

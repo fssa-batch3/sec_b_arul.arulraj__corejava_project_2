@@ -45,7 +45,7 @@ public class CategoryDAO {
      * @param id
      * @throws PersistanceException
      */
-    public static boolean categoryIdAlreadyExistOrNot(int id) throws PersistanceException {
+    public static boolean categoryIdAlreadyExistOrNot(int categoryId) throws PersistanceException {
 
         Connection conn = null;
         PreparedStatement pre = null;
@@ -55,13 +55,13 @@ public class CategoryDAO {
             String query = "SELECT * FROM category WHERE id = ?";
             conn = ConnectionUtil.getConnection();
             pre = conn.prepareStatement(query);
-            pre.setInt(1, id);
+            pre.setInt(1, categoryId);
             rs = pre.executeQuery();
             if (!rs.next()) {
-                throw new PersistanceException("Category with ID " + id + " doesn't exist");
+                throw new PersistanceException("Category with ID " + categoryId + " doesn't exist");
             }
         } catch (SQLException e) {
-            System.out.println("Category with ID " + id + " doesn't exist");
+            System.out.println("Category with ID " + categoryId + " doesn't exist");
             throw new PersistanceException(e.getMessage());
         } finally {
             ConnectionUtil.close(conn, pre, rs);
@@ -69,7 +69,7 @@ public class CategoryDAO {
         return result;
     }
     
-    public static void categoryNameAlreadyExists(String name) throws PersistanceException {
+    public static void categoryNameAlreadyExists(String categoryName) throws PersistanceException {
 
         Connection conn = null;
         PreparedStatement pre = null;
@@ -78,10 +78,10 @@ public class CategoryDAO {
             String query = "SELECT category_name FROM category WHERE category_name = ?";
             conn = ConnectionUtil.getConnection();
             pre = conn.prepareStatement(query);
-            pre.setString(1, name);
+            pre.setString(1, categoryName);
             rs = pre.executeQuery();
             if (rs.next()) {
-                throw new PersistanceException("Category Name " + name + " already exist");
+                throw new PersistanceException("Category Name " + categoryName + " already exist");
             }
         } catch (SQLException e) {
             e.printStackTrace();

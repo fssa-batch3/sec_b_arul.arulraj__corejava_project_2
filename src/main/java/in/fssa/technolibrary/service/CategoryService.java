@@ -10,7 +10,7 @@ public class CategoryService {
 	 * @param newCategory
 	 * @throws Exception
 	 */
-	public static void create(Category newCategory) throws Exception {
+	public static void createCategory(Category newCategory) throws Exception {
 		CategoryValidator.validate(newCategory);
 		CategoryDAO.categoryNameAlreadyExists(newCategory.getName());
 		CategoryDAO categoryDao = new CategoryDAO();

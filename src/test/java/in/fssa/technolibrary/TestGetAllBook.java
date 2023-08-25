@@ -18,42 +18,42 @@ public class TestGetAllBook {
 	public void getAllUser() throws PersistanceException {
 		BookService bookService = new BookService();
 
-		Set<Book> books = bookService.findAll();
+		Set<Book> books = bookService.findAllBook();
 
 		System.out.print(books);
 	}
 
 	@Test
 	public void getBookById() throws Exception {
-		Book book = BookService.findById(1);
+		Book book = BookService.findBookById(1);
 		System.out.print(book);
 	}
 
 	@Test
 	public void getBookByAuthor() throws Exception {
 		BookService bookService = new BookService();
-		Set<Book> book = bookService.findByAuthor("Ramuu");
+		Set<Book> book = bookService.findByAuthorName("Ramuu");
 		System.out.print(book);
 	}
 	
 	@Test
 	public void getBookByCategoryId() throws Exception {
 		BookService bookService = new BookService();
-		Set<Book> book = bookService.findByCategoryId(1);
+		Set<Book> book = bookService.findBookByCategoryId(1);
 		System.out.print(book);
 	}
 
 	@Test
 	public void getBookByPublisherId() throws Exception {
 		BookService bookService = new BookService();
-		Set<Book> book = bookService.findByPublisherId(1);
+		Set<Book> book = bookService.findBookByPublisherId(1);
 		System.out.print(book);
 	}
 
 	@Test
 	public void testDelete() throws ValidationException, PersistanceException {
 		BookService bookService = new BookService();
-		bookService.delete(1);
+		bookService.deleteBook(1);
 	}
 
 	 @Test
@@ -70,7 +70,7 @@ public class TestGetAllBook {
 	        newData.setPublishedDate(generatedDate);
 	        newData.setTitle(generatedTitle);
 
-	        bookService.updateTitleAndDate(2, newData);
+	        bookService.updateBookTitleAndDate(2, newData);
 	    }
 
 	 private String generateRandomString(int length) {
@@ -102,7 +102,7 @@ public class TestGetAllBook {
 		newData.setTitle("BookofMagic");
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.updateTitleAndDate(6, newData);
+			bookService.updateBookTitleAndDate(6, newData);
 		});
 
 		String expectedMessage = "New Title And Published Date is the same as the old Title And Published Date.";
@@ -123,7 +123,7 @@ public class TestGetAllBook {
         Book newPrice = new Book();
         newPrice.setPrice(randomPrice);
         
-        bookService.updatePrice(1, newPrice);
+        bookService.updateBookPrice(1, newPrice);
     }
 
     private int generateRandomPrice(int minPrice, int maxPrice) {
@@ -137,7 +137,7 @@ public class TestGetAllBook {
 		newPrice.setPrice(5000);
 
 		Exception exception = assertThrows(PersistanceException.class, () -> {
-			bookService.updatePrice(3, newPrice);
+			bookService.updateBookPrice(3, newPrice);
 		});
 
 		String expectedMessage = "New price is the same as the old price.";
@@ -149,7 +149,7 @@ public class TestGetAllBook {
 	@Test
 	public void testupdateAuthorNamePublisheIdCategoryId() throws ValidationException, PersistanceException {
 	    BookService bookService = new BookService();
-	    Book existingBook = BookService.findById(2);
+	    Book existingBook = BookService.findBookById(2);
 	    
 	    Book newData = new Book();
 	    
@@ -174,7 +174,7 @@ public class TestGetAllBook {
 	    } while (randomCategoryId == existingBook.getCategoryId());
 	    newData.setCategoryId(randomCategoryId);
 	    
-	    bookService.updateAuthorNamePublisherIdCategoryId(2, newData);
+	    bookService.updateBookAuthorNamePublisherIdCategoryId(2, newData);
 	}
 
 	private String generateRandomAuthor() {
@@ -197,7 +197,7 @@ public class TestGetAllBook {
 		newData.setCategoryId(2);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.updateAuthorNamePublisherIdCategoryId(1, newData);
+			bookService.updateBookAuthorNamePublisherIdCategoryId(1, newData);
 		});
 
 		String expectedMessage = "New Author ,Published Id And Category Id is the same as the old Author ,Published Id And Category Id.";

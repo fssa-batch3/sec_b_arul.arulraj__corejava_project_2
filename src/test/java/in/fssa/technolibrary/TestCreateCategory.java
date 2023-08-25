@@ -23,7 +23,7 @@ public class TestCreateCategory {
         newCategory.setName(generatedName);
 
         assertDoesNotThrow(() -> {
-            CategoryService.create(newCategory);
+            CategoryService.createCategory(newCategory);
         });
         assertDoesNotThrow(() -> {
             CategoryValidator.validateName(generatedName);
@@ -47,7 +47,7 @@ public class TestCreateCategory {
         newCategory.setName(null);
 
         Exception exception = assertThrows(ValidationException.class, () -> {
-            CategoryService.create(newCategory);
+            CategoryService.createCategory(newCategory);
         });
 
         String expectedMessage = "Name cannot be null or empty";
@@ -62,7 +62,7 @@ public class TestCreateCategory {
         newCategory.setName("");
 
         Exception exception = assertThrows(ValidationException.class, () -> {
-            CategoryService.create(newCategory);
+            CategoryService.createCategory(newCategory);
         });
 
         String expectedMessage = "Name cannot be null or empty";
@@ -77,7 +77,7 @@ public class TestCreateCategory {
         newCategory.setName("dcs676");
 
         Exception exception = assertThrows(ValidationException.class, () -> {
-            CategoryService.create(newCategory);
+            CategoryService.createCategory(newCategory);
         });
 
         String expectedMessage = "Name doesn't match the pattern";
