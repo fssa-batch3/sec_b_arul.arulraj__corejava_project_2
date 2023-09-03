@@ -5,13 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Random;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Category;
+import in.fssa.technolibrary.model.Publisher;
 import in.fssa.technolibrary.service.CategoryService;
-import in.fssa.technolibrary.validator.CategoryValidator;
+import in.fssa.technolibrary.service.PublisherService;
 
 public class TestCreateCategory {
 
@@ -24,9 +27,6 @@ public class TestCreateCategory {
 
         assertDoesNotThrow(() -> {
             CategoryService.createCategory(newCategory);
-        });
-        assertDoesNotThrow(() -> {
-            CategoryValidator.validateName(generatedName);
         });
     }
 
@@ -85,4 +85,28 @@ public class TestCreateCategory {
 
         assertTrue(expectedMessage.equals(actualMessage));
     }
+    
+    @Test
+	public void testCategorySameName() {
+		
+		Category newCategory = new Category();
+
+		newCategory.setName("Thriller");
+
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			CategoryService.createCategory(newCategory);
+		});
+
+		String exceptedMessage = "Category Name already exist";
+		String actualMessage = exception.getMessage();
+		System.out.print(actualMessage);
+		assertTrue(exceptedMessage.equals(actualMessage));
+	}
+    
+	@Test
+	public void getAllCategory() throws ServiceException {
+		CategoryService categoryService = new CategoryService();
+		Set<Category> categorys = categoryService.findAllcategory();
+		System.out.print(categorys);
+	}
 }

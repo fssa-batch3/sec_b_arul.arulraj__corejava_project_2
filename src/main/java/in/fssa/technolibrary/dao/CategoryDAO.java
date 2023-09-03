@@ -4,92 +4,166 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 import in.fssa.technolibrary.exception.PersistanceException;
+import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Category;
+import in.fssa.technolibrary.model.Publisher;
 import in.fssa.technolibrary.util.ConnectionUtil;
 
 public class CategoryDAO {
 
-    // Create Category
-    /**
-     * 
-     * @param newCategory
-     * @throws RuntimeException
-     */
-    public void create(Category newCategory) throws RuntimeException {
-       Connection con = null;
-        PreparedStatement ps = null;
+	// Create Category
+	/**
+	 * 
+	 * @param newCategory
+	 * @throws RuntimeException
+	 * @throws PersistanceException 
+	 */
+	public void create(Category newCategory) throws RuntimeException, PersistanceException {
+		Connection con = null;
+		PreparedStatement ps = null;
 
-        try {
-            String query = "INSERT INTO category (category_name) VALUES (?)";
-            con = ConnectionUtil.getConnection();
-            ps = con.prepareStatement(query);
+		try {
+			String query = "INSERT INTO categorys (category_name) VALUES (?)";
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
 
-            ps.setString(1, newCategory.getName());
-            ps.executeUpdate();
+			ps.setString(1, newCategory.getName());
+			ps.executeUpdate();
 
-            System.out.print("Category has been successfully created");
+			System.out.print("Category has been successfully created");
 
-        } catch (SQLException e) {
-            System.out.print(e.getMessage());
-            throw new RuntimeException();
-        } finally {
-            ConnectionUtil.close(con, ps);
-        }
-    }
+		} catch (SQLException e) {
+			System.out.print(e.getMessage());
+			throw new PersistanceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(con, ps);
+		}
+	}
+	/**
+	 * 
+	 * @return
+	 * @throws PersistanceException
+	 */
+	public Set<Category> findAll() throws PersistanceException {
 
-    // Category ExistOrNot
-    /**
-     * 
-     * @param id
-     * @throws PersistanceException
-     */
-    public static boolean categoryIdAlreadyExistOrNot(int categoryId) throws PersistanceException {
+	    Connection con = null;
+	    PreparedStatement ps = null;
+	    ResultSet rs = null;
 
-        Connection conn = null;
-        PreparedStatement pre = null;
-        ResultSet rs = null;
-        boolean result = true;
-        try {
-            String query = "SELECT * FROM category WHERE id = ?";
-            conn = ConnectionUtil.getConnection();
-            pre = conn.prepareStatement(query);
-            pre.setInt(1, categoryId);
-            rs = pre.executeQuery();
-            if (!rs.next()) {
-                throw new PersistanceException("Category with ID " + categoryId + " doesn't exist");
-            }
-        } catch (SQLException e) {
-            System.out.println("Category with ID " + categoryId + " doesn't exist");
-            throw new PersistanceException(e.getMessage());
-        } finally {
-            ConnectionUtil.close(conn, pre, rs);
-        }
-        return result;
-    }
-    
-    public static void categoryNameAlreadyExists(String categoryName) throws PersistanceException {
+	    Set<Category> categoryList = new HashSet<>();
 
-        Connection conn = null;
-        PreparedStatement pre = null;
-        ResultSet rs = null;
-        try {
-            String query = "SELECT category_name FROM category WHERE category_name = ?";
-            conn = ConnectionUtil.getConnection();
-            pre = conn.prepareStatement(query);
-            pre.setString(1, categoryName);
-            rs = pre.executeQuery();
-            if (rs.next()) {
-                throw new PersistanceException("Category Name " + categoryName + " already exist");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new PersistanceException(e.getMessage());
-        } finally {
-            ConnectionUtil.close(conn, pre, rs);
-        }
-        
-    }
+	    try {
+	        String query = "SELECT id,category_name FROM categorys";
+	        con = ConnectionUtil.getConnection();
+	        ps = con.prepareStatement(query);
+	        rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	        	Category category = new Category();
+	        	category.setId(rs.getInt("id"));
+	        	category.setName(rs.getString("category_name"));
+	        	categoryList.add(category);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        throw new PersistanceException("Error while fetching categorys: " + e.getMessage());
+	    } finally {
+	        ConnectionUtil.close(con, ps, rs);
+	    }
+	    return categoryList;
+	}
+	
+	public int findCategoryIdByCategoryName(String categoryName) throws PersistanceException {
+
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int category_id = 0;
+
+		try {
+			String query = "SELECT id FROM categorys WHERE category_name = ?" ;
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
+			ps.setString(1, categoryName);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				category_id = rs.getInt("id");
+	        }
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.print(e.getMessage());
+			throw new PersistanceException(e.getMessage());
+		}  finally {
+			ConnectionUtil.close(con, ps, rs);
+		}
+		return category_id;
+	}
+
+	// Category ExistOrNot
+	/**
+	 * 
+	 * @param id
+	 * @throws PersistanceException
+	 * @throws ValidationException
+	 */
+	public static boolean categoryIdAlreadyExistOrNot(int categoryId) throws PersistanceException, ValidationException {
+
+		Connection conn = null;
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		boolean result = true;
+		try {
+			String query = "SELECT id FROM categorys WHERE id = ?";
+			conn = ConnectionUtil.getConnection();
+			pre = conn.prepareStatement(query);
+			pre.setInt(1, categoryId);
+			rs = pre.executeQuery();
+			if (!rs.next()) {
+				throw new ValidationException("Category doesn't exist");
+			}
+		} catch (SQLException e) {
+			System.out.println("Category doesn't exist");
+			throw new PersistanceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, pre, rs);
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param categoryName
+	 * @throws PersistanceException
+	 * @throws ValidationException 
+	 */
+	public static void categoryNameAlreadyExists(String categoryName) throws PersistanceException, ValidationException {
+
+		Connection conn = null;
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		try {
+			String query = "SELECT category_name FROM categorys WHERE category_name = ?";
+			conn = ConnectionUtil.getConnection();
+			pre = conn.prepareStatement(query);
+			pre.setString(1, categoryName);
+			rs = pre.executeQuery();
+			if (rs.next()) {
+				throw new ValidationException("Category Name already exist");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new PersistanceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, pre, rs);
+		}
+
+	}
+	
+	
 }
-

@@ -9,105 +9,177 @@ import in.fssa.technolibrary.dao.BookDAO;
 import in.fssa.technolibrary.dao.CategoryDAO;
 import in.fssa.technolibrary.dao.PublisherDAO;
 import in.fssa.technolibrary.exception.PersistanceException;
+import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.util.StringUtil;
 
 public class BookValidator {
 	private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\s]*$";
+
 	/**
 	 * 
 	 * @param book
 	 * @throws ValidationException
-	 * @throws PersistanceException 
+	 * @throws PersistanceException
+	 * @throws ServiceException
 	 */
-	public static void validate(Book book) throws ValidationException, PersistanceException {
+	public static void validate(Book book) throws ValidationException, ServiceException {
 		if (book == null) {
 			throw new ValidationException("Invalid user input");
 		}
-		
+		validateAuthor(book.getAuthor());
+		rejectIfBookTitleExist(book.getTitle());
 		validateTitle(book.getTitle());
-		validateAuthorNamePattern(book.getAuthor());
-		PublisherValidator.validateId(book.getPublisherId());
-		CategoryValidator.validateId(book.getCategoryId());
 		validatePublisherId(book.getPublisherId());
 		validateCategoryId(book.getCategoryId());
 		validatePrice(book.getPrice());
 		validatePublishedDate(book.getPublishedDate());
-		
 	}
-	public static void validateAthor(String authorName) throws ValidationException, PersistanceException {
-		validateAuthorNamePattern(authorName);
-//		BookDAO.authorAlreadyExistOrNot(authorName);
+	
+	public static void validateFindAuthor(String authorName) throws ValidationException, ServiceException {
+		try {
+			validateAuthorNamePattern(authorName);
+
+			BookDAO.authorAlreadyExistOrNot(authorName);
+
+		} catch (PersistanceException e) {
+			throw new ServiceException("Author doesn't exist", e);
+		}
 	}
-		
+	
+	public static void validateAuthor(String authorName) throws ValidationException, ServiceException {
+		try {
+			validateAuthorNamePattern(authorName);
+
+			BookDAO.bookNameAlreadyExist(authorName);
+
+		} catch (PersistanceException e) {
+			throw new ServiceException("Author name Already exist", e);
+		}
+	}
+
+	public static void validateUpdateBookAndTitle(Book updatedData) throws ValidationException, ServiceException {
+
+		StringUtil.rejectIfInvalidString(updatedData.getTitle(), "Title");
+
+		if (!Pattern.matches(NAME_PATTERN, updatedData.getTitle())) {
+			throw new ValidationException("Title doesn't match the pattern");
+		}
+		validatePublishedDate(updatedData.getPublishedDate());
+	}
+
+	public static void validateFindBookTitle(String bookTitle) throws ValidationException {
+		validateTitle(bookTitle);
+		try {
+			BookDAO.bookNameAlreadyExistOrNot(bookTitle);
+		} catch (PersistanceException e) {
+			e.printStackTrace();
+			throw new ValidationException("There is no book in this Name");
+		}
+	}
+
+	/**
+	 * 
+	 * @param bookTitle
+	 * @throws ValidationException
+	 * @throws ServiceException 
+	 */
+	public static void rejectIfBookTitleExist(String bookTitle) throws ValidationException {
+		try {
+			BookDAO.bookNameAlreadyExist(bookTitle);
+		} catch (PersistanceException e) {
+			e.printStackTrace();
+			throw new ValidationException("Book already Exist");
+		}
+	}
+
 	/**
 	 * 
 	 * @param title
 	 * @throws ValidationException
 	 */
 	public static void validateTitle(String bookTitle) throws ValidationException {
-		
+
 		StringUtil.rejectIfInvalidString(bookTitle, "Title");
-		
+
 		if (!Pattern.matches(NAME_PATTERN, bookTitle)) {
 			throw new ValidationException("Title doesn't match the pattern");
 		}
-	
 	}
+
 	/**
 	 * 
 	 * @param author
 	 * @throws ValidationException
-	 * @throws PersistanceException 
+	 * @throws PersistanceException
 	 */
-	public static void validateAuthorNamePattern(String authorName) throws ValidationException, PersistanceException {
-		
+	public static void validateAuthorNamePattern(String authorName) throws ValidationException {
+
 		StringUtil.rejectIfInvalidString(authorName, "Author");
-		
+
 		if (!Pattern.matches(NAME_PATTERN, authorName)) {
 			throw new ValidationException("Author name doesn't match the pattern");
 		}
-	
+
 	}
+
 	/**
 	 * 
 	 * @param id
 	 * @throws ValidationException
-	 * @throws PersistanceException 
+	 * @throws PersistanceException
+	 * @throws ServiceException
 	 */
-	public static void validateId(int bookId) throws ValidationException, PersistanceException {
-		if (bookId <= 0) {
-			throw new ValidationException("Id can not be less than zero.");
+	public static void validateId(int bookId) throws ServiceException, ValidationException {
+		try {
+			if (bookId <= 0) {
+				throw new ValidationException("Id can not be less than zero.");
+			}
+			BookDAO.bookIdAlreadyExistOrNot(bookId);
+		} catch (PersistanceException e) {
+			throw new ServiceException("Book doesn't exist", e);
 		}
-		BookDAO.bookIdAlreadyExistOrNot(bookId);
 	}
+
 	/**
 	 * 
 	 * @param publisherId
 	 * @throws ValidationException
-	 * @throws PersistanceException 
+	 * @throws PersistanceException
+	 * @throws ServiceException
 	 */
-	public static void validatePublisherId(int publisherId) throws ValidationException, PersistanceException {
-		if (publisherId <= 0) {
-			throw new ValidationException("Publisher Id can not be less than zero.");
+	public static void validatePublisherId(int publisherId) throws ValidationException, ServiceException {
+		try {
+			if (publisherId <= 0) {
+				throw new ValidationException("Publisher Id can not be less than zero.");
+			}
+			PublisherDAO.publisherIdAlreadyExistOrNot(publisherId);
+		} catch (PersistanceException e) {
+			throw new ServiceException("Publisher doesn't exist", e);
 		}
-		PublisherDAO.publisherIdAlreadyExistOrNot(publisherId);
-	
 	}
+
 	/**
 	 * 
 	 * @param category_id
 	 * @throws ValidationException
-	 * @throws PersistanceException 
+	 * @throws PersistanceException
+	 * @throws ServiceException
 	 */
-	public static void validateCategoryId(int categoryId) throws ValidationException, PersistanceException {
-		if (categoryId <= 0) {
-			throw new ValidationException("Category Id can not be less than zero.");
+	public static void validateCategoryId(int categoryId) throws ValidationException, ServiceException {
+		try {
+			if (categoryId <= 0) {
+
+				throw new ValidationException("Category Id can not be less than zero.");
+			}
+			CategoryDAO.categoryIdAlreadyExistOrNot(categoryId);
+
+		} catch (PersistanceException e) {
+			throw new ServiceException("Category doesn't exist", e);
 		}
-		CategoryDAO.categoryIdAlreadyExistOrNot(categoryId);
-	
 	}
+
 	/**
 	 * 
 	 * @param price
@@ -117,27 +189,28 @@ public class BookValidator {
 		if (bookPrice <= 0) {
 			throw new ValidationException("Price can not be less than zero.");
 		}
-	
+
 	}
+
 	/**
 	 * 
 	 * @param date
 	 * @throws ValidationException
 	 */
-	public static void validatePublishedDate(String publisheddate) throws ValidationException {
-	    StringUtil.rejectIfInvalidString(publisheddate, "Date");
-	    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	    LocalDate dueDate;
-	    try {
-	        dueDate = LocalDate.parse(publisheddate, inputFormatter);
-	    } catch (DateTimeParseException e) {
-	        throw new ValidationException("Invalid date or Invalid date format ( yyyy-MM-dd)");
-	    }
-	    String formattedDate = dueDate.format(inputFormatter);
-	    System.out.println("Formatted Date: " + formattedDate);
-	    LocalDate currentDate = LocalDate.now();
-	    if (dueDate.equals(currentDate) || dueDate.isAfter(currentDate)) {
-	        throw new ValidationException("Date can't be in future");
-	    }
+	public static void validatePublishedDate(String publishedate) throws ValidationException {
+		StringUtil.rejectIfInvalidString(publishedate, "Date");
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate publisheddate;
+		try {
+			publisheddate = LocalDate.parse(publishedate, inputFormatter);
+		} catch (DateTimeParseException e) {
+			throw new ValidationException("Invalid date or Invalid date format (yyyy-MM-dd)");
+		}
+		String formattedDate = publisheddate.format(inputFormatter);
+		System.out.println("Formatted Date: " + formattedDate);
+		LocalDate currentDate = LocalDate.now();
+		if (publisheddate.isAfter(currentDate)) {
+			throw new ValidationException("Date can't be in future");
+		}
 	}
 }

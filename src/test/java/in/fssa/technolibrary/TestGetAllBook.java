@@ -2,97 +2,88 @@ package in.fssa.technolibrary;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Calendar;
 import java.util.Random;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
-import in.fssa.technolibrary.exception.PersistanceException;
+import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.service.BookService;
 
 public class TestGetAllBook {
 	@Test
-	public void getAllUser() throws PersistanceException {
+	public void getAllBook() throws ServiceException {
 		BookService bookService = new BookService();
-
 		Set<Book> books = bookService.findAllBook();
-
 		System.out.print(books);
 	}
 
 	@Test
-	public void getBookById() throws Exception {
+	public void getBookById() throws ServiceException, ValidationException {
 		Book book = BookService.findBookById(1);
 		System.out.print(book);
 	}
 
 	@Test
-	public void getBookByAuthor() throws Exception {
+	public void getBookByAuthor() throws ValidationException, ServiceException {
 		BookService bookService = new BookService();
 		Set<Book> book = bookService.findByAuthorName("Ramuu");
 		System.out.print(book);
 	}
-	
+
 	@Test
-	public void getBookByCategoryId() throws Exception {
+	public void getBookByCategoryId() throws ServiceException, ValidationException {
 		BookService bookService = new BookService();
 		Set<Book> book = bookService.findBookByCategoryId(1);
 		System.out.print(book);
 	}
 
 	@Test
-	public void getBookByPublisherId() throws Exception {
+	public void getBookByPublisherId() throws ServiceException, ValidationException {
 		BookService bookService = new BookService();
 		Set<Book> book = bookService.findBookByPublisherId(1);
 		System.out.print(book);
 	}
 
 	@Test
-	public void testDelete() throws ValidationException, PersistanceException {
+	public void testDelete() throws ValidationException, ServiceException {
 		BookService bookService = new BookService();
 		bookService.deleteBook(1);
 	}
 
-	 @Test
-	    public void testUpdateTitleAndDate() throws Exception {
-	        BookService bookService = new BookService();
+	@Test
+	public void testUpdateTitleAndDate() throws ValidationException, ServiceException {
+		BookService bookService = new BookService();
+		String generatedTitle = generateRandomString(7);
+		String generatedDate = generateRandomPreviousDate();
+		Book newData = new Book();
+		newData.setPublishedDate(generatedDate);
+		newData.setTitle(generatedTitle);
+		bookService.updateBookTitleAndDate(2, newData);
+	}
 
-	        // Generate random title
-	        String generatedTitle = generateRandomString(7);
+	private String generateRandomString(int length) {
+		String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		StringBuilder randomString = new StringBuilder();
+		Random random = new Random();
+		for (int i = 0; i < length; i++) {
+			int index = random.nextInt(characters.length());
+			randomString.append(characters.charAt(index));
+		}
+		return randomString.toString();
+	}
 
-	        // Generate random previous date
-	        String generatedDate = generateRandomPreviousDate();
+	private String generateRandomPreviousDate() {
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR) - 1;
+		int month = new Random().nextInt(12) + 1;
+		int day = new Random().nextInt(28) + 1;
 
-	        Book newData = new Book();
-	        newData.setPublishedDate(generatedDate);
-	        newData.setTitle(generatedTitle);
-
-	        bookService.updateBookTitleAndDate(2, newData);
-	    }
-
-	 private String generateRandomString(int length) {
-		    String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		    StringBuilder randomString = new StringBuilder();
-		    Random random = new Random();
-		    for (int i = 0; i < length; i++) {
-		        int index = random.nextInt(characters.length());
-		        randomString.append(characters.charAt(index));
-		    }
-		    return randomString.toString();
-		    }
-
-	    private String generateRandomPreviousDate() {
-	        Calendar calendar = Calendar.getInstance();
-	        int year = calendar.get(Calendar.YEAR) - 1;
-	        int month = new Random().nextInt(12) + 1;
-	        int day = new Random().nextInt(28) + 1;
-
-	        String formattedDate = String.format("%04d-%02d-%02d", year, month, day);
-	        return formattedDate;
-	    }
+		String formattedDate = String.format("%04d-%02d-%02d", year, month, day);
+		return formattedDate;
+	}
 
 	@Test
 	public void testupdateTitleAndDateWithSameTitleAndDate() throws ValidationException {
@@ -107,89 +98,87 @@ public class TestGetAllBook {
 
 		String expectedMessage = "New Title And Published Date is the same as the old Title And Published Date.";
 		String actualMessage = exception.getMessage();
-		assertTrue(actualMessage.equals(expectedMessage));
+		assertEquals(actualMessage,expectedMessage);
 
 	}
 
 	@Test
-    public void testUpdatePrice() throws Exception {
-        BookService bookService = new BookService();
-        
-        // Generate a random price between a specified range
-        int minPrice = 1000;
-        int maxPrice = 5000;
-        int randomPrice = generateRandomPrice(minPrice, maxPrice);
+	public void testUpdatePrice() throws ValidationException, ServiceException {
 
-        Book newPrice = new Book();
-        newPrice.setPrice(randomPrice);
-        
-        bookService.updateBookPrice(1, newPrice);
-    }
+		// Generate a random price between a specified range
+		int minPrice = 1000;
+		int maxPrice = 5000;
+		int randomPrice = generateRandomPrice(minPrice, maxPrice);
 
-    private int generateRandomPrice(int minPrice, int maxPrice) {
-        return minPrice + (int) (Math.random() * (maxPrice - minPrice + 1));
-    }
+		Book newPrice = new Book();
+		newPrice.setPrice(randomPrice);
+
+		BookService.updateBookPrice(1, newPrice);
+	}
+
+	private int generateRandomPrice(int minPrice, int maxPrice) {
+		return minPrice + (int) (Math.random() * (maxPrice - minPrice + 1));
+	}
 
 	@Test
-	public void testUpdatePriceWithTheSamePrice() throws ValidationException, PersistanceException {
-		BookService bookService = new BookService();
+	public void testUpdatePriceWithTheSamePrice() throws ValidationException {
 		Book newPrice = new Book();
 		newPrice.setPrice(5000);
 
-		Exception exception = assertThrows(PersistanceException.class, () -> {
-			bookService.updateBookPrice(3, newPrice);
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			BookService.updateBookPrice(3, newPrice);
 		});
 
 		String expectedMessage = "New price is the same as the old price.";
 		String actualMessage = exception.getMessage();
 		System.out.print(actualMessage);
-		assertEquals(actualMessage,expectedMessage);
+		assertEquals(actualMessage, expectedMessage);
 	}
-	
+
 	@Test
-	public void testupdateAuthorNamePublisheIdCategoryId() throws ValidationException, PersistanceException {
-	    BookService bookService = new BookService();
-	    Book existingBook = BookService.findBookById(2);
-	    
-	    Book newData = new Book();
-	    
-	    // Generate a random author name different from the existing one
-	    String randomAuthor;
-	    do {
-	        randomAuthor = generateRandomAuthor();
-	    } while (randomAuthor.equals(existingBook.getAuthor()));
-	    newData.setAuthor(randomAuthor);
-	    
-	    // Generate a random publisher id different from the existing one
-	    int randomPublisherId;
-	    do {
-	        randomPublisherId = generateRandomId(1, 5);
-	    } while (randomPublisherId == existingBook.getPublisherId());
-	    newData.setPublisherId(randomPublisherId);
-	    
-	    // Generate a random category id different from the existing one
-	    int randomCategoryId;
-	    do {
-	        randomCategoryId = generateRandomId(1, 5);
-	    } while (randomCategoryId == existingBook.getCategoryId());
-	    newData.setCategoryId(randomCategoryId);
-	    
-	    bookService.updateBookAuthorNamePublisherIdCategoryId(2, newData);
+	public void testupdateAuthorNamePublisheIdCategoryId() throws ValidationException, ServiceException {
+		BookService bookService = new BookService();
+		Book existingBook = BookService.findBookById(2);
+
+		Book newData = new Book();
+
+		// Generate a random author name different from the existing one
+		String randomAuthor;
+		do {
+			randomAuthor = generateRandomAuthor();
+		} while (randomAuthor.equals(existingBook.getAuthor()));
+		newData.setAuthor(randomAuthor);
+
+		// Generate a random publisher id different from the existing one
+		int randomPublisherId;
+		do {
+			randomPublisherId = generateRandomId(1, 5);
+		} while (randomPublisherId == existingBook.getPublisherId());
+		newData.setPublisherId(randomPublisherId);
+
+		// Generate a random category id different from the existing one
+		int randomCategoryId;
+		do {
+			randomCategoryId = generateRandomId(1, 5);
+		} while (randomCategoryId == existingBook.getCategoryId());
+		newData.setCategoryId(randomCategoryId);
+
+		bookService.updateBookAuthorNamePublisherIdCategoryId(2, newData);
 	}
 
 	private String generateRandomAuthor() {
-	    String[] authors = {"AuthorA", "AuthorB", "AuthorC", "AuthorD"};
-	    Random random = new Random();
-	    return authors[random.nextInt(authors.length)];
+		String[] authors = { "AuthorA", "AuthorB", "AuthorC", "AuthorD" };
+		Random random = new Random();
+		return authors[random.nextInt(authors.length)];
 	}
 
 	private int generateRandomId(int min, int max) {
-	    Random random = new Random();
-	    return random.nextInt(max - min + 1) + min;
+		Random random = new Random();
+		return random.nextInt(max - min + 1) + min;
 	}
-	
+
 	@Test
-	public void testupdateAuthorNamePublisheIdCategoryIdSameDetails() throws PersistanceException {
+	public void testupdateAuthorNamePublisheIdCategoryIdSameDetails() {
 		BookService bookService = new BookService();
 		Book newData = new Book();
 		newData.setAuthor("Ramuu");
@@ -202,7 +191,7 @@ public class TestGetAllBook {
 
 		String expectedMessage = "New Author ,Published Id And Category Id is the same as the old Author ,Published Id And Category Id.";
 		String actualMessage = exception.getMessage();
-		assertEquals(actualMessage,expectedMessage);
+		assertEquals(actualMessage, expectedMessage);
 	}
 
 }

@@ -5,11 +5,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Random;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
+import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.model.Publisher;
+import in.fssa.technolibrary.service.BookService;
 import in.fssa.technolibrary.service.PublisherService;
 import in.fssa.technolibrary.validator.PublisherValidator;
 
@@ -26,11 +30,6 @@ public class TestCreatePublisher {
 
 	        assertDoesNotThrow(() -> {
 	            PublisherService.createPublisher(newPublisher);
-	        });
-
-	        // Validate the generated name using the pattern
-	        assertDoesNotThrow(() -> {
-	            PublisherValidator.validateName(generatedName);
 	        });
 	    }
 
@@ -56,7 +55,7 @@ public class TestCreatePublisher {
 			PublisherService.createPublisher(newPublisher);
 		});
 
-		String exceptedMessage = "Name cannot be null or empty";
+		String exceptedMessage = "PublisherName cannot be null or empty";
 		String actualMessage = exception.getMessage();
 
 		assertTrue(exceptedMessage.equals(actualMessage));
@@ -73,10 +72,11 @@ public class TestCreatePublisher {
 			PublisherService.createPublisher(newPublisher);
 		});
 
-		String exceptedMessage = "Name cannot be null or empty";
+		String exceptedMessage = "PublisherName cannot be null or empty";
 		String actualMessage = exception.getMessage();
-
+		System.out.print(actualMessage);
 		assertTrue(exceptedMessage.equals(actualMessage));
+		
 	}
 	
 	@Test
@@ -90,10 +90,41 @@ public class TestCreatePublisher {
 			PublisherService.createPublisher(newPublisher);
 		});
 
-		String exceptedMessage = "Name doesn't match the pattern";
+		String exceptedMessage = "PublisherName doesn't match the pattern";
+		String actualMessage = exception.getMessage();
+		System.out.print(actualMessage);
+		assertTrue(exceptedMessage.equals(actualMessage));
+	}
+	
+	@Test
+	public void testPublisherSameName() {
+		
+		Publisher newPublisher = new Publisher();
+
+		newPublisher.setName("bofbwnhjsq");
+
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			PublisherService.createPublisher(newPublisher);
+		});
+
+		String exceptedMessage = "Publisher Already exist";
 		String actualMessage = exception.getMessage();
 
 		assertTrue(exceptedMessage.equals(actualMessage));
+	}
+	
+	@Test
+	public void getAllPublishers() throws ServiceException {
+		PublisherService publisherService = new PublisherService();
+		Set<Publisher> publishers = publisherService.findAllPublisher();
+		System.out.print(publishers);
+	}
+	
+	@Test
+	public void getPublisherIdByName() throws ServiceException, ValidationException {
+		PublisherService publisherService = new PublisherService();
+		int publisher = publisherService.findIdByPublisherName("sfimizzscl");
+		System.out.print(publisher);
 	}
 
 }
