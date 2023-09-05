@@ -4,13 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
 import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ValidationException;
-import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.model.Publisher;
 import in.fssa.technolibrary.util.ConnectionUtil;
 
@@ -76,38 +74,6 @@ public class PublisherDAO {
 	        ConnectionUtil.close(con, ps, rs);
 	    }
 	    return publisherList;
-	}
-	/**
-	 * 
-	 * @param publisherName
-	 * @return
-	 * @throws PersistanceException
-	 */
-	public int findPublisherIdByPublisherName(String publisherName) throws PersistanceException {
-
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		int publisher_id = 0;
-
-		try {
-			String query = "SELECT id FROM publishers WHERE publisher_name = ?" ;
-			con = ConnectionUtil.getConnection();
-			ps = con.prepareStatement(query);
-			ps.setString(1, publisherName);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				publisher_id = rs.getInt("id");
-	        }
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print(e.getMessage());
-			throw new PersistanceException(e.getMessage());
-		}  finally {
-			ConnectionUtil.close(con, ps, rs);
-		}
-		return publisher_id;
 	}
 
 	/**

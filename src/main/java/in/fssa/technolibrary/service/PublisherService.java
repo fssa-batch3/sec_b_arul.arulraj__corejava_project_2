@@ -2,14 +2,11 @@ package in.fssa.technolibrary.service;
 
 import java.util.Set;
 
-import in.fssa.technolibrary.dao.BookDAO;
 import in.fssa.technolibrary.dao.PublisherDAO;
 import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
-import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.model.Publisher;
-import in.fssa.technolibrary.validator.BookValidator;
 import in.fssa.technolibrary.validator.PublisherValidator;
 
 public class PublisherService {
@@ -43,25 +40,6 @@ public class PublisherService {
 			e.printStackTrace();
 			throw new ServiceException("Error while retrieving all publishers");
 		}
-	}
-	/**
-	 * 
-	 * @param publisherName
-	 * @return
-	 * @throws ServiceException
-	 * @throws ValidationException
-	 */
-	public  int findIdByPublisherName(String publisherName) throws ServiceException, ValidationException {
-		try {
-			PublisherValidator.validateNamePattern(publisherName);
-			PublisherDAO publisherDAO = new PublisherDAO();
-			int publisher_id =  publisherDAO.findPublisherIdByPublisherName(publisherName);
-			return publisher_id;
-
-		} catch (PersistanceException e) {
-			throw new ServiceException("There is no Publisher_id in this Name", e);
-		}
-
 	}
 
 

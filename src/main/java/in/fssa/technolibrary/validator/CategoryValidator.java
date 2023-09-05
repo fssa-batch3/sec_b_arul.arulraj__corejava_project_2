@@ -11,7 +11,7 @@ import in.fssa.technolibrary.util.StringUtil;
 
 public class CategoryValidator {
 	
-	private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
+	private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\s]*$";
 	/**
 	 * 
 	 * @param category

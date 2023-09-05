@@ -227,7 +227,7 @@ public class BookDAO {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	public Set<Book> findByCtegoryId(int categoryId) throws PersistanceException {
+	public Set<Book> findByCategoryId(int categoryId) throws PersistanceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -486,7 +486,7 @@ public class BookDAO {
         PreparedStatement pre = null;
         ResultSet rs = null;
         try {
-            String query = "SELECT title FROM books WHERE title = ?";
+            String query = "SELECT * FROM books WHERE title = ?";
             conn = ConnectionUtil.getConnection();
             pre = conn.prepareStatement(query);
             pre.setString(1, bookName);

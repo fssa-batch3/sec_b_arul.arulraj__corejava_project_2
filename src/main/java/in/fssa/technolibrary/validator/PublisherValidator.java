@@ -11,19 +11,19 @@ import in.fssa.technolibrary.util.StringUtil;
 
 public class PublisherValidator {
 
-	private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\\\s]*$";
+	private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\s]*$";
 
 	/**
 	 * 
 	 * @param publisher
 	 * @throws ValidationException
-	 * @throws ServiceException 
+	 * @throws ServiceException
 	 */
 	public static void validate(Publisher publisher) throws ValidationException, ServiceException {
 		if (publisher == null) {
 			throw new ValidationException("Invalid user input");
 		}
-		
+
 		validateName(publisher.getName());
 	}
 
@@ -31,7 +31,7 @@ public class PublisherValidator {
 	 * 
 	 * @param name
 	 * @throws ValidationException
-	 * @throws ServiceException 
+	 * @throws ServiceException
 	 * @throws PersistanceException
 	 */
 	public static void validateName(String publisherName) throws ValidationException, ServiceException {
@@ -41,12 +41,19 @@ public class PublisherValidator {
 			if (!Pattern.matches(NAME_PATTERN, publisherName)) {
 				throw new ValidationException("PublisherName doesn't match the pattern");
 			}
+
 			PublisherDAO.publisherNameAlreadyExist(publisherName);
 		} catch (PersistanceException e) {
-			throw new ServiceException("Publisher Already exist");
+			throw new ServiceException("Publisher Already exists");
 		}
 	}
-	
+
+	/**
+	 * 
+	 * @param publisherName
+	 * @throws ValidationException
+	 * @throws ServiceException 
+	 */
 	public static void validateNamePattern(String publisherName) throws ValidationException, ServiceException {
 		try {
 			StringUtil.rejectIfInvalidString(publisherName, "PublisherName");
@@ -54,10 +61,12 @@ public class PublisherValidator {
 			if (!Pattern.matches(NAME_PATTERN, publisherName)) {
 				throw new ValidationException("PublisherName doesn't match the pattern");
 			}
+
 			PublisherDAO.publisherNameAlreadyExistOrNot(publisherName);
 		} catch (PersistanceException e) {
-			throw new ServiceException("Publisher Not exist");
+			throw new ServiceException("Publisher doesn't exist");
 		}
+
 	}
 
 	/**

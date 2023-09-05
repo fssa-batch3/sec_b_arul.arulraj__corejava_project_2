@@ -194,7 +194,7 @@ public class TestCreateBook {
 		String exceptedMessage = "Publisher Id can not be less than zero.";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 
 	@Test
@@ -216,8 +216,7 @@ public class TestCreateBook {
 		String exceptedMessage = "Category Id can not be less than zero.";
 		String actualMessage = exception.getMessage();
 		System.out.print(actualMessage);
-		assertTrue(exceptedMessage.equals(actualMessage));
-	}
+		assertEquals(exceptedMessage,actualMessage);	}
 
 	@Test
 	public void testPrice() {
@@ -238,30 +237,30 @@ public class TestCreateBook {
 		String exceptedMessage = "Price can not be less than zero.";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 
 	@Test
 	public void testDateNull() {
+	    Book newBook = new Book();
 
-		Book newBook = new Book();
+	    newBook.setAuthor("Ajun");
+	    newBook.setTitle("Sesslyn");
+	    newBook.setCategoryId(1);
+	    newBook.setPublisherId(1);
+	    newBook.setPublishedDate(null); // Set publishedDate to null
+	    newBook.setPrice(1000);
 
-		newBook.setAuthor("Ajun");
-		newBook.setTitle("jhvhgc");
-		newBook.setCategoryId(1);
-		newBook.setPublisherId(1);
-		newBook.setPublishedDate(null);
-		newBook.setPrice(1000);
+	    Exception exception = assertThrows(ValidationException.class, () -> {
+	        BookService.createNewBook(newBook);
+	    });
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
-		});
+	    String expectedMessage = "Date cannot be null or empty";
+	    String actualMessage = exception.getMessage();
 
-		String exceptedMessage = "Date cannot be null or empty";
-		String actualMessage = exception.getMessage();
-	
-		assertEquals(exceptedMessage,actualMessage);
+	    assertEquals(expectedMessage, actualMessage);
 	}
+
 
 	@Test
 	public void testDateEmpty() {
@@ -282,7 +281,7 @@ public class TestCreateBook {
 		String exceptedMessage = "Date cannot be null or empty";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 
 	@Test
@@ -304,7 +303,7 @@ public class TestCreateBook {
 		String exceptedMessage = "Invalid date or Invalid date format (yyyy-MM-dd)";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 
 	@Test
@@ -326,7 +325,7 @@ public class TestCreateBook {
 		String exceptedMessage = "Date can't be in future";
 		String actualMessage = exception.getMessage();
 		System.out.print(actualMessage);
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 
 	@Test

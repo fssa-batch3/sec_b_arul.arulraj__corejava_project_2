@@ -118,7 +118,7 @@ public class BookService {
 		try {
 			BookValidator.validateCategoryId(categoryId);
 			BookDAO bookDAO = new BookDAO();
-			return bookDAO.findByCtegoryId(categoryId);
+			return bookDAO.findByCategoryId(categoryId);
 		} catch (PersistanceException e) {
 			throw new ServiceException("There is no book in this id", e);
 		}

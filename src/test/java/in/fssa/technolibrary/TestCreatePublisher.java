@@ -1,6 +1,7 @@
 package in.fssa.technolibrary;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -11,11 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
-import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.model.Publisher;
-import in.fssa.technolibrary.service.BookService;
 import in.fssa.technolibrary.service.PublisherService;
-import in.fssa.technolibrary.validator.PublisherValidator;
 
 public class TestCreatePublisher {
 	
@@ -101,7 +99,7 @@ public class TestCreatePublisher {
 		
 		Publisher newPublisher = new Publisher();
 
-		newPublisher.setName("bofbwnhjsq");
+		newPublisher.setName("Pearson");
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			PublisherService.createPublisher(newPublisher);
@@ -110,7 +108,7 @@ public class TestCreatePublisher {
 		String exceptedMessage = "Publisher Already exist";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 	
 	@Test
@@ -118,13 +116,6 @@ public class TestCreatePublisher {
 		PublisherService publisherService = new PublisherService();
 		Set<Publisher> publishers = publisherService.findAllPublisher();
 		System.out.print(publishers);
-	}
-	
-	@Test
-	public void getPublisherIdByName() throws ServiceException, ValidationException {
-		PublisherService publisherService = new PublisherService();
-		int publisher = publisherService.findIdByPublisherName("sfimizzscl");
-		System.out.print(publisher);
 	}
 
 }

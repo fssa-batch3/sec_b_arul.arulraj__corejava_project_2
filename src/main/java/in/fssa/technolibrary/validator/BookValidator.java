@@ -49,14 +49,9 @@ public class BookValidator {
 	}
 	
 	public static void validateAuthor(String authorName) throws ValidationException, ServiceException {
-		try {
+		
 			validateAuthorNamePattern(authorName);
 
-			BookDAO.bookNameAlreadyExist(authorName);
-
-		} catch (PersistanceException e) {
-			throw new ServiceException("Author name Already exist", e);
-		}
 	}
 
 	public static void validateUpdateBookAndTitle(Book updatedData) throws ValidationException, ServiceException {
