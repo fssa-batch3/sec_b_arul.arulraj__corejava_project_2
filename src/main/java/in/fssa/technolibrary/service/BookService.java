@@ -70,25 +70,6 @@ public class BookService {
 
 	}
 
-//	/**
-//	 * 
-//	 * @param bookTitle
-//	 * @return
-//	 * @throws ServiceException
-//	 * @throws ValidationException
-//	 */
-//	public static Book findBookByTitle(String bookTitle) throws ServiceException, ValidationException {
-//		try {
-//			BookValidator.validateFindBookTitle(bookTitle);
-//			BookDAO bookDAO = new BookDAO();
-//			return bookDAO.findByBookTitle(bookTitle);
-//
-//		} catch (PersistanceException e) {
-//			throw new ServiceException("There is no book in this Name", e);
-//		}
-//
-//	}
-
 	/**
 	 * 
 	 * @param author

@@ -1,6 +1,6 @@
 package in.fssa.technolibrary.model;
 
-public abstract class CategoryEntity implements Comparable<CategoryEntity>{
+public abstract class CategoryEntity {
 	
 	private int id;
 	private String name;
@@ -17,11 +17,6 @@ public abstract class CategoryEntity implements Comparable<CategoryEntity>{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-    @Override
-    public int compareTo(CategoryEntity other) {
-		return Integer.compare(this.id, other.getId());
-    }
 	
 	@Override
 	public String toString() {

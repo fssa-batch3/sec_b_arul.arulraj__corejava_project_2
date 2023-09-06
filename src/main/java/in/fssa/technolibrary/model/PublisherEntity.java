@@ -1,6 +1,6 @@
 package in.fssa.technolibrary.model;
 
-public abstract class PublisherEntity implements Comparable<PublisherEntity> {
+public abstract class PublisherEntity {
 	
 	private int id;
 	private String name;
@@ -24,11 +24,6 @@ public abstract class PublisherEntity implements Comparable<PublisherEntity> {
 	public void setIs_active(boolean is_active) {
 		this.is_active = is_active;
 	}
-	
-    @Override
-    public int compareTo(PublisherEntity other) {
-		return Integer.compare(this.id, other.getId());
-    }
     
 	@Override
 	public String toString() {
