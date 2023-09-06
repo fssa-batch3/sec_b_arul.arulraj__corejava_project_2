@@ -178,48 +178,6 @@ public class BookDAO {
 		}
 		return bookList;
 	}
-	/**
-	 * 
-	 * @param bookTitle
-	 * @return
-	 * @throws PersistanceException
-	 */
-	public Book findByBookTitle(String bookTitle) throws PersistanceException {
-
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Book book = null;
-
-		try {
-			String query = "SELECT id, published_date, title, author, publisher_id, category_id, price, is_active FROM books WHERE id = ?";
-			con = ConnectionUtil.getConnection();
-			ps = con.prepareStatement(query);
-			ps.setString(1, bookTitle);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				book = new Book();
-				book.setId(rs.getInt("id"));
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				String dueDateStr = dateFormat.format(rs.getTimestamp("published_date"));
-				book.setPublishedDate(dueDateStr);
-				book.setTitle(rs.getString("title"));
-				book.setAuthor(rs.getString("author"));
-				book.setPublisherId(rs.getInt("publisher_id"));
-				book.setCategoryId(rs.getInt("category_id"));
-				book.setPrice(rs.getInt("price"));
-				book.setActive(rs.getBoolean("is_active"));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print(e.getMessage());
-			throw new PersistanceException(e.getMessage());
-		}  finally {
-			ConnectionUtil.close(con, ps, rs);
-		}
-		return book;
-	}
 
 	/**
 	 * 
@@ -447,34 +405,7 @@ public class BookDAO {
             ConnectionUtil.close(conn, pre, rs);
         }
     }
-	/**
-	 * 
-	 * @param bookId
-	 * @return 
-	 * @throws PersistanceException
-	 * @throws ValidationException
-	 */
-	public static void bookNameAlreadyExistOrNot(String bookName) throws PersistanceException, ValidationException {
-        Connection conn = null;
-        PreparedStatement pre = null;
-        ResultSet rs = null;
-        try {
-            String query = "SELECT title FROM books WHERE title = ?";
-            conn = ConnectionUtil.getConnection();
-            pre = conn.prepareStatement(query);
-            pre.setString(1, bookName);
-            rs = pre.executeQuery();
-            
-            if (!rs.next()) {
-                throw new ValidationException("There is no book in this Name");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new PersistanceException(e.getMessage());
-        } finally {
-            ConnectionUtil.close(conn, pre, rs);
-        }
-    }
+
 	/**
 	 * 
 	 * @param bookName

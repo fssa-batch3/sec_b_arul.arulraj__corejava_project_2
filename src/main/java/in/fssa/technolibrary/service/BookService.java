@@ -69,24 +69,25 @@ public class BookService {
 		}
 
 	}
-	/**
-	 * 
-	 * @param bookTitle
-	 * @return
-	 * @throws ServiceException
-	 * @throws ValidationException
-	 */
-	public static Book findBookByTitle(String bookTitle) throws ServiceException, ValidationException {
-		try {
-			BookValidator.validateFindBookTitle(bookTitle);
-			BookDAO bookDAO = new BookDAO();
-			return bookDAO.findByBookTitle(bookTitle);
 
-		} catch (PersistanceException e) {
-			throw new ServiceException("There is no book in this Name", e);
-		}
-
-	}
+//	/**
+//	 * 
+//	 * @param bookTitle
+//	 * @return
+//	 * @throws ServiceException
+//	 * @throws ValidationException
+//	 */
+//	public static Book findBookByTitle(String bookTitle) throws ServiceException, ValidationException {
+//		try {
+//			BookValidator.validateFindBookTitle(bookTitle);
+//			BookDAO bookDAO = new BookDAO();
+//			return bookDAO.findByBookTitle(bookTitle);
+//
+//		} catch (PersistanceException e) {
+//			throw new ServiceException("There is no book in this Name", e);
+//		}
+//
+//	}
 
 	/**
 	 * 
@@ -188,6 +189,42 @@ public class BookService {
 			throw new ServiceException("There is no book in this id", e);
 		}
 	}
+	
+	/**
+	 * 
+	 * @param bookId
+	 * @param updatedData
+	 * @throws ValidationException
+	 * @throws ServiceException
+	 */
+	public static void updatePrice(int bookId, Book updatedData) throws ValidationException, ServiceException {
+		try {
+			BookValidator.validateId(bookId);
+			BookDAO bookDAO = new BookDAO();
+
+			bookDAO.updatePrice(bookId, updatedData);
+		} catch (PersistanceException e) {
+			throw new ServiceException("There is no book in this id", e);
+		}
+	}
+
+	/**
+	 * 
+	 * @param bookId
+	 * @param updatedData
+	 * @throws ValidationException
+	 * @throws ServiceException
+	 */
+	public static void updateTitleAndDate(int bookId, Book updatedData) throws ValidationException, ServiceException {
+		try {
+			BookValidator.validateUpdateBookAndTitle(updatedData);
+			BookDAO bookDAO = new BookDAO();
+
+			bookDAO.updateTitleAndDate(bookId, updatedData);
+		} catch (PersistanceException e) {
+			throw new ServiceException("There is no book in this id", e);
+		}
+	}
 
 	/**
 	 * 
@@ -197,7 +234,8 @@ public class BookService {
 	 * @throws ServiceException
 	 * @throws PersistanceException
 	 */
-	public static void updateBookTitleAndDate(int bookId, Book updatedData) throws ValidationException, ServiceException {
+	public static void updateBookTitleAndDate(int bookId, Book updatedData)
+			throws ValidationException, ServiceException {
 		try {
 			BookValidator.validateUpdateBookAndTitle(updatedData);
 			BookDAO bookDAO = new BookDAO();
@@ -213,6 +251,28 @@ public class BookService {
 				throw new ValidationException(
 						"New Title And Published Date is the same as the old Title And Published Date.");
 			}
+		} catch (PersistanceException e) {
+			throw new ServiceException("There is no book in this id", e);
+		}
+	}
+
+	/**
+	 * 
+	 * @param bookId
+	 * @param updatedData
+	 * @throws ValidationException
+	 * @throws ServiceException
+	 */
+	public static void updateAuthorNamePublisherIdCategoryId(int bookId, Book updatedData)
+			throws ValidationException, ServiceException {
+		try {
+			BookValidator.validateId(bookId);
+			BookValidator.validateAuthorNamePattern(updatedData.getAuthor());
+			BookValidator.validatePublisherId(updatedData.getPublisherId());
+			BookValidator.validateCategoryId(updatedData.getCategoryId());
+			BookDAO bookDAO = new BookDAO();
+
+			bookDAO.updateAuthorNamePublisherIdCategoryId(bookId, updatedData);
 		} catch (PersistanceException e) {
 			throw new ServiceException("There is no book in this id", e);
 		}

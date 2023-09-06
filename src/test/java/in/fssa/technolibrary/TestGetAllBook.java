@@ -12,56 +12,56 @@ import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.service.BookService;
 
-public class TestGetAllBook {
+class TestGetAllBook {
 	@Test
-	public void getAllBook() throws ServiceException {
+	void getAllBook() throws ServiceException {
 		BookService bookService = new BookService();
 		Set<Book> books = bookService.findAllBook();
 		System.out.print(books);
 	}
 
 	@Test
-	public void getBookById() throws ServiceException, ValidationException {
+	void getBookById() throws ServiceException, ValidationException {
 		Book book = BookService.findBookById(1);
 		System.out.print(book);
 	}
 
 	@Test
-	public void getBookByAuthor() throws ValidationException, ServiceException {
+	void getBookByAuthor() throws ValidationException, ServiceException {
 		BookService bookService = new BookService();
 		Set<Book> book = bookService.findByAuthorName("Ramuu");
 		System.out.print(book);
 	}
 
 	@Test
-	public void getBookByCategoryId() throws ServiceException, ValidationException {
+	void getBookByCategoryId() throws ServiceException, ValidationException {
 		BookService bookService = new BookService();
 		Set<Book> book = bookService.findBookByCategoryId(1);
 		System.out.print(book);
 	}
 
 	@Test
-	public void getBookByPublisherId() throws ServiceException, ValidationException {
+	void getBookByPublisherId() throws ServiceException, ValidationException {
 		BookService bookService = new BookService();
 		Set<Book> book = bookService.findBookByPublisherId(1);
 		System.out.print(book);
 	}
 
 	@Test
-	public void testDelete() throws ValidationException, ServiceException {
+	void testDelete() throws ValidationException, ServiceException {
 		BookService bookService = new BookService();
 		bookService.deleteBook(1);
 	}
 
 	@Test
-	public void testUpdateTitleAndDate() throws ValidationException, ServiceException {
-		BookService bookService = new BookService();
+	void testUpdateTitleAndDate() throws ValidationException, ServiceException {
+		
 		String generatedTitle = generateRandomString(7);
 		String generatedDate = generateRandomPreviousDate();
 		Book newData = new Book();
 		newData.setPublishedDate(generatedDate);
 		newData.setTitle(generatedTitle);
-		bookService.updateBookTitleAndDate(2, newData);
+		BookService.updateBookTitleAndDate(2, newData);
 	}
 
 	private String generateRandomString(int length) {
@@ -86,14 +86,13 @@ public class TestGetAllBook {
 	}
 
 	@Test
-	public void testupdateTitleAndDateWithSameTitleAndDate() throws ValidationException {
-		BookService bookService = new BookService();
+	void testupdateTitleAndDateWithSameTitleAndDate() throws ValidationException {
 		Book newData = new Book();
 		newData.setPublishedDate("2022-10-12");
 		newData.setTitle("BookofMagic");
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.updateBookTitleAndDate(6, newData);
+			BookService.updateBookTitleAndDate(6, newData);
 		});
 
 		String expectedMessage = "New Title And Published Date is the same as the old Title And Published Date.";
@@ -103,7 +102,7 @@ public class TestGetAllBook {
 	}
 
 	@Test
-	public void testUpdatePrice() throws ValidationException, ServiceException {
+	void testUpdatePrice() throws ValidationException, ServiceException {
 
 		// Generate a random price between a specified range
 		int minPrice = 1000;
@@ -121,7 +120,7 @@ public class TestGetAllBook {
 	}
 
 	@Test
-	public void testUpdatePriceWithTheSamePrice() throws ValidationException {
+	void testUpdatePriceWithTheSamePrice() throws ValidationException {
 		Book newPrice = new Book();
 		newPrice.setPrice(5000);
 
@@ -136,8 +135,8 @@ public class TestGetAllBook {
 	}
 
 	@Test
-	public void testupdateAuthorNamePublisheIdCategoryId() throws ValidationException, ServiceException {
-		BookService bookService = new BookService();
+	void testupdateAuthorNamePublisheIdCategoryId() throws ValidationException, ServiceException {
+
 		Book existingBook = BookService.findBookById(2);
 
 		Book newData = new Book();
@@ -163,7 +162,7 @@ public class TestGetAllBook {
 		} while (randomCategoryId == existingBook.getCategoryId());
 		newData.setCategoryId(randomCategoryId);
 
-		bookService.updateBookAuthorNamePublisherIdCategoryId(2, newData);
+		BookService.updateBookAuthorNamePublisherIdCategoryId(2, newData);
 	}
 
 	private String generateRandomAuthor() {
@@ -178,15 +177,14 @@ public class TestGetAllBook {
 	}
 
 	@Test
-	public void testupdateAuthorNamePublisheIdCategoryIdSameDetails() {
-		BookService bookService = new BookService();
+	void testupdateAuthorNamePublisheIdCategoryIdSameDetails() {
 		Book newData = new Book();
 		newData.setAuthor("Ramuu");
 		newData.setPublisherId(2);
 		newData.setCategoryId(2);
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.updateBookAuthorNamePublisherIdCategoryId(1, newData);
+			BookService.updateBookAuthorNamePublisherIdCategoryId(1, newData);
 		});
 
 		String expectedMessage = "New Author ,Published Id And Category Id is the same as the old Author ,Published Id And Category Id.";

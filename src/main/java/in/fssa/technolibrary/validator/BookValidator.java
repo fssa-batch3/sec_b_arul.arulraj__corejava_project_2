@@ -36,25 +36,36 @@ public class BookValidator {
 		validatePrice(book.getPrice());
 		validatePublishedDate(book.getPublishedDate());
 	}
-	
-	public static void validateFindAuthor(String authorName) throws ValidationException, ServiceException {
+	/**
+	 * 
+	 * @param authorName
+	 * @throws ValidationException
+	 * @throws ServiceException
+	 */
+	public static void validateFindAuthor(String authorName) throws ValidationException {
 		try {
 			validateAuthorNamePattern(authorName);
 
 			BookDAO.authorAlreadyExistOrNot(authorName);
 
 		} catch (PersistanceException e) {
-			throw new ServiceException("Author doesn't exist", e);
+			throw new ValidationException("Author doesn't exist");
 		}
 	}
 	
-	public static void validateAuthor(String authorName) throws ValidationException, ServiceException {
+	public static void validateAuthor(String authorName) throws ValidationException {
 		
 			validateAuthorNamePattern(authorName);
 
 	}
-
-	public static void validateUpdateBookAndTitle(Book updatedData) throws ValidationException, ServiceException {
+	
+	/**
+	 * 
+	 * @param updatedData
+	 * @throws ValidationException
+	 * @throws ServiceException
+	 */
+	public static void validateUpdateBookAndTitle(Book updatedData) throws ValidationException {
 
 		StringUtil.rejectIfInvalidString(updatedData.getTitle(), "Title");
 
@@ -62,16 +73,6 @@ public class BookValidator {
 			throw new ValidationException("Title doesn't match the pattern");
 		}
 		validatePublishedDate(updatedData.getPublishedDate());
-	}
-
-	public static void validateFindBookTitle(String bookTitle) throws ValidationException {
-		validateTitle(bookTitle);
-		try {
-			BookDAO.bookNameAlreadyExistOrNot(bookTitle);
-		} catch (PersistanceException e) {
-			e.printStackTrace();
-			throw new ValidationException("There is no book in this Name");
-		}
 	}
 
 	/**
@@ -124,16 +125,15 @@ public class BookValidator {
 	 * @param id
 	 * @throws ValidationException
 	 * @throws PersistanceException
-	 * @throws ServiceException
 	 */
-	public static void validateId(int bookId) throws ServiceException, ValidationException {
+	public static void validateId(int bookId) throws ValidationException {
 		try {
 			if (bookId <= 0) {
 				throw new ValidationException("Id can not be less than zero.");
 			}
 			BookDAO.bookIdAlreadyExistOrNot(bookId);
 		} catch (PersistanceException e) {
-			throw new ServiceException("Book doesn't exist", e);
+			throw new ValidationException("Book doesn't exist");
 		}
 	}
 
@@ -144,14 +144,14 @@ public class BookValidator {
 	 * @throws PersistanceException
 	 * @throws ServiceException
 	 */
-	public static void validatePublisherId(int publisherId) throws ValidationException, ServiceException {
+	public static void validatePublisherId(int publisherId) throws ValidationException {
 		try {
 			if (publisherId <= 0) {
 				throw new ValidationException("Publisher Id can not be less than zero.");
 			}
 			PublisherDAO.publisherIdAlreadyExistOrNot(publisherId);
 		} catch (PersistanceException e) {
-			throw new ServiceException("Publisher doesn't exist", e);
+			throw new ValidationException("Publisher doesn't exist");
 		}
 	}
 
@@ -162,7 +162,7 @@ public class BookValidator {
 	 * @throws PersistanceException
 	 * @throws ServiceException
 	 */
-	public static void validateCategoryId(int categoryId) throws ValidationException, ServiceException {
+	public static void validateCategoryId(int categoryId) throws ValidationException{
 		try {
 			if (categoryId <= 0) {
 
@@ -171,7 +171,7 @@ public class BookValidator {
 			CategoryDAO.categoryIdAlreadyExistOrNot(categoryId);
 
 		} catch (PersistanceException e) {
-			throw new ServiceException("Category doesn't exist", e);
+			throw new ValidationException("Category doesn't exist");
 		}
 	}
 

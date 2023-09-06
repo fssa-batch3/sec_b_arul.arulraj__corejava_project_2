@@ -32,10 +32,7 @@ public class PublisherDAO {
 			ps.setString(1, newPublisher.getName());
 			ps.executeUpdate();
 
-			System.out.print("Publisher has been successfully created");
-
 		} catch (SQLException e) {
-			System.out.print(e.getMessage());
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps);
@@ -97,7 +94,6 @@ public class PublisherDAO {
 			rs = pre.executeQuery();
 			if (!rs.next()) {
 				result = false;
-				System.out.println("Publisher doesn't exist");
 				throw new ValidationException("Publisher doesn't exist");
 			}
 		} catch (SQLException e) {
@@ -109,35 +105,7 @@ public class PublisherDAO {
 		return result;
 
 	}
-	/**
-	 * 
-	 * @param publisherName
-	 * @throws PersistanceException
-	 * @throws ValidationException
-	 */
-	public static void publisherNameAlreadyExistOrNot(String publisherName)
-			throws PersistanceException, ValidationException {
 
-		Connection conn = null;
-		PreparedStatement pre = null;
-		ResultSet rs = null;
-		try {
-			String query = "Select publisher_name From publishers Where publisher_name = ?";
-			conn = ConnectionUtil.getConnection();
-			pre = conn.prepareStatement(query);
-			pre.setString(1, publisherName);
-			rs = pre.executeQuery();
-			if (!rs.next()) {
-				throw new ValidationException("Publisher doesn't exist");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new PersistanceException(e.getMessage());
-		} finally {
-			ConnectionUtil.close(conn, pre);
-		}
-
-	}
 	/**
 	 * 
 	 * @param publisherName

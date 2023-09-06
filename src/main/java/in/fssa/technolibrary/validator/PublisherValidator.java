@@ -44,45 +44,8 @@ public class PublisherValidator {
 
 			PublisherDAO.publisherNameAlreadyExist(publisherName);
 		} catch (PersistanceException e) {
-			throw new ServiceException("Publisher Already exists");
+			throw new ServiceException("Publisher Already exist");
 		}
 	}
-
-	/**
-	 * 
-	 * @param publisherName
-	 * @throws ValidationException
-	 * @throws ServiceException 
-	 */
-	public static void validateNamePattern(String publisherName) throws ValidationException, ServiceException {
-		try {
-			StringUtil.rejectIfInvalidString(publisherName, "PublisherName");
-
-			if (!Pattern.matches(NAME_PATTERN, publisherName)) {
-				throw new ValidationException("PublisherName doesn't match the pattern");
-			}
-
-			PublisherDAO.publisherNameAlreadyExistOrNot(publisherName);
-		} catch (PersistanceException e) {
-			throw new ServiceException("Publisher doesn't exist");
-		}
-
-	}
-
-	/**
-	 * 
-	 * @param id
-	 * @throws ValidationException
-	 * @throws PersistanceException
-	 */
-	public static void validateId(int id) throws ValidationException {
-		try {
-			if (id <= 0) {
-				throw new ValidationException("Id can not be less than zero.");
-			}
-			PublisherDAO.publisherIdAlreadyExistOrNot(id);
-		} catch (PersistanceException e) {
-			throw new ValidationException("Publisher doesn't exist");
-		}
-	}
+	
 }

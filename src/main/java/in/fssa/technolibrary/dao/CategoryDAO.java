@@ -10,7 +10,6 @@ import java.util.Set;
 import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Category;
-import in.fssa.technolibrary.model.Publisher;
 import in.fssa.technolibrary.util.ConnectionUtil;
 
 public class CategoryDAO {
@@ -22,7 +21,7 @@ public class CategoryDAO {
 	 * @throws RuntimeException
 	 * @throws PersistanceException 
 	 */
-	public void create(Category newCategory) throws RuntimeException, PersistanceException {
+	public void create(Category newCategory) throws PersistanceException {
 		Connection con = null;
 		PreparedStatement ps = null;
 
@@ -34,10 +33,7 @@ public class CategoryDAO {
 			ps.setString(1, newCategory.getName());
 			ps.executeUpdate();
 
-			System.out.print("Category has been successfully created");
-
 		} catch (SQLException e) {
-			System.out.print(e.getMessage());
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps);
@@ -77,33 +73,6 @@ public class CategoryDAO {
 	    }
 	    return categoryList;
 	}
-	
-	public int findCategoryIdByCategoryName(String categoryName) throws PersistanceException {
-
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		int category_id = 0;
-
-		try {
-			String query = "SELECT id FROM categorys WHERE category_name = ?" ;
-			con = ConnectionUtil.getConnection();
-			ps = con.prepareStatement(query);
-			ps.setString(1, categoryName);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				category_id = rs.getInt("id");
-	        }
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print(e.getMessage());
-			throw new PersistanceException(e.getMessage());
-		}  finally {
-			ConnectionUtil.close(con, ps, rs);
-		}
-		return category_id;
-	}
 
 	// Category ExistOrNot
 	/**
@@ -128,7 +97,6 @@ public class CategoryDAO {
 				throw new ValidationException("Category doesn't exist");
 			}
 		} catch (SQLException e) {
-			System.out.println("Category doesn't exist");
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);

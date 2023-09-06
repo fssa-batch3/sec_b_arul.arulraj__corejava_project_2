@@ -3,7 +3,6 @@ package in.fssa.technolibrary;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Random;
 import java.util.Set;
@@ -15,10 +14,10 @@ import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Publisher;
 import in.fssa.technolibrary.service.PublisherService;
 
-public class TestCreatePublisher {
+class TestCreatePublisher {
 	
 	@Test
-	 public void testCreatePublisherWithValidDetails() {
+	 void testCreatePublisherWithValidDetails() {
 	        Publisher newPublisher = new Publisher();
 
 	        // Generate a random name with alphabetic characters
@@ -43,7 +42,7 @@ public class TestCreatePublisher {
 	    }
 	
 	@Test
-	public void testPublisherNameNull() {
+	void testPublisherNameNull() {
 		
 		Publisher newPublisher = new Publisher();
 
@@ -56,11 +55,11 @@ public class TestCreatePublisher {
 		String exceptedMessage = "PublisherName cannot be null or empty";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage, actualMessage);
 	}
 	
 	@Test
-	public void testPublisherNameEmpty() {
+	void testPublisherNameEmpty() {
 		
 		Publisher newPublisher = new Publisher();
 
@@ -72,13 +71,13 @@ public class TestCreatePublisher {
 
 		String exceptedMessage = "PublisherName cannot be null or empty";
 		String actualMessage = exception.getMessage();
-		System.out.print(actualMessage);
-		assertTrue(exceptedMessage.equals(actualMessage));
+		
+		assertEquals(exceptedMessage, actualMessage);
 		
 	}
 	
 	@Test
-	public void testPublisherNamePattern() {
+	void testPublisherNamePattern() {
 		
 		Publisher newPublisher = new Publisher();
 
@@ -90,12 +89,12 @@ public class TestCreatePublisher {
 
 		String exceptedMessage = "PublisherName doesn't match the pattern";
 		String actualMessage = exception.getMessage();
-		System.out.print(actualMessage);
-		assertTrue(exceptedMessage.equals(actualMessage));
+		
+		assertEquals(exceptedMessage, actualMessage);
 	}
 	
 	@Test
-	public void testPublisherSameName() {
+	void testPublisherSameName() {
 		
 		Publisher newPublisher = new Publisher();
 
@@ -112,7 +111,7 @@ public class TestCreatePublisher {
 	}
 	
 	@Test
-	public void getAllPublishers() throws ServiceException {
+	void getAllPublishers() throws ServiceException {
 		PublisherService publisherService = new PublisherService();
 		Set<Publisher> publishers = publisherService.findAllPublisher();
 		System.out.print(publishers);

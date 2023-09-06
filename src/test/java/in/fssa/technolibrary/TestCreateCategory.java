@@ -1,8 +1,8 @@
 package in.fssa.technolibrary;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Random;
 import java.util.Set;
@@ -12,14 +12,12 @@ import org.junit.jupiter.api.Test;
 import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Category;
-import in.fssa.technolibrary.model.Publisher;
 import in.fssa.technolibrary.service.CategoryService;
-import in.fssa.technolibrary.service.PublisherService;
 
-public class TestCreateCategory {
+class TestCreateCategory {
 
     @Test
-    public void testCreateCategoryWithRandomName() {
+    void testCreateCategoryWithRandomName() {
         Category newCategory = new Category();
         String generatedName = generateRandomAlphabeticName();
 
@@ -42,7 +40,7 @@ public class TestCreateCategory {
     }
 
     @Test
-    public void testCategoryNameNull() {
+    void testCategoryNameNull() {
         Category newCategory = new Category();
         newCategory.setName(null);
 
@@ -53,11 +51,11 @@ public class TestCreateCategory {
         String expectedMessage = "Name cannot be null or empty";
         String actualMessage = exception.getMessage();
 
-        assertTrue(expectedMessage.equals(actualMessage));
+        assertEquals(expectedMessage, actualMessage);
     }
 
     @Test
-    public void testCategoryNameEmpty() {
+    void testCategoryNameEmpty() {
         Category newCategory = new Category();
         newCategory.setName("");
 
@@ -68,11 +66,11 @@ public class TestCreateCategory {
         String expectedMessage = "Name cannot be null or empty";
         String actualMessage = exception.getMessage();
 
-        assertTrue(expectedMessage.equals(actualMessage));
+        assertEquals(expectedMessage, actualMessage);
     }
 
     @Test
-    public void testCategoryNamePattern() {
+    void testCategoryNamePattern() {
         Category newCategory = new Category();
         newCategory.setName("dcs676");
 
@@ -83,11 +81,11 @@ public class TestCreateCategory {
         String expectedMessage = "Name doesn't match the pattern";
         String actualMessage = exception.getMessage();
 
-        assertTrue(expectedMessage.equals(actualMessage));
+        assertEquals(expectedMessage, actualMessage);
     }
     
     @Test
-	public void testCategorySameName() {
+	void testCategorySameName() {
 		
 		Category newCategory = new Category();
 
@@ -99,12 +97,11 @@ public class TestCreateCategory {
 
 		String exceptedMessage = "Category Name already exist";
 		String actualMessage = exception.getMessage();
-		System.out.print(actualMessage);
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage, actualMessage);
 	}
     
 	@Test
-	public void getAllCategory() throws ServiceException {
+	void testgetAllCategory() throws ServiceException {
 		CategoryService categoryService = new CategoryService();
 		Set<Category> categorys = categoryService.findAllcategory();
 		System.out.print(categorys);

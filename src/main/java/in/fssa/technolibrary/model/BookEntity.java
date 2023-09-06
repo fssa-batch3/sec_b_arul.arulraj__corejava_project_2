@@ -55,18 +55,17 @@ public abstract class BookEntity implements Comparable<BookEntity> {
 		this.price = price;
 	}
 	
-    @Override
-    public int compareTo(BookEntity other) {
-		return Integer.compare(this.id, other.getId());
-    }
-    
-	
 	public boolean isActive() {
 		return isActive;
 	}
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+	
+    @Override
+    public int compareTo(BookEntity other) {
+		return Integer.compare(this.id, other.getId());
+    }
 
 	@Override
 	public String toString() {

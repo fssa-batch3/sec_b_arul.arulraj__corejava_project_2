@@ -13,10 +13,10 @@ import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.service.BookService;
 import in.fssa.technolibrary.exception.ValidationException;
 
-public class TestCreateBook {
+class TestCreateBook {
 
 	@Test
-	public void testCreateBookWithValidDetails() throws Exception {
+	void testCreateBookWithValidDetails() throws Exception {
 
 		Book newBook = new Book();
 
@@ -47,7 +47,7 @@ public class TestCreateBook {
 	}
 	
 	@Test
-	public void testBookTitleWithAlreadyExistName() {
+	void testBookTitleWithAlreadyExistName() {
 
 		Book newBook = new Book();
 
@@ -69,7 +69,7 @@ public class TestCreateBook {
 	}
 
 	@Test
-	public void testAuthorNameNull() {
+	void testAuthorNameNull() {
 
 		Book newBook = new Book();
 
@@ -91,7 +91,7 @@ public class TestCreateBook {
 	}
 
 	@Test
-	public void testAuthorNameEmpty() {
+	void testAuthorNameEmpty() {
 
 		Book newBook = new Book();
 
@@ -113,7 +113,7 @@ public class TestCreateBook {
 	}
 
 	@Test
-	public void testAuthorNamePattern() {
+	void testAuthorNamePattern() {
 
 		Book newBook = new Book();
 
@@ -135,7 +135,7 @@ public class TestCreateBook {
 	}
 
 	@Test
-	public void testAuthorAlreadyExistOrNot() {
+	void testAuthorAlreadyExistOrNot() {
 
 		BookService bookService = new BookService();
 
@@ -149,24 +149,10 @@ public class TestCreateBook {
 	}
 
 	@Test
-	public void testBookTitleAlreadyExistOrNot() {
-		
-		
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.findBookByTitle("asdgfbhr");
-		});
-
-		String exceptedMessage = "There is no book in this Name";
-		String actualMessage = exception.getMessage();
-		System.out.print(actualMessage);
-		assertEquals(exceptedMessage, actualMessage);
-	}
-
-	@Test
 	public void testBookIdAlreadyExistOrNot() {
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.findBookById(200);
+			BookService.findBookById(2000);
 		});
 
 		String exceptedMessage = "Book doesn't exist";
@@ -176,7 +162,7 @@ public class TestCreateBook {
 	}
 
 	@Test
-	public void testPublisherId() {
+	void testPublisherId() {
 
 		Book newBook = new Book();
 
@@ -198,7 +184,7 @@ public class TestCreateBook {
 	}
 
 	@Test
-	public void testCategoryId() {
+	void testCategoryId() {
 
 		Book newBook = new Book();
 
@@ -219,7 +205,7 @@ public class TestCreateBook {
 		assertEquals(exceptedMessage,actualMessage);	}
 
 	@Test
-	public void testPrice() {
+	void testPrice() {
 
 		Book newBook = new Book();
 
@@ -241,7 +227,7 @@ public class TestCreateBook {
 	}
 
 	@Test
-	public void testDateNull() {
+	void testDateNull() {
 	    Book newBook = new Book();
 
 	    newBook.setAuthor("Ajun");
@@ -263,7 +249,7 @@ public class TestCreateBook {
 
 
 	@Test
-	public void testDateEmpty() {
+	void testDateEmpty() {
 
 		Book newBook = new Book();
 
@@ -285,7 +271,7 @@ public class TestCreateBook {
 	}
 
 	@Test
-	public void testDateFormat() {
+	void testDateFormat() {
 
 		Book newBook = new Book();
 
@@ -307,7 +293,7 @@ public class TestCreateBook {
 	}
 
 	@Test
-	public void testDateInvalideFormate() {
+	void testDateInvalideFormate() {
 
 		Book newBook = new Book();
 
@@ -329,7 +315,7 @@ public class TestCreateBook {
 	}
 
 	@Test
-	public void testCategoryIdAlreadyExistOrNot() {
+	void testCategoryIdAlreadyExistOrNot() {
 
 		BookService bookService = new BookService();
 
@@ -344,7 +330,7 @@ public class TestCreateBook {
 	}
 
 	@Test
-	public void testPublisherIdAlreadyExistOrNot() {
+	void testPublisherIdAlreadyExistOrNot() {
 
 		BookService bookService = new BookService();
 
@@ -355,6 +341,6 @@ public class TestCreateBook {
 		String exceptedMessage = "Publisher doesn't exist";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage, actualMessage);
 	}
 }

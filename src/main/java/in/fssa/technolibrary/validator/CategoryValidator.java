@@ -44,23 +44,5 @@ public class CategoryValidator {
 			throw new ServiceException("Category Name already exist");
 		}
 	}
-	/**
-	 * 
-	 * @param id
-	 * @throws ValidationException
-	 * @throws PersistanceException 
-	 * @throws ServiceException 
-	 */
-	public static void validateId(int categoryId) throws ValidationException, ServiceException {
-		try {
-		if (categoryId <= 0) {
-			throw new ValidationException("Id can not be less than zero.");
-		}
-		CategoryDAO.categoryIdAlreadyExistOrNot(categoryId);
-		} catch (PersistanceException e) {
-			throw new ServiceException("Category doesn't exist");
-		}
-	}
-	
 
 }
