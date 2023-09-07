@@ -12,6 +12,7 @@ import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.util.ConnectionUtil;
+import in.fssa.technolibrary.util.Logger;
 
 public class BookDAO {
 
@@ -37,10 +38,10 @@ public class BookDAO {
 			ps.setInt(6, newBook.getPrice());
 			ps.executeUpdate();
 
-			System.out.print("Book has been Added successfully");
+			Logger.info("Book has been Added successfully");
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps);
@@ -82,7 +83,7 @@ public class BookDAO {
 	        }
 
 	    } catch (SQLException e) {
-	        e.printStackTrace();
+	    	Logger.error(e);
 	        throw new PersistanceException("Error while fetching publishers: " + e.getMessage());
 	    } finally {
 	        ConnectionUtil.close(con, ps, rs);
@@ -124,8 +125,7 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print(e.getMessage());
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		}  finally {
 			ConnectionUtil.close(con, ps, rs);
@@ -170,8 +170,7 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print(e.getMessage());
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps, rs);
@@ -216,6 +215,7 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		}finally {
 			ConnectionUtil.close(con, ps, rs);
@@ -261,8 +261,7 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print(e.getMessage());
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps, rs);
@@ -284,10 +283,9 @@ public class BookDAO {
 			ps = con.prepareStatement(query);
 			ps.setInt(1, bookId);
 			ps.executeUpdate();
-			System.out.println("Book has been successfullly deleted.");
+			Logger.info("Book has been successfullly deleted.");
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print(e.getMessage());
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps);
@@ -310,10 +308,9 @@ public class BookDAO {
 			ps.setInt(1, priceUpdate.getPrice());
 			ps.setInt(2, id);
 			ps.executeUpdate();
-			System.out.println("Price has been updated successfully");
+			Logger.info("Price has been updated successfully");
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print(e.getMessage());
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, ps, null);
@@ -337,10 +334,9 @@ public class BookDAO {
 			ps.setString(2, titleAndDateUpdate.getPublishedDate());
 			ps.setInt(3, id);
 			ps.executeUpdate();
-			System.out.println("Title And Published Date has been updated successfully");
+			Logger.info("Title And Published Date has been updated successfully");
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print(e.getMessage());
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, ps, null);
@@ -364,10 +360,9 @@ public class BookDAO {
 			ps.setInt(3, AuthorNamePublisheIdCategoryId.getCategoryId());
 			ps.setInt(4, id);
 			ps.executeUpdate();
-			System.out.println("Author ,Published Id And Category Id has been updated successfully");
+			Logger.info("Author ,Published Id And Category Id has been updated successfully");
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print(e.getMessage());
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, ps);
@@ -397,7 +392,7 @@ public class BookDAO {
                 throw new ValidationException("Book doesn't exist");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+        	Logger.error(e);
             throw new PersistanceException(e.getMessage());
         } finally {
             ConnectionUtil.close(conn, pre, rs);
@@ -425,7 +420,7 @@ public class BookDAO {
                 throw new ValidationException("Book name already exist");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+        	Logger.error(e);
             throw new PersistanceException(e.getMessage());
         } finally {
             ConnectionUtil.close(conn, pre, rs);
@@ -453,7 +448,7 @@ public class BookDAO {
                 throw new ValidationException("Author doesn't exist.");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+        	Logger.error(e);
             throw new PersistanceException(e.getMessage());
         } finally {
             ConnectionUtil.close(conn, pre, rs);

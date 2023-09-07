@@ -12,6 +12,7 @@ import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Book;
+import in.fssa.technolibrary.util.Logger;
 import in.fssa.technolibrary.util.StringUtil;
 
 public class BookValidator {
@@ -88,7 +89,7 @@ public class BookValidator {
 		try {
 			BookDAO.bookNameAlreadyExist(bookTitle);
 		} catch (PersistanceException e) {
-			e.printStackTrace();
+			Logger.error(e);
 			throw new ValidationException("Book already Exist");
 		}
 	}
@@ -136,6 +137,7 @@ public class BookValidator {
 			}
 			BookDAO.bookIdAlreadyExistOrNot(bookId);
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ValidationException("Book doesn't exist");
 		}
 	}
@@ -154,6 +156,7 @@ public class BookValidator {
 			}
 			PublisherDAO.publisherIdAlreadyExistOrNot(publisherId);
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ValidationException("Publisher doesn't exist");
 		}
 	}
@@ -174,6 +177,7 @@ public class BookValidator {
 			CategoryDAO.categoryIdAlreadyExistOrNot(categoryId);
 
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ValidationException("Category doesn't exist");
 		}
 	}
@@ -202,6 +206,7 @@ public class BookValidator {
 		try {
 			publisheddate = LocalDate.parse(publishedate, inputFormatter);
 		} catch (DateTimeParseException e) {
+			Logger.error(e);
 			throw new ValidationException("Invalid date or Invalid date format (yyyy-MM-dd)");
 		}
 		String formattedDate = publisheddate.format(inputFormatter);

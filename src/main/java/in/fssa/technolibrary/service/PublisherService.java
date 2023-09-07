@@ -7,6 +7,7 @@ import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Publisher;
+import in.fssa.technolibrary.util.Logger;
 import in.fssa.technolibrary.validator.PublisherValidator;
 
 public class PublisherService {
@@ -24,6 +25,7 @@ public class PublisherService {
 		publisherDao.create(newPublisher);
 		}
 		catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("Error occurred while creating Publisher.", e);
 		}
 	}
@@ -37,7 +39,7 @@ public class PublisherService {
 			PublisherDAO publisherDAO = new PublisherDAO();
 			return publisherDAO.findAll();
 		} catch (PersistanceException e) {
-			e.printStackTrace();
+			Logger.error(e);
 			throw new ServiceException("Error while retrieving all publishers");
 		}
 	}
@@ -54,6 +56,7 @@ public class PublisherService {
 			String publisher = publisherDAO.findById(publisherId);
 			return publisher;
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no publisher in this id");
 		}
 

@@ -7,6 +7,7 @@ import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Category;
+import in.fssa.technolibrary.util.Logger;
 import in.fssa.technolibrary.validator.CategoryValidator;
 
 public class CategoryService {
@@ -24,6 +25,7 @@ public class CategoryService {
 		categoryDao.create(newCategory);
 	}
 	catch (PersistanceException e) {
+		Logger.error(e);
 		throw new ServiceException("Error occurred while creating Publisher.", e);
 	}
 	}
@@ -37,7 +39,7 @@ public class CategoryService {
 			CategoryDAO categoryDAO = new CategoryDAO();
 			return categoryDAO.findAll();
 		} catch (PersistanceException e) {
-			e.printStackTrace();
+			Logger.error(e);
 			throw new ServiceException("Error while retrieving all publishers");
 		}
 	}
@@ -54,6 +56,7 @@ public class CategoryService {
 			String category = categoryDAO.findById(publisherId);
 			return category;
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no category in this id");
 		}
 

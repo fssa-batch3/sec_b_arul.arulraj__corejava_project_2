@@ -7,6 +7,7 @@ import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Publisher;
+import in.fssa.technolibrary.util.Logger;
 import in.fssa.technolibrary.util.StringUtil;
 
 public class PublisherValidator {
@@ -44,6 +45,7 @@ public class PublisherValidator {
 
 			PublisherDAO.publisherNameAlreadyExist(publisherName);
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("Publisher Already exist");
 		}
 	}

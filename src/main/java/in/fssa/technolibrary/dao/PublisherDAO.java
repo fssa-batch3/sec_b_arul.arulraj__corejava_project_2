@@ -11,6 +11,7 @@ import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Publisher;
 import in.fssa.technolibrary.util.ConnectionUtil;
+import in.fssa.technolibrary.util.Logger;
 
 public class PublisherDAO {
 	// Create Publisher
@@ -33,6 +34,7 @@ public class PublisherDAO {
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps);
@@ -65,7 +67,7 @@ public class PublisherDAO {
 	        }
 
 	    } catch (SQLException e) {
-	        e.printStackTrace();
+	    	Logger.error(e);
 	        throw new PersistanceException("Error while fetching books: " + e.getMessage());
 	    } finally {
 	        ConnectionUtil.close(con, ps, rs);
@@ -96,6 +98,7 @@ public class PublisherDAO {
 			}
 
 		} catch (SQLException e) {
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		}  finally {
 			ConnectionUtil.close(con, ps, rs);
@@ -127,7 +130,7 @@ public class PublisherDAO {
 				throw new ValidationException("Publisher doesn't exist");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);
@@ -158,7 +161,7 @@ public class PublisherDAO {
 				throw new ValidationException("Publisher Already exist");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);

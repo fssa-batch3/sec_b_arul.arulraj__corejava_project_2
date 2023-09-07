@@ -11,6 +11,7 @@ import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Category;
 import in.fssa.technolibrary.util.ConnectionUtil;
+import in.fssa.technolibrary.util.Logger;
 
 public class CategoryDAO {
 
@@ -34,6 +35,7 @@ public class CategoryDAO {
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(con, ps);
@@ -66,7 +68,7 @@ public class CategoryDAO {
 	        }
 
 	    } catch (SQLException e) {
-	        e.printStackTrace();
+	    	Logger.error(e);
 	        throw new PersistanceException("Error while fetching categorys: " + e.getMessage());
 	    } finally {
 	        ConnectionUtil.close(con, ps, rs);
@@ -97,6 +99,7 @@ public class CategoryDAO {
 			}
 
 		} catch (SQLException e) {
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		}  finally {
 			ConnectionUtil.close(con, ps, rs);
@@ -127,6 +130,7 @@ public class CategoryDAO {
 				throw new ValidationException("Category doesn't exist");
 			}
 		} catch (SQLException e) {
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);
@@ -155,7 +159,7 @@ public class CategoryDAO {
 				throw new ValidationException("Category Name already exist");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Logger.error(e);
 			throw new PersistanceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);

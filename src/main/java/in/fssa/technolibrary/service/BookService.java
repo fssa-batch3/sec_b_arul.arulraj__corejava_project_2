@@ -10,6 +10,7 @@ import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.model.BookEntity;
+import in.fssa.technolibrary.util.Logger;
 import in.fssa.technolibrary.validator.BookValidator;
 
 public class BookService {
@@ -28,6 +29,7 @@ public class BookService {
 			BookDAO bookDAO = new BookDAO();
 			bookDAO.create(newBook);
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("Error occurred while creating book.", e);
 		}
 	}
@@ -44,7 +46,7 @@ public class BookService {
 			BookDAO bookDAO = new BookDAO();
 			return bookDAO.findAll();
 		} catch (PersistanceException e) {
-			e.printStackTrace();
+			Logger.error(e);
 			throw new ServiceException("Error while retrieving all books");
 		}
 	}
@@ -65,6 +67,7 @@ public class BookService {
 			Book book = bookDAO.findById(bookId);
 			return book;
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no book in this book id", e);
 		}
 
@@ -84,6 +87,7 @@ public class BookService {
 			BookDAO bookDAO = new BookDAO();
 			return bookDAO.findByAuthor(author);
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no book in this author name", e);
 		}
 	}
@@ -102,6 +106,7 @@ public class BookService {
 			BookDAO bookDAO = new BookDAO();
 			return bookDAO.findByCategoryId(categoryId);
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no book in this category id", e);
 		}
 	}
@@ -124,6 +129,7 @@ public class BookService {
 			}
 			return bookList;
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no book in this publisher id", e);
 		}
 	}
@@ -141,6 +147,7 @@ public class BookService {
 			BookDAO bookDAO = new BookDAO();
 			bookDAO.delete(bookId);
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no book in this book id", e);
 		}
 	}
@@ -167,6 +174,7 @@ public class BookService {
 				throw new ValidationException("New price is the same as the old price.");
 			}
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no book in this book id", e);
 		}
 	}
@@ -185,6 +193,7 @@ public class BookService {
 
 			bookDAO.updatePrice(bookId, updatedData);
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no book in this book id", e);
 		}
 	}
@@ -203,6 +212,7 @@ public class BookService {
 
 			bookDAO.updateTitleAndDate(bookId, updatedData);
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no book in this book id", e);
 		}
 	}
@@ -233,6 +243,7 @@ public class BookService {
 						"New Title And Published Date is the same as the old Title And Published Date.");
 			}
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no book in this book id", e);
 		}
 	}
@@ -255,6 +266,7 @@ public class BookService {
 
 			bookDAO.updateAuthorNamePublisherIdCategoryId(bookId, updatedData);
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no book in this book id", e);
 		}
 	}
@@ -297,6 +309,7 @@ public class BookService {
 						"New Author ,Published Id And Category Id is the same as the old Author ,Published Id And Category Id.");
 			}
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("There is no book in this book id");
 		}
 	}

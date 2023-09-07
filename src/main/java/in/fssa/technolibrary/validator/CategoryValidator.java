@@ -7,6 +7,7 @@ import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.Category;
+import in.fssa.technolibrary.util.Logger;
 import in.fssa.technolibrary.util.StringUtil;
 
 public class CategoryValidator {
@@ -41,6 +42,7 @@ public class CategoryValidator {
 		}
 		CategoryDAO.categoryNameAlreadyExists(categoryName);
 		} catch (PersistanceException e) {
+			Logger.error(e);
 			throw new ServiceException("Category Name already exist");
 		}
 	}
