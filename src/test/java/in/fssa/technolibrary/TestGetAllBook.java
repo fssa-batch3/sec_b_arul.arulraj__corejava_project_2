@@ -135,7 +135,7 @@ class TestGetAllBook {
 	}
 
 	@Test
-	void testupdateAuthorNamePublisheIdCategoryId() th    rows ValidationException, ServiceException {
+	void testupdateAuthorNamePublisheIdCategoryId() throws ValidationException, ServiceException {
 
 		Book existingBook = BookService.findBookById(2);
 
