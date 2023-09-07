@@ -3,7 +3,6 @@ package in.fssa.technolibrary;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Random;
 
@@ -87,7 +86,7 @@ class TestCreateBook {
 		String exceptedMessage = "Title doesn't match the pattern";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 	
 	@Test
@@ -109,7 +108,8 @@ class TestCreateBook {
 		String exceptedMessage = "Title cannot be null or empty";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
+		
 	}
 
 	@Test
@@ -131,7 +131,7 @@ class TestCreateBook {
 		String exceptedMessage = "Author cannot be null or empty";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 
 	@Test
@@ -175,7 +175,7 @@ class TestCreateBook {
 		String exceptedMessage = "Author name doesn't match the pattern";
 		String actualMessage = exception.getMessage();
 
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 
 	@Test
@@ -189,11 +189,11 @@ class TestCreateBook {
 
 		String exceptedMessage = "Author doesn't exist.";
 		String actualMessage = exception.getMessage();
-		assertTrue(exceptedMessage.equals(actualMessage));
+		assertEquals(exceptedMessage,actualMessage);
 	}
 
 	@Test
-	public void testBookIdAlreadyExistOrNot() {
+	void testBookIdAlreadyExistOrNot() {
 
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			BookService.findBookById(2000);

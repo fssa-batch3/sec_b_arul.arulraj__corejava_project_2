@@ -21,7 +21,7 @@ public class PublisherDAO {
 	 * @throws RuntimeException
 	 * @throws PersistanceException 
 	 */
-	public void create(Publisher newPublisher) throws RuntimeException, PersistanceException {
+	public void create(Publisher newPublisher) throws PersistanceException {
 		Connection con = null;
 		PreparedStatement ps = null;
 

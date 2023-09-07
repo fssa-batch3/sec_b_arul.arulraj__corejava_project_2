@@ -53,8 +53,7 @@ public class CategoryService {
 	public String findCategoryById(int publisherId) throws ServiceException{
 		try {
 			CategoryDAO categoryDAO = new CategoryDAO();
-			String category = categoryDAO.findById(publisherId);
-			return category;
+			return categoryDAO.findById(publisherId);
 		} catch (PersistanceException e) {
 			Logger.error(e);
 			throw new ServiceException("There is no category in this id");

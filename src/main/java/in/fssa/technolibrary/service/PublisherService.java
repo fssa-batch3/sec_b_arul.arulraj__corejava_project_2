@@ -53,8 +53,8 @@ public class PublisherService {
 	public String findPublisherById(int publisherId) throws ServiceException{
 		try {
 			PublisherDAO publisherDAO = new PublisherDAO();
-			String publisher = publisherDAO.findById(publisherId);
-			return publisher;
+			return publisherDAO.findById(publisherId);
+			 
 		} catch (PersistanceException e) {
 			Logger.error(e);
 			throw new ServiceException("There is no publisher in this id");

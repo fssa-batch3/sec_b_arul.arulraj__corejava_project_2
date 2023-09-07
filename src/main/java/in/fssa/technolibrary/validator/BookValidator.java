@@ -28,7 +28,7 @@ public class BookValidator {
 	 * @throws PersistanceException
 	 * @throws ServiceException
 	 */
-	public static void validate(Book book) throws ValidationException, ServiceException {
+	public static void validate(Book book) throws ValidationException {
 		if (book == null) {
 			throw new ValidationException("Invalid user input");
 		}
