@@ -101,14 +101,14 @@ class TestCreateCategory {
 	}
     
 	@Test
-	void testgetAllCategory() throws ServiceException {
+	void testGetAllCategoriesShouldReturnNonEmptySet() throws ServiceException {
 		CategoryService categoryService = new CategoryService();
 		Set<Category> categorys = categoryService.findAllcategory();
 		System.out.print(categorys);
 	}
 	
 	@Test
-	void getCategoryById() throws ServiceException{
+	void testGetCategoryByIdShouldReturnCategoryName() throws ServiceException{
 		CategoryService categoryService = new CategoryService();
 		String category = categoryService.findCategoryById(1);
 		System.out.print(category);
