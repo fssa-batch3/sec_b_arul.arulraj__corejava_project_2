@@ -16,6 +16,9 @@ import in.fssa.technolibrary.util.StringUtil;
 
 public class BookValidator {
 	private static final String NAME_PATTERN = "^[A-Za-z][A-Za-z\\s]*$";
+	
+	private static final String BOOK_PATTERN = "^[A-Za-z0-9][A-Za-z0-9\\s]*$";
+
 
 	/**
 	 * 
@@ -69,7 +72,7 @@ public class BookValidator {
 
 		StringUtil.rejectIfInvalidString(updatedData.getTitle(), "Title");
 
-		if (!Pattern.matches(NAME_PATTERN, updatedData.getTitle())) {
+		if (!Pattern.matches(BOOK_PATTERN, updatedData.getTitle())) {
 			throw new ValidationException("Title doesn't match the pattern");
 		}
 		validatePublishedDate(updatedData.getPublishedDate());
@@ -99,7 +102,7 @@ public class BookValidator {
 
 		StringUtil.rejectIfInvalidString(bookTitle, "Title");
 
-		if (!Pattern.matches(NAME_PATTERN, bookTitle)) {
+		if (!Pattern.matches(BOOK_PATTERN, bookTitle)) {
 			throw new ValidationException("Title doesn't match the pattern");
 		}
 	}

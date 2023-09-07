@@ -41,6 +41,23 @@ public class PublisherService {
 			throw new ServiceException("Error while retrieving all publishers");
 		}
 	}
+	
+	/**
+	 * 
+	 * @param publisherId
+	 * @return
+	 * @throws ServiceException
+	 */
+	public String findPublisherById(int publisherId) throws ServiceException{
+		try {
+			PublisherDAO publisherDAO = new PublisherDAO();
+			String publisher = publisherDAO.findById(publisherId);
+			return publisher;
+		} catch (PersistanceException e) {
+			throw new ServiceException("There is no publisher in this id");
+		}
+
+	}
 
 
 }

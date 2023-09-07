@@ -72,6 +72,36 @@ public class PublisherDAO {
 	    }
 	    return publisherList;
 	}
+	/**
+	 * 
+	 * @param publisherId
+	 * @return
+	 * @throws PersistanceException
+	 */
+	public String findById(int publisherId) throws PersistanceException {
+
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String publisher = null;
+
+		try {
+			String query = "SELECT publisher_name FROM publishers WHERE id = ?";
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
+			ps.setInt(1, publisherId);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				publisher = rs.getString("publisher_name");
+			}
+
+		} catch (SQLException e) {
+			throw new PersistanceException(e.getMessage());
+		}  finally {
+			ConnectionUtil.close(con, ps, rs);
+		}
+		return publisher;
+	}
 
 	/**
 	 * 

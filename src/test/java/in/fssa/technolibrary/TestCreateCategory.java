@@ -106,4 +106,11 @@ class TestCreateCategory {
 		Set<Category> categorys = categoryService.findAllcategory();
 		System.out.print(categorys);
 	}
+	
+	@Test
+	void getCategoryById() throws ServiceException{
+		CategoryService categoryService = new CategoryService();
+		String category = categoryService.findCategoryById(1);
+		System.out.print(category);
+	}
 }

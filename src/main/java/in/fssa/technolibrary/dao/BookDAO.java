@@ -216,8 +216,6 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print(e.getMessage());
 			throw new PersistanceException(e.getMessage());
 		}finally {
 			ConnectionUtil.close(con, ps, rs);

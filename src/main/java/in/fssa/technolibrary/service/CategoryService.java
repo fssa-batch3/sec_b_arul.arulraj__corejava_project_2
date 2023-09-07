@@ -41,5 +41,22 @@ public class CategoryService {
 			throw new ServiceException("Error while retrieving all publishers");
 		}
 	}
+	
+	/**
+	 * 
+	 * @param publisherId
+	 * @return
+	 * @throws ServiceException
+	 */
+	public String findCategoryById(int publisherId) throws ServiceException{
+		try {
+			CategoryDAO categoryDAO = new CategoryDAO();
+			String category = categoryDAO.findById(publisherId);
+			return category;
+		} catch (PersistanceException e) {
+			throw new ServiceException("There is no category in this id");
+		}
+
+	}
 
 }

@@ -67,6 +67,50 @@ class TestCreateBook {
 		System.out.print(actualMessage);
 		assertEquals(exceptedMessage, actualMessage);
 	}
+	
+	@Test
+	void testBookTitlePattern() {
+
+		Book newBook = new Book();
+
+		newBook.setAuthor("Ajun");
+		newBook.setTitle("cdkjsbc...");
+		newBook.setCategoryId(1);
+		newBook.setPublisherId(1);
+		newBook.setPublishedDate("12-01-2023");
+		newBook.setPrice(1000);
+
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			BookService.createNewBook(newBook);
+		});
+
+		String exceptedMessage = "Title doesn't match the pattern";
+		String actualMessage = exception.getMessage();
+
+		assertTrue(exceptedMessage.equals(actualMessage));
+	}
+	
+	@Test
+	void testBookNameNull() {
+
+		Book newBook = new Book();
+
+		newBook.setAuthor("Ajun");
+		newBook.setTitle(null);
+		newBook.setCategoryId(1);
+		newBook.setPublisherId(1);
+		newBook.setPublishedDate("12-01-2023");
+		newBook.setPrice(1000);
+
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			BookService.createNewBook(newBook);
+		});
+
+		String exceptedMessage = "Title cannot be null or empty";
+		String actualMessage = exception.getMessage();
+
+		assertTrue(exceptedMessage.equals(actualMessage));
+	}
 
 	@Test
 	void testAuthorNameNull() {

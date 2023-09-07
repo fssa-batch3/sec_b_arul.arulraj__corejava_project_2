@@ -65,7 +65,7 @@ public class BookService {
 			Book book = bookDAO.findById(bookId);
 			return book;
 		} catch (PersistanceException e) {
-			throw new ServiceException("There is no book in this id", e);
+			throw new ServiceException("There is no book in this book id", e);
 		}
 
 	}
@@ -102,7 +102,7 @@ public class BookService {
 			BookDAO bookDAO = new BookDAO();
 			return bookDAO.findByCategoryId(categoryId);
 		} catch (PersistanceException e) {
-			throw new ServiceException("There is no book in this id", e);
+			throw new ServiceException("There is no book in this category id", e);
 		}
 	}
 
@@ -141,7 +141,7 @@ public class BookService {
 			BookDAO bookDAO = new BookDAO();
 			bookDAO.delete(bookId);
 		} catch (PersistanceException e) {
-			throw new ServiceException("There is no book in this id", e);
+			throw new ServiceException("There is no book in this book id", e);
 		}
 	}
 
@@ -167,7 +167,7 @@ public class BookService {
 				throw new ValidationException("New price is the same as the old price.");
 			}
 		} catch (PersistanceException e) {
-			throw new ServiceException("There is no book in this id", e);
+			throw new ServiceException("There is no book in this book id", e);
 		}
 	}
 	
@@ -185,7 +185,7 @@ public class BookService {
 
 			bookDAO.updatePrice(bookId, updatedData);
 		} catch (PersistanceException e) {
-			throw new ServiceException("There is no book in this id", e);
+			throw new ServiceException("There is no book in this book id", e);
 		}
 	}
 
@@ -203,7 +203,7 @@ public class BookService {
 
 			bookDAO.updateTitleAndDate(bookId, updatedData);
 		} catch (PersistanceException e) {
-			throw new ServiceException("There is no book in this id", e);
+			throw new ServiceException("There is no book in this book id", e);
 		}
 	}
 
@@ -233,7 +233,7 @@ public class BookService {
 						"New Title And Published Date is the same as the old Title And Published Date.");
 			}
 		} catch (PersistanceException e) {
-			throw new ServiceException("There is no book in this id", e);
+			throw new ServiceException("There is no book in this book id", e);
 		}
 	}
 
@@ -255,7 +255,7 @@ public class BookService {
 
 			bookDAO.updateAuthorNamePublisherIdCategoryId(bookId, updatedData);
 		} catch (PersistanceException e) {
-			throw new ServiceException("There is no book in this id", e);
+			throw new ServiceException("There is no book in this book id", e);
 		}
 	}
 
@@ -297,7 +297,7 @@ public class BookService {
 						"New Author ,Published Id And Category Id is the same as the old Author ,Published Id And Category Id.");
 			}
 		} catch (PersistanceException e) {
-			throw new ServiceException("There is no book in this id", e);
+			throw new ServiceException("There is no book in this book id");
 		}
 	}
 

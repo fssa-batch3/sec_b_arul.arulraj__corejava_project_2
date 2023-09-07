@@ -73,6 +73,36 @@ public class CategoryDAO {
 	    }
 	    return categoryList;
 	}
+	/**
+	 * 
+	 * @param publisherId
+	 * @return
+	 * @throws PersistanceException
+	 */
+	public String findById(int categoryId) throws PersistanceException {
+
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String category = null;
+
+		try {
+			String query = "SELECT category_name FROM categorys WHERE id = ?";
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
+			ps.setInt(1, categoryId);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				category = rs.getString("category_name");
+			}
+
+		} catch (SQLException e) {
+			throw new PersistanceException(e.getMessage());
+		}  finally {
+			ConnectionUtil.close(con, ps, rs);
+		}
+		return category;
+	}
 
 	// Category ExistOrNot
 	/**
