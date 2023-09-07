@@ -111,14 +111,14 @@ class TestCreatePublisher {
 	}
 	
 	@Test
-	void testGetAllPublishersShouldReturnNonEmptySet() throws ServiceException {
+	void getAllPublishers() throws ServiceException {
 		PublisherService publisherService = new PublisherService();
 		Set<Publisher> publishers = publisherService.findAllPublisher();
 		System.out.print(publishers);
 	}
 	
 	@Test
-	void testGetPublisherByIdShouldReturnPublisherName() throws ServiceException{
+	void getPublisherById() throws ServiceException{
 		PublisherService publisherService = new PublisherService();
 		String publisher = publisherService.findPublisherById(1);
 		System.out.print(publisher);

@@ -14,47 +14,47 @@ import in.fssa.technolibrary.service.BookService;
 
 class TestGetAllBook {
 	@Test
-	void testGetAllBooksShouldReturnNonEmptySet() throws ServiceException {
+	void getAllBook() throws ServiceException {
 		BookService bookService = new BookService();
 		Set<Book> books = bookService.findAllBook();
 		System.out.print(books);
 	}
 
 	@Test
-	void testGetBookByIdShouldReturnBook() throws ServiceException, ValidationException {
+	void getBookById() throws ServiceException, ValidationException {
 		Book book = BookService.findBookById(1);
 		System.out.print(book);
 	}
 
 	@Test
-	void testGetBooksByAuthorNameShouldReturnMatchingBooks() throws ValidationException, ServiceException {
+	void getBookByAuthor() throws ValidationException, ServiceException {
 		BookService bookService = new BookService();
 		Set<Book> book = bookService.findByAuthorName("Ramuu");
 		System.out.print(book);
 	}
 
 	@Test
-	void testGetBooksByCategoryIdShouldReturnMatchingBooks() throws ServiceException, ValidationException {
+	void getBookByCategoryId() throws ServiceException, ValidationException {
 		BookService bookService = new BookService();
 		Set<Book> book = bookService.findBookByCategoryId(1);
 		System.out.print(book);
 	}
 
 	@Test
-	void testGetBooksByPublisherIdShouldReturnMatchingBooks() throws ServiceException, ValidationException {
+	void getBookByPublisherId() throws ServiceException, ValidationException {
 		BookService bookService = new BookService();
 		Set<Book> book = bookService.findBookByPublisherId(1);
 		System.out.print(book);
 	}
 
 	@Test
-	void testDeleteBookById() throws ValidationException, ServiceException {
+	void testDelete() throws ValidationException, ServiceException {
 		BookService bookService = new BookService();
 		bookService.deleteBook(1);
 	}
 
 	@Test
-	void testUpdateBookTitleAndDate() throws ValidationException, ServiceException {
+	void testUpdateTitleAndDate() throws ValidationException, ServiceException {
 		
 		String generatedTitle = generateRandomString(7);
 		String generatedDate = generateRandomPreviousDate();
@@ -102,7 +102,7 @@ class TestGetAllBook {
 	}
 
 	@Test
-	void testUpdateBookPrice() throws ValidationException, ServiceException {
+	void testUpdatePrice() throws ValidationException, ServiceException {
 
 		// Generate a random price between a specified range
 		int minPrice = 1000;
@@ -135,7 +135,7 @@ class TestGetAllBook {
 	}
 
 	@Test
-	void testUpdateBookAuthorNamePublisherIdCategoryId() throws ValidationException, ServiceException {
+	void testupdateAuthorNamePublisheIdCategoryId() th    rows ValidationException, ServiceException {
 
 		Book existingBook = BookService.findBookById(2);
 
