@@ -14,7 +14,7 @@ import in.fssa.technolibrary.util.ConnectionUtil;
 import in.fssa.technolibrary.util.Logger;
 
 public class CategoryDAO {
-
+ 
 	// Create Category
 	/**
 	 * 
@@ -36,7 +36,7 @@ public class CategoryDAO {
 
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		} finally {
 			ConnectionUtil.close(con, ps);
 		}
@@ -69,7 +69,7 @@ public class CategoryDAO {
 
 	    } catch (SQLException e) {
 	    	Logger.error(e);
-	        throw new PersistanceException("Error while fetching categorys: " + e.getMessage());
+	    	throw new PersistanceException(e);
 	    } finally {
 	        ConnectionUtil.close(con, ps, rs);
 	    }
@@ -100,7 +100,7 @@ public class CategoryDAO {
 
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		}  finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
@@ -131,7 +131,7 @@ public class CategoryDAO {
 			}
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);
 		}
@@ -160,7 +160,7 @@ public class CategoryDAO {
 			}
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);
 		}

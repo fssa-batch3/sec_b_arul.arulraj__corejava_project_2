@@ -42,7 +42,7 @@ public class BookDAO {
 
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		} finally {
 			ConnectionUtil.close(con, ps);
 		}
@@ -55,40 +55,40 @@ public class BookDAO {
 	 */
 	public Set<Book> findAll() throws PersistanceException {
 
-	    Connection con = null;
-	    PreparedStatement ps = null;
-	    ResultSet rs = null;
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 
-	    Set<Book> bookList = new HashSet<>();
+		Set<Book> bookList = new HashSet<>();
 
-	    try {
-	        String query = "SELECT id, published_date, title, author, publisher_id, category_id, price, is_active FROM books WHERE is_active=1";
-	        con = ConnectionUtil.getConnection();
-	        ps = con.prepareStatement(query);
-	        rs = ps.executeQuery();
+		try {
+			String query = "SELECT id, published_date, title, author, publisher_id, category_id, price, is_active FROM books WHERE is_active=1";
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
 
-	        while (rs.next()) {
-	            Book book = new Book();
-	            book.setId(rs.getInt("id"));
+			while (rs.next()) {
+				Book book = new Book();
+				book.setId(rs.getInt("id"));
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				String dueDateStr = dateFormat.format(rs.getTimestamp("published_date"));
 				book.setPublishedDate(dueDateStr);
-	            book.setTitle(rs.getString("title"));
-	            book.setAuthor(rs.getString("author"));
-	            book.setPublisherId(rs.getInt("publisher_id"));
-	            book.setCategoryId(rs.getInt("category_id"));
-	            book.setPrice(rs.getInt("price")); 
-	            book.setActive(rs.getBoolean("is_active"));
-	            bookList.add(book);
-	        }
+				book.setTitle(rs.getString("title"));
+				book.setAuthor(rs.getString("author"));
+				book.setPublisherId(rs.getInt("publisher_id"));
+				book.setCategoryId(rs.getInt("category_id"));
+				book.setPrice(rs.getInt("price"));
+				book.setActive(rs.getBoolean("is_active"));
+				bookList.add(book);
+			}
 
-	    } catch (SQLException e) {
-	    	Logger.error(e);
-	        throw new PersistanceException("Error while fetching publishers: " + e.getMessage());
-	    } finally {
-	        ConnectionUtil.close(con, ps, rs);
-	    }
-	    return bookList;
+		} catch (SQLException e) {
+			Logger.error(e);
+			throw new PersistanceException(e);
+		} finally {
+			ConnectionUtil.close(con, ps, rs);
+		}
+		return bookList;
 	}
 
 	/**
@@ -126,8 +126,8 @@ public class BookDAO {
 
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
-		}  finally {
+			throw new PersistanceException(e);
+		} finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
 		return book;
@@ -171,7 +171,7 @@ public class BookDAO {
 
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		} finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
@@ -216,8 +216,8 @@ public class BookDAO {
 
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
-		}finally {
+			throw new PersistanceException(e);
+		} finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
 		return bookList;
@@ -229,7 +229,7 @@ public class BookDAO {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	public Set<Book> findByPublisherId(int publisherId) throws PersistanceException{
+	public Set<Book> findByPublisherId(int publisherId) throws PersistanceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -262,7 +262,7 @@ public class BookDAO {
 
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		} finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
@@ -286,7 +286,7 @@ public class BookDAO {
 			Logger.info("Book has been successfullly deleted.");
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		} finally {
 			ConnectionUtil.close(con, ps);
 		}
@@ -295,77 +295,35 @@ public class BookDAO {
 	/**
 	 * 
 	 * @param id
-	 * @param basicUpdate
+	 * @param bookUpdate
 	 * @throws PersistanceException
 	 */
-	public void updatePrice(int id, Book priceUpdate) throws PersistanceException {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		try {
-			String query = "UPDATE books SET price = ? WHERE is_active = 1 AND id = ?";
-			conn = ConnectionUtil.getConnection();
-			ps = conn.prepareStatement(query);
-			ps.setInt(1, priceUpdate.getPrice());
-			ps.setInt(2, id);
-			ps.executeUpdate();
-			Logger.info("Price has been updated successfully");
-		} catch (SQLException e) {
-			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
-		} finally {
-			ConnectionUtil.close(conn, ps, null);
-		}
-	}
+	public void updateBook(int id, Book bookUpdate) throws PersistanceException {
 
-	/**
-	 * 
-	 * @param id
-	 * @param basicUpdate
-	 * @throws PersistanceException
-	 */
-	public void updateTitleAndDate(int id, Book titleAndDateUpdate) throws PersistanceException {
-		Connection conn = null;
+		Connection con = null;
 		PreparedStatement ps = null;
 		try {
-			String query = "UPDATE books SET title = ? , published_date = ? WHERE is_active = 1 AND id = ?";
-			conn = ConnectionUtil.getConnection();
-			ps = conn.prepareStatement(query);
-			ps.setString(1, titleAndDateUpdate.getTitle());
-			ps.setString(2, titleAndDateUpdate.getPublishedDate());
-			ps.setInt(3, id);
+			String query = "UPDATE books SET title =?, author =?, publisher_id =?, category_id = ?, published_date = ?, price = ?  WHERE is_active = 1 AND id =?";
+
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
+			ps.setString(1, bookUpdate.getTitle());
+			ps.setString(2, bookUpdate.getAuthor());
+			ps.setInt(3, bookUpdate.getPublisherId());
+			ps.setInt(4, bookUpdate.getCategoryId());
+			ps.setString(5, bookUpdate.getPublishedDate());
+			ps.setInt(6, bookUpdate.getPrice());
+
+			ps.setInt(7, id);
+
 			ps.executeUpdate();
-			Logger.info("Title And Published Date has been updated successfully");
+			Logger.info("Book has been successfullly updated.");
 		} catch (SQLException e) {
+			e.printStackTrace();
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		} finally {
-			ConnectionUtil.close(conn, ps, null);
-		}
-	}
-	/**
-	 * 
-	 * @param id
-	 * @param basicUpdate
-	 * @throws PersistanceException
-	 */
-	public void updateAuthorNamePublisherIdCategoryId(int id, Book AuthorNamePublisheIdCategoryId) throws PersistanceException {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		try {
-			String query = "UPDATE books SET author = ? , publisher_id = ? , category_id = ? WHERE is_active = 1 AND id = ?";
-			conn = ConnectionUtil.getConnection();
-			ps = conn.prepareStatement(query);
-			ps.setString(1, AuthorNamePublisheIdCategoryId.getAuthor());
-			ps.setInt(2, AuthorNamePublisheIdCategoryId.getPublisherId());
-			ps.setInt(3, AuthorNamePublisheIdCategoryId.getCategoryId());
-			ps.setInt(4, id);
-			ps.executeUpdate();
-			Logger.info("Author ,Published Id And Category Id has been updated successfully");
-		} catch (SQLException e) {
-			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
-		} finally {
-			ConnectionUtil.close(conn, ps);
+			ConnectionUtil.close(con, ps);
 		}
 	}
 
@@ -374,30 +332,30 @@ public class BookDAO {
 	 * @param id
 	 * @return
 	 * @throws PersistanceException
-	 * @throws ValidationException 
+	 * @throws ValidationException
 	 */
 	public static void bookIdAlreadyExistOrNot(int bookId) throws PersistanceException, ValidationException {
-        Connection conn = null;
-        PreparedStatement pre = null;
-        ResultSet rs = null;
-        
-        try {
-            String query = "SELECT id FROM books WHERE id = ?";
-            conn = ConnectionUtil.getConnection();
-            pre = conn.prepareStatement(query);
-            pre.setInt(1, bookId);
-            rs = pre.executeQuery();
-            
-            if (!rs.next()) {
-                throw new ValidationException("Book doesn't exist");
-            }
-        } catch (SQLException e) {
-        	Logger.error(e);
-            throw new PersistanceException(e.getMessage());
-        } finally {
-            ConnectionUtil.close(conn, pre, rs);
-        }
-    }
+		Connection conn = null;
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+
+		try {
+			String query = "SELECT id FROM books WHERE id = ?";
+			conn = ConnectionUtil.getConnection();
+			pre = conn.prepareStatement(query);
+			pre.setInt(1, bookId);
+			rs = pre.executeQuery();
+
+			if (!rs.next()) {
+				throw new ValidationException("Book doesn't exist");
+			}
+		} catch (SQLException e) {
+			Logger.error(e);
+			throw new PersistanceException(e);
+		} finally {
+			ConnectionUtil.close(conn, pre, rs);
+		}
+	}
 
 	/**
 	 * 
@@ -406,53 +364,54 @@ public class BookDAO {
 	 * @throws ValidationException
 	 */
 	public static void bookNameAlreadyExist(String bookName) throws PersistanceException, ValidationException {
-        Connection conn = null;
-        PreparedStatement pre = null;
-        ResultSet rs = null;
-        try {
-            String query = "SELECT * FROM books WHERE title = ?";
-            conn = ConnectionUtil.getConnection();
-            pre = conn.prepareStatement(query);
-            pre.setString(1, bookName);
-            rs = pre.executeQuery();
-            
-            if (rs.next()) {
-                throw new ValidationException("Book name already exist");
-            }
-        } catch (SQLException e) {
-        	Logger.error(e);
-            throw new PersistanceException(e.getMessage());
-        } finally {
-            ConnectionUtil.close(conn, pre, rs);
-        }
-    }
+		Connection conn = null;
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+		try {
+			String query = "SELECT * FROM books WHERE title = ?";
+			conn = ConnectionUtil.getConnection();
+			pre = conn.prepareStatement(query);
+			pre.setString(1, bookName);
+			rs = pre.executeQuery();
+
+			if (rs.next()) {
+				throw new ValidationException("Book name already exist");
+			}
+		} catch (SQLException e) {
+			Logger.error(e);
+			throw new PersistanceException(e);
+		} finally {
+			ConnectionUtil.close(conn, pre, rs);
+		}
+	}
+
 	/**
 	 * 
 	 * @param authorName
 	 * @throws PersistanceException
 	 * @throws ValidationException
 	 */
-    public static void authorAlreadyExistOrNot(String authorName) throws PersistanceException, ValidationException {
-        Connection conn = null;
-        PreparedStatement pre = null;
-        ResultSet rs = null;
-        
-        try {
-            String query = "SELECT author FROM books WHERE author = ?";
-            conn = ConnectionUtil.getConnection();
-            pre = conn.prepareStatement(query);
-            pre.setString(1, authorName);
-            rs = pre.executeQuery();
-            
-            if (!rs.next()) {
-                throw new ValidationException("Author doesn't exist.");
-            }
-        } catch (SQLException e) {
-        	Logger.error(e);
-            throw new PersistanceException(e.getMessage());
-        } finally {
-            ConnectionUtil.close(conn, pre, rs);
-        }
-    }
+	public static void authorAlreadyExistOrNot(String authorName) throws PersistanceException, ValidationException {
+		Connection conn = null;
+		PreparedStatement pre = null;
+		ResultSet rs = null;
+
+		try {
+			String query = "SELECT author FROM books WHERE author = ?";
+			conn = ConnectionUtil.getConnection();
+			pre = conn.prepareStatement(query);
+			pre.setString(1, authorName);
+			rs = pre.executeQuery();
+
+			if (!rs.next()) {
+				throw new ValidationException("Author doesn't exist.");
+			}
+		} catch (SQLException e) {
+			Logger.error(e);
+			throw new PersistanceException(e);
+		} finally {
+			ConnectionUtil.close(conn, pre, rs);
+		}
+	}
 
 }

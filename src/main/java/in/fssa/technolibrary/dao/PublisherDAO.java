@@ -35,7 +35,7 @@ public class PublisherDAO {
 
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		} finally {
 			ConnectionUtil.close(con, ps);
 		}
@@ -68,7 +68,7 @@ public class PublisherDAO {
 
 	    } catch (SQLException e) {
 	    	Logger.error(e);
-	        throw new PersistanceException("Error while fetching books: " + e.getMessage());
+	    	throw new PersistanceException(e);
 	    } finally {
 	        ConnectionUtil.close(con, ps, rs);
 	    }
@@ -99,7 +99,7 @@ public class PublisherDAO {
 
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		}  finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
@@ -131,7 +131,7 @@ public class PublisherDAO {
 			}
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);
 		}
@@ -162,7 +162,7 @@ public class PublisherDAO {
 			}
 		} catch (SQLException e) {
 			Logger.error(e);
-			throw new PersistanceException(e.getMessage());
+			throw new PersistanceException(e);
 		} finally {
 			ConnectionUtil.close(conn, pre, rs);
 		}

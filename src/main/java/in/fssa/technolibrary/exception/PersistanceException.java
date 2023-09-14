@@ -1,11 +1,13 @@
 package in.fssa.technolibrary.exception;
 
+import java.sql.SQLException;
+
 public class PersistanceException extends Exception {
 	
-		public PersistanceException(String e) {
+		public PersistanceException(SQLException e) {
 
 			super(e);
-
+ 
 		}
 
 	}

@@ -3,8 +3,6 @@ package in.fssa.technolibrary.service;
 import java.util.Set;
 
 import in.fssa.technolibrary.dao.BookDAO;
-import in.fssa.technolibrary.dao.CategoryDAO;
-import in.fssa.technolibrary.dao.PublisherDAO;
 import in.fssa.technolibrary.exception.PersistanceException;
 import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
@@ -21,7 +19,7 @@ public class BookService {
 	 * @throws PersistanceException
 	 * @throws ValidationException
 	 * @throws ServiceException
-	 */
+	 */ 
 
 	public static void createNewBook(Book newBook) throws ServiceException, ValidationException {
 		try {
@@ -152,165 +150,15 @@ public class BookService {
 		}
 	}
 
-	/**
-	 * 
-	 * @param id
-	 * @param updatedData
-	 * @throws ValidationException
-	 * @throws ServiceException
-	 * @throws PersistanceException
-	 */
-	public static void updateBookPrice(int bookId, Book updatedData) throws ValidationException, ServiceException {
-		try {
-			BookValidator.validateId(bookId);
-			BookDAO bookDAO = new BookDAO();
-			BookValidator.validatePrice(updatedData.getPrice());
-			int newPrice = updatedData.getPrice();
-			Book oldData = bookDAO.findById(bookId);
-			int oldPrice = oldData.getPrice();
-			if (oldPrice != newPrice) {
-				bookDAO.updatePrice(bookId, updatedData);
-			} else {
-				throw new ValidationException("New price is the same as the old price.");
-			}
-		} catch (PersistanceException e) {
-			Logger.error(e);
-			throw new ServiceException("There is no book in this book id", e);
-		}
-	}
 	
-	/**
-	 * 
-	 * @param bookId
-	 * @param updatedData
-	 * @throws ValidationException
-	 * @throws ServiceException
-	 */
-	public static void updatePrice(int bookId, Book updatedData) throws ValidationException, ServiceException {
+	public static void updateBook(int id, Book updatedBook) throws ServiceException {
 		try {
-			BookValidator.validateId(bookId);
-			BookDAO bookDAO = new BookDAO();
-
-			bookDAO.updatePrice(bookId, updatedData);
+		
+		BookDAO bookDAO = new BookDAO();
+		bookDAO.updateBook(id, updatedBook);
 		} catch (PersistanceException e) {
 			Logger.error(e);
 			throw new ServiceException("There is no book in this book id", e);
-		}
-	}
-
-	/**
-	 * 
-	 * @param bookId
-	 * @param updatedData
-	 * @throws ValidationException
-	 * @throws ServiceException
-	 */
-	public static void updateTitleAndDate(int bookId, Book updatedData) throws ValidationException, ServiceException {
-		try {
-			BookValidator.validateUpdateBookAndTitle(updatedData);
-			BookDAO bookDAO = new BookDAO();
-
-			bookDAO.updateTitleAndDate(bookId, updatedData);
-		} catch (PersistanceException e) {
-			Logger.error(e);
-			throw new ServiceException("There is no book in this book id", e);
-		}
-	}
-
-	/**
-	 * 
-	 * @param id
-	 * @param updatedData
-	 * @throws ValidationException
-	 * @throws ServiceException
-	 * @throws PersistanceException
-	 */
-	public static void updateBookTitleAndDate(int bookId, Book updatedData)
-			throws ValidationException, ServiceException {
-		try {
-			BookValidator.validateUpdateBookAndTitle(updatedData);
-			BookDAO bookDAO = new BookDAO();
-
-			String newTitle = updatedData.getTitle();
-			String newDate = updatedData.getPublishedDate();
-			Book oldData = bookDAO.findById(bookId);
-			String oldTitle = oldData.getTitle();
-			String oldDate = oldData.getPublishedDate();
-			if (!oldTitle.equals(newTitle) && !oldDate.equals(newDate)) {
-				bookDAO.updateTitleAndDate(bookId, updatedData);
-			} else {
-				throw new ValidationException(
-						"New Title And Published Date is the same as the old Title And Published Date.");
-			}
-		} catch (PersistanceException e) {
-			Logger.error(e);
-			throw new ServiceException("There is no book in this book id", e);
-		}
-	}
-
-	/**
-	 * 
-	 * @param bookId
-	 * @param updatedData
-	 * @throws ValidationException
-	 * @throws ServiceException
-	 */
-	public static void updateAuthorNamePublisherIdCategoryId(int bookId, Book updatedData)
-			throws ValidationException, ServiceException {
-		try {
-			BookValidator.validateId(bookId);
-			BookValidator.validateAuthorNamePattern(updatedData.getAuthor());
-			BookValidator.validatePublisherId(updatedData.getPublisherId());
-			BookValidator.validateCategoryId(updatedData.getCategoryId());
-			BookDAO bookDAO = new BookDAO();
-
-			bookDAO.updateAuthorNamePublisherIdCategoryId(bookId, updatedData);
-		} catch (PersistanceException e) {
-			Logger.error(e);
-			throw new ServiceException("There is no book in this book id", e);
-		}
-	}
-
-	/**
-	 * 
-	 * @param id
-	 * @param updatedData
-	 * @throws ValidationException
-	 * @throws ServiceException
-	 * @throws PersistanceException
-	 */
-	public static void updateBookAuthorNamePublisherIdCategoryId(int bookId, Book updatedData)
-			throws ValidationException, ServiceException {
-		try {
-			BookValidator.validateId(bookId);
-			BookValidator.validateAuthorNamePattern(updatedData.getAuthor());
-			BookValidator.validatePublisherId(updatedData.getPublisherId());
-			BookValidator.validateCategoryId(updatedData.getCategoryId());
-			BookDAO bookDAO = new BookDAO();
-			if (!PublisherDAO.publisherIdAlreadyExistOrNot(updatedData.getPublisherId())) {
-				throw new ValidationException("Publisher ID " + updatedData.getPublisherId() + " does not exist.");
-			}
-			if (!CategoryDAO.categoryIdAlreadyExistOrNot(updatedData.getCategoryId())) {
-				throw new ValidationException("Category ID " + updatedData.getCategoryId() + " does not exist.");
-			}
-
-			String newAuthorName = updatedData.getTitle();
-			int newPublisherId = updatedData.getPublisherId();
-			int newCategoryId = updatedData.getCategoryId();
-			Book oldData = bookDAO.findById(bookId);
-			String oldAuthorName = oldData.getAuthor();
-			int oldPublisherId = oldData.getPublisherId();
-			int oldCategory = oldData.getCategoryId();
-			if (!oldAuthorName.equals(newAuthorName) && oldPublisherId != newPublisherId
-					&& oldCategory != newCategoryId) {
-				bookDAO.updateAuthorNamePublisherIdCategoryId(bookId, updatedData);
-			} else {
-				throw new ValidationException(
-						"New Author ,Published Id And Category Id is the same as the old Author ,Published Id And Category Id.");
-			}
-		} catch (PersistanceException e) {
-			Logger.error(e);
-			throw new ServiceException("There is no book in this book id");
 		}
 	}
 
