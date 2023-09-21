@@ -2,10 +2,9 @@ package in.fssa.technolibrary.validator;
 
 import java.util.regex.Pattern;
 
-import com.google.protobuf.ServiceException;
-
 import in.fssa.technolibrary.dao.UserDAO;
 import in.fssa.technolibrary.exception.PersistanceException;
+import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.User;
 import in.fssa.technolibrary.util.StringUtil;

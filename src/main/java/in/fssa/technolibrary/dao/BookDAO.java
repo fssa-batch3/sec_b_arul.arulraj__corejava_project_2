@@ -66,7 +66,7 @@ public class BookDAO {
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
-
+			
 			while (rs.next()) {
 				Book book = new Book();
 				book.setId(rs.getInt("id"));

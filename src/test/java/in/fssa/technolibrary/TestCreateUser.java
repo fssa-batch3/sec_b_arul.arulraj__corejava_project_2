@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.User;
 import in.fssa.technolibrary.service.UserService;
+import in.fssa.technolibrary.util.PasswordEncryptUtil;
 
 class TestCreateUser {
 
@@ -21,7 +22,8 @@ class TestCreateUser {
 	    String randomString = generateRandomString(8); 
 	    newUser.setName("Ajun");
 	    newUser.setEmail(randomString + "@" + "gmail.com");
-	    newUser.setPassword("Ajun@5555");
+	    String hashPassword = PasswordEncryptUtil.encrypt("Ajunajun@05");
+	    newUser.setPassword(hashPassword);
 	    newUser.setImage("https://iili.io/J9kwBe9.jpg");
 	    newUser.setPhoneNumber(9863456787L);
 

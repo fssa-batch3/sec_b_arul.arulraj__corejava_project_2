@@ -150,15 +150,22 @@ public class BookService {
 		}
 	}
 
-	
+	/**
+	 * 
+	 * @param id
+	 * @param updatedBook
+	 * @throws ServiceException
+	 */
 	public static void updateBook(int id, Book updatedBook) throws ServiceException {
 		try {
+			
+		BookValidator.validateUpdatedBook(updatedBook);
 		
 		BookDAO bookDAO = new BookDAO();
 		bookDAO.updateBook(id, updatedBook);
-		} catch (PersistanceException e) {
+		} catch (PersistanceException | ValidationException e) {
 			Logger.error(e);
-			throw new ServiceException("There is no book in this book id", e);
+			throw new ServiceException(e.getMessage());
 		}
 	}
 

@@ -58,25 +58,7 @@ public class BookValidator {
 	}
 	
 	public static void validateAuthor(String authorName) throws ValidationException {
-		
 			validateAuthorNamePattern(authorName);
-
-	}
-	
-	/**
-	 * 
-	 * @param updatedData
-	 * @throws ValidationException
-	 * @throws ServiceException
-	 */
-	public static void validateUpdateBookAndTitle(Book updatedData) throws ValidationException {
-
-		StringUtil.rejectIfInvalidString(updatedData.getTitle(), "Title");
-
-		if (!Pattern.matches(BOOK_PATTERN, updatedData.getTitle())) {
-			throw new ValidationException("Title doesn't match the pattern");
-		}
-		validatePublishedDate(updatedData.getPublishedDate());
 	}
 
 	/**
@@ -122,6 +104,16 @@ public class BookValidator {
 			throw new ValidationException("Author name doesn't match the pattern");
 		}
 
+	}
+	
+	public static void validateUpdatedBook(Book updatedBook) throws ValidationException {
+		
+		BookValidator.validateTitle(updatedBook.getTitle());
+		BookValidator.validateCategoryId(updatedBook.getCategoryId());
+		BookValidator.validatePublisherId(updatedBook.getPublisherId());
+		BookValidator.validateAuthorNamePattern(updatedBook.getAuthor());
+		BookValidator.validatePrice(updatedBook.getPrice());
+		BookValidator.validatePublishedDate(updatedBook.getPublishedDate());
 	}
 
 	/**
@@ -181,6 +173,8 @@ public class BookValidator {
 			throw new ValidationException("Category doesn't exist");
 		}
 	}
+	
+	
 
 	/**
 	 * 

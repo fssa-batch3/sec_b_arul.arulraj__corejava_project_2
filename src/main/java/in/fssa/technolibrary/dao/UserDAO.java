@@ -14,6 +14,7 @@ import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.User;
 import in.fssa.technolibrary.util.ConnectionUtil;
 import in.fssa.technolibrary.util.Logger;
+import in.fssa.technolibrary.util.PasswordEncryptUtil;
 
 public class UserDAO {
 
@@ -151,7 +152,8 @@ public class UserDAO {
 			ps = conn.prepareStatement(query);
 			ps.setString(1, newUser.getName());
 			ps.setString(2, newUser.getEmail());
-			ps.setString(3, newUser.getPassword());
+			String hashPassword = PasswordEncryptUtil.encrypt(newUser.getPassword());
+			ps.setString(3, hashPassword);
 			if (newUser.getImage() != null) {
 				ps.setString(4, newUser.getImage());
 			} else {

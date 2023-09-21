@@ -2,10 +2,11 @@ package in.fssa.technolibrary.service;
 
 import java.util.Set;
 
-import com.google.protobuf.ServiceException;
+
 
 import in.fssa.technolibrary.dao.UserDAO;
 import in.fssa.technolibrary.exception.PersistanceException;
+import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.User;
 import in.fssa.technolibrary.validator.UserValidator;
@@ -53,8 +54,9 @@ public class UserService {
 	 * @throws ValidationException If the provided email address is invalid.
 	 * @throws ServiceException    If a service-related error occurs during
 	 *                             retrieval.
+	 * @throws com.google.protobuf.ServiceException 
 	 */
-	public User findByEmail(String email) throws ValidationException, ServiceException {
+	public User findByEmail(String email) throws ValidationException, ServiceException{
 		try {
 			UserValidator.validateEmail(email);
 			UserDAO userDAO = new UserDAO();

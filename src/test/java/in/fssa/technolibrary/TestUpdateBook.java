@@ -6,16 +6,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import in.fssa.technolibrary.exception.ServiceException;
 import in.fssa.technolibrary.model.Book;
 import in.fssa.technolibrary.service.BookService;
 import in.fssa.technolibrary.util.Randomgenerater;
-import in.fssa.technolibrary.exception.ValidationException;
 
-class TestCreateBook {
+class TestUpdateBook {
+	
 
 	@Test
-	void testCreateBookWithValidDetails() throws Exception {
-
+	void testupdateBook() {
+		
 		Book newBook = new Book();
 
 		String generatedAuthor = Randomgenerater.generateRandomAlphabeticName();
@@ -28,33 +29,10 @@ class TestCreateBook {
 		newBook.setPublishedDate("2023-01-03");
 		newBook.setPrice(5100);
 		assertDoesNotThrow(() -> {
-			BookService.createNewBook(newBook);
+			BookService.updateBook(45, newBook);
 		});
-
+		
 	}
-	
-	@Test
-	void testBookTitleWithAlreadyExistName() {
-
-		Book newBook = new Book();
-
-		newBook.setAuthor("Tjhg");
-		newBook.setTitle("BookofMagic");
-		newBook.setCategoryId(1);
-		newBook.setPublisherId(1);
-		newBook.setPublishedDate("12-01-2023");
-		newBook.setPrice(1000);
-
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
-		});
-
-		String exceptedMessage = "Book name already exist";
-		String actualMessage = exception.getMessage();
-		System.out.print(actualMessage);
-		assertEquals(exceptedMessage, actualMessage);
-	}
-	
 	
 	@Test
 	void testBookTitlePattern() {
@@ -68,8 +46,8 @@ class TestCreateBook {
 		newBook.setPublishedDate("12-01-2023");
 		newBook.setPrice(1000);
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
+		Exception exception = assertThrows(ServiceException.class, () -> {
+			BookService.updateBook(45, newBook);
 		});
 
 		String exceptedMessage = "Title doesn't match the pattern";
@@ -90,8 +68,8 @@ class TestCreateBook {
 		newBook.setPublishedDate("12-01-2023");
 		newBook.setPrice(1000);
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
+		Exception exception = assertThrows(ServiceException.class, () -> {
+			BookService.updateBook(45, newBook);
 		});
 
 		String exceptedMessage = "Title cannot be null or empty";
@@ -113,8 +91,8 @@ class TestCreateBook {
 		newBook.setPublishedDate("12-01-2023");
 		newBook.setPrice(1000);
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
+		Exception exception = assertThrows(ServiceException.class, () -> {
+			BookService.updateBook(45, newBook);
 		});
 
 		String exceptedMessage = "Author cannot be null or empty";
@@ -135,8 +113,8 @@ class TestCreateBook {
 		newBook.setPublishedDate("12-01-2023");
 		newBook.setPrice(1000);
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
+		Exception exception = assertThrows(ServiceException.class, () -> {
+			BookService.updateBook(45, newBook);
 		});
 
 		String exceptedMessage = "Author cannot be null or empty";
@@ -157,8 +135,8 @@ class TestCreateBook {
 		newBook.setPublishedDate("12-01-2023");
 		newBook.setPrice(1000);
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
+		Exception exception = assertThrows(ServiceException.class, () -> {
+			BookService.updateBook(45, newBook);
 		});
 
 		String exceptedMessage = "Author name doesn't match the pattern";
@@ -166,34 +144,7 @@ class TestCreateBook {
 
 		assertEquals(exceptedMessage,actualMessage);
 	}
-
-	@Test
-	void testAuthorAlreadyExistOrNot() {
-
-		BookService bookService = new BookService();
-
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.findByAuthorName("gvhgv");
-		});
-
-		String exceptedMessage = "Author doesn't exist.";
-		String actualMessage = exception.getMessage();
-		assertEquals(exceptedMessage,actualMessage);
-	}
-
-	@Test
-	void testBookIdAlreadyExistOrNot() {
-
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.findBookById(2000);
-		});
-
-		String exceptedMessage = "Book doesn't exist";
-		String actualMessage = exception.getMessage();
-
-		assertEquals(exceptedMessage, actualMessage);
-	}
-
+	
 	@Test
 	void testPublisherId() {
 
@@ -206,8 +157,8 @@ class TestCreateBook {
 		newBook.setPublishedDate("12-01-2023");
 		newBook.setPrice(1000);
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
+		Exception exception = assertThrows(ServiceException.class, () -> {
+			BookService.updateBook(45, newBook);
 		});
 
 		String exceptedMessage = "Publisher Id can not be less than zero.";
@@ -228,8 +179,8 @@ class TestCreateBook {
 		newBook.setPublishedDate("12-01-2023");
 		newBook.setPrice(1000);
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
+		Exception exception = assertThrows(ServiceException.class, () -> {
+			BookService.updateBook(45, newBook);
 		});
 
 		String exceptedMessage = "Category Id can not be less than zero.";
@@ -249,8 +200,8 @@ class TestCreateBook {
 		newBook.setPublishedDate("12-01-2023");
 		newBook.setPrice(0);
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
+		Exception exception = assertThrows(ServiceException.class, () -> {
+			BookService.updateBook(45, newBook);
 		});
 
 		String exceptedMessage = "Price can not be less than zero.";
@@ -270,8 +221,8 @@ class TestCreateBook {
 	    newBook.setPublishedDate(null); // Set publishedDate to null
 	    newBook.setPrice(1000);
 
-	    Exception exception = assertThrows(ValidationException.class, () -> {
-	        BookService.createNewBook(newBook);
+	    Exception exception = assertThrows(ServiceException.class, () -> {
+	    	BookService.updateBook(45, newBook);
 	    });
 
 	    String expectedMessage = "Date cannot be null or empty";
@@ -293,8 +244,8 @@ class TestCreateBook {
 		newBook.setPublishedDate("");
 		newBook.setPrice(1000);
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
+		Exception exception = assertThrows(ServiceException.class, () -> {
+			BookService.updateBook(45, newBook);
 		});
 
 		String exceptedMessage = "Date cannot be null or empty";
@@ -315,8 +266,8 @@ class TestCreateBook {
 		newBook.setPublishedDate("23-03-2022");
 		newBook.setPrice(1000);
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
+		Exception exception = assertThrows(ServiceException.class, () -> {
+			BookService.updateBook(45, newBook);
 		});
 
 		String exceptedMessage = "Invalid date or Invalid date format (yyyy-MM-dd)";
@@ -337,8 +288,8 @@ class TestCreateBook {
 		newBook.setPublishedDate("2030-12-31");
 		newBook.setPrice(1000);
 
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			BookService.createNewBook(newBook);
+		Exception exception = assertThrows(ServiceException.class, () -> {
+			BookService.updateBook(45, newBook);
 		});
 
 		String exceptedMessage = "Date can't be in future";
@@ -346,34 +297,7 @@ class TestCreateBook {
 		System.out.print(actualMessage);
 		assertEquals(exceptedMessage,actualMessage);
 	}
+	
+	
 
-	@Test
-	void testCategoryIdAlreadyExistOrNot() {
-
-		BookService bookService = new BookService();
-
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.findBookByCategoryId(5000);
-		});
-
-		String exceptedMessage = "Category doesn't exist";
-		String actualMessage = exception.getMessage();
-
-		assertEquals(exceptedMessage, actualMessage);
-	}
-
-	@Test
-	void testPublisherIdAlreadyExistOrNot() {
-
-		BookService bookService = new BookService();
-
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			bookService.findBookByPublisherId(1000);
-		});
-
-		String exceptedMessage = "Publisher doesn't exist";
-		String actualMessage = exception.getMessage();
-
-		assertEquals(exceptedMessage, actualMessage);
-	}
 }

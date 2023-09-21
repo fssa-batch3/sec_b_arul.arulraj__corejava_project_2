@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import in.fssa.technolibrary.exception.ValidationException;
 import in.fssa.technolibrary.model.User;
 import in.fssa.technolibrary.service.UserService;
+import in.fssa.technolibrary.util.PasswordEncryptUtil;
 
 class TestUpdateUser {
 
@@ -27,7 +28,8 @@ class TestUpdateUser {
 		assertDoesNotThrow(() -> {
 			UserService userService = new UserService();
 			User newUser = new User();
-			newUser.setPassword("Sess@2608");
+			String hashPassword = PasswordEncryptUtil.encrypt("Admin@05");
+			newUser.setPassword(hashPassword);
 			userService.updateUser(1, newUser);
 		});
 	}
